@@ -1,0 +1,3 @@
+/home/nyz/MyminiSQL/build/CMakeFiles/MyminiSQL.dir
+/home/nyz/MyminiSQL/build/CMakeFiles/edit_cache.dir
+/home/nyz/MyminiSQL/build/CMakeFiles/rebuild_cache.dir
