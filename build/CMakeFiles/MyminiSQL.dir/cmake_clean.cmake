@@ -1,6 +1,14 @@
 file(REMOVE_RECURSE
   "../bin/MyminiSQL"
   "../bin/MyminiSQL.pdb"
+  "CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.o"
+  "CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.o.d"
+  "CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o"
+  "CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o.d"
+  "CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.o"
+  "CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.o.d"
+  "CMakeFiles/MyminiSQL.dir/src/includes/table.cpp.o"
+  "CMakeFiles/MyminiSQL.dir/src/includes/table.cpp.o.d"
   "CMakeFiles/MyminiSQL.dir/src/main.cpp.o"
   "CMakeFiles/MyminiSQL.dir/src/main.cpp.o.d"
 )

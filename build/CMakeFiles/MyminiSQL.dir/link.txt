@@ -1,1 +1,1 @@
-/usr/bin/c++ CMakeFiles/MyminiSQL.dir/src/main.cpp.o -o ../bin/MyminiSQL 
+/usr/bin/c++ CMakeFiles/MyminiSQL.dir/src/main.cpp.o CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.o CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.o CMakeFiles/MyminiSQL.dir/src/includes/table.cpp.o -o ../bin/MyminiSQL 

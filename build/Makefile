@@ -129,6 +129,102 @@ MyminiSQL/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyminiSQL.dir/build.make CMakeFiles/MyminiSQL.dir/build
 .PHONY : MyminiSQL/fast
 
+src/includes/database.o: src/includes/database.cpp.o
+.PHONY : src/includes/database.o
+
+# target to build an object file
+src/includes/database.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyminiSQL.dir/build.make CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.o
+.PHONY : src/includes/database.cpp.o
+
+src/includes/database.i: src/includes/database.cpp.i
+.PHONY : src/includes/database.i
+
+# target to preprocess a source file
+src/includes/database.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyminiSQL.dir/build.make CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.i
+.PHONY : src/includes/database.cpp.i
+
+src/includes/database.s: src/includes/database.cpp.s
+.PHONY : src/includes/database.s
+
+# target to generate assembly for a file
+src/includes/database.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyminiSQL.dir/build.make CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.s
+.PHONY : src/includes/database.cpp.s
+
+src/includes/parser.o: src/includes/parser.cpp.o
+.PHONY : src/includes/parser.o
+
+# target to build an object file
+src/includes/parser.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyminiSQL.dir/build.make CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o
+.PHONY : src/includes/parser.cpp.o
+
+src/includes/parser.i: src/includes/parser.cpp.i
+.PHONY : src/includes/parser.i
+
+# target to preprocess a source file
+src/includes/parser.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyminiSQL.dir/build.make CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.i
+.PHONY : src/includes/parser.cpp.i
+
+src/includes/parser.s: src/includes/parser.cpp.s
+.PHONY : src/includes/parser.s
+
+# target to generate assembly for a file
+src/includes/parser.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyminiSQL.dir/build.make CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.s
+.PHONY : src/includes/parser.cpp.s
+
+src/includes/query.o: src/includes/query.cpp.o
+.PHONY : src/includes/query.o
+
+# target to build an object file
+src/includes/query.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyminiSQL.dir/build.make CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.o
+.PHONY : src/includes/query.cpp.o
+
+src/includes/query.i: src/includes/query.cpp.i
+.PHONY : src/includes/query.i
+
+# target to preprocess a source file
+src/includes/query.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyminiSQL.dir/build.make CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.i
+.PHONY : src/includes/query.cpp.i
+
+src/includes/query.s: src/includes/query.cpp.s
+.PHONY : src/includes/query.s
+
+# target to generate assembly for a file
+src/includes/query.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyminiSQL.dir/build.make CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.s
+.PHONY : src/includes/query.cpp.s
+
+src/includes/table.o: src/includes/table.cpp.o
+.PHONY : src/includes/table.o
+
+# target to build an object file
+src/includes/table.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyminiSQL.dir/build.make CMakeFiles/MyminiSQL.dir/src/includes/table.cpp.o
+.PHONY : src/includes/table.cpp.o
+
+src/includes/table.i: src/includes/table.cpp.i
+.PHONY : src/includes/table.i
+
+# target to preprocess a source file
+src/includes/table.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyminiSQL.dir/build.make CMakeFiles/MyminiSQL.dir/src/includes/table.cpp.i
+.PHONY : src/includes/table.cpp.i
+
+src/includes/table.s: src/includes/table.cpp.s
+.PHONY : src/includes/table.s
+
+# target to generate assembly for a file
+src/includes/table.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyminiSQL.dir/build.make CMakeFiles/MyminiSQL.dir/src/includes/table.cpp.s
+.PHONY : src/includes/table.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -162,6 +258,18 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... MyminiSQL"
+	@echo "... src/includes/database.o"
+	@echo "... src/includes/database.i"
+	@echo "... src/includes/database.s"
+	@echo "... src/includes/parser.o"
+	@echo "... src/includes/parser.i"
+	@echo "... src/includes/parser.s"
+	@echo "... src/includes/query.o"
+	@echo "... src/includes/query.i"
+	@echo "... src/includes/query.s"
+	@echo "... src/includes/table.o"
+	@echo "... src/includes/table.i"
+	@echo "... src/includes/table.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

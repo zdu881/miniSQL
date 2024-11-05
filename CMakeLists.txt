@@ -8,7 +8,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Add the executable
-add_executable(MyminiSQL src/main.cpp)
+file(GLOB_RECURSE SOURCES "src/includes/*.cpp" "src/includes/*.hpp" "src/main.cpp")
+add_executable(MyminiSQL src/main.cpp ${SOURCES})
 
 # Include directories
 include_directories(${PROJECT_SOURCE_DIR}/src/includes)

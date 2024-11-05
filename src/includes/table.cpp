@@ -1,7 +1,7 @@
 // table.cpp
 #include "table.hpp"
 #include <iostream>
-
+Table::Table() :name(""){}
 Table::Table(const std::string& name) : name(name) {}
 
 void Table::insertRow(const std::unordered_map<std::string, std::string>& row) {
