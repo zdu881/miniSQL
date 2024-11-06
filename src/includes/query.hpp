@@ -11,9 +11,10 @@ public:
     ~Query();
     void getQ();
     void excQ();
+    //void loaddb(Database& db);
 private:
     std::string userInput;
-    Database db;
+    Database* dbptr =nullptr;
 };
 
 #endif // QUERY_HPP
