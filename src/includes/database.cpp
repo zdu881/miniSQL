@@ -1,7 +1,7 @@
 // database.cpp
 #include "database.hpp"
 #include <iostream>
-
+#include <fstream>
 void Database::createTable(const std::string& name) {
     if (tables.find(name) == tables.end()) {
         tables[name] = Table(name);
@@ -25,4 +25,23 @@ Table* Database::getTable(const std::string& name) {
         return &it->second;
     }
     return nullptr;
+}
+
+void Database::save(const std::string& filename){
+    std::ofstream file(filename, std::ios::out);
+    if (!file){
+        std::cerr<<"Cannot open the file for saving:"<<filename<<std::endl;
+        return;
+    }
+
+    auto tableCount= tables.size();
+    file.write((char*)&tableCount, sizeof(tableCount));
+    for (const auto& [name,table] : tables){
+        auto nameLength = name.size(); 
+        file.write((char*)&nameLength, sizeof(nameLength));
+        file.write(name.c_str(), nameLength);
+        table.save(file);
+    }
+
+    file.close();
 }

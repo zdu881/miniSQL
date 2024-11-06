@@ -13,6 +13,7 @@ public:
     void insertRow(const std::unordered_map<std::string, std::string>& row);
     void deleteRow(int id);
     void queryTable() const;
+    void save(std::ofstream& file) const;
     friend std::ostream& operator<<(std::ostream& os, const Table& table);
 private:
     std::string name;

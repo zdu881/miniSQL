@@ -11,6 +11,8 @@ public:
     void createTable(const std::string& name);
     void dropTable(const std::string& name);
     Table* getTable(const std::string& name);
+    void save(const std::string& filename);
+    void load(const std::string& filename);
 private:
     std::unordered_map<std::string, Table> tables;
 };

@@ -36,7 +36,10 @@ void Parser::parse(const std::string& input, Database& db) {
     }else if(command == "EXIT"){
         std::cout<<"See ya next time!"<<std::endl;
         exit(0);
-    }else {
+    }else if(command == "HELP"){
+        std::cout<<"Commands available: CREATE TABLE, DROP TABLE, SELECT, EXIT"<<std::endl;
+    }
+    else {
         std::cout << "Unknown command: " << command << std::endl;
     }
 }

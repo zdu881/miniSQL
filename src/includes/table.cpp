@@ -1,6 +1,7 @@
 // table.cpp
 #include "table.hpp"
 #include <iostream>
+#include <fstream>
 Table::Table() :name(""){}
 Table::Table(const std::string& name) : name(name) {}
 
@@ -25,5 +26,21 @@ void Table::queryTable() const {
             std::cout << key << ": " << value << " ";
         }
         std::cout << std::endl;
+    }
+}
+void Table::save(std::ofstream& file) const{
+    auto rowCount = rows.size();
+    file.write((char*)&rowCount, sizeof(rowCount));
+    for (const auto& row : rows){
+        auto rowSize = row.size();
+        file.write((char*)&rowSize, sizeof(rowSize));
+        for (const auto& [key,value] : row){
+            auto keyLength = key.size();
+            file.write((char*)&keyLength, sizeof(keyLength));
+            file.write(key.c_str(), keyLength);
+            auto valueLength = value.size();
+            file.write((char*)&valueLength, sizeof(valueLength));
+            file.write(value.c_str(), valueLength);
+        }
     }
 }
