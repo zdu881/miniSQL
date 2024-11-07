@@ -71,6 +71,42 @@ void Table::queryTable(const std::vector<std::string>& columns) const {
     }
 }
 
+void Table::queryTable(const std::vector<std::string>& columns, const std::string& whereColumn, const std::string& whereOperator, const ColumnType& whereValue) const {
+    std::cout << "Table " << name << " contents:" << std::endl;
+    for (const auto& row : rows) {
+        auto it = std::find_if(row.begin(), row.end(), [&whereColumn](const auto& pair) {
+            return std::get<std::string>(pair.first) == whereColumn;
+        });
+        if (it != row.end()) {
+            bool conditionMet = false;
+            if (whereOperator == "=") {
+                conditionMet = (it->second == whereValue);
+            } else if (whereOperator == "<") {
+                conditionMet = (it->second < whereValue);
+            } else if (whereOperator == ">") {
+                conditionMet = (it->second > whereValue);
+            }
+            if (conditionMet) {
+                for (const auto& column : columns) {
+                    auto colIt = std::find_if(row.begin(), row.end(), [&column](const auto& pair) {
+                        return std::get<std::string>(pair.first) == column;
+                    });
+                    if (colIt != row.end()) {
+                        std::visit([](auto&& arg) {
+                            if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, std::string>) {
+                                std::cout << "\"" << arg << "\" ";
+                            } else {
+                                std::cout << arg << " ";
+                            }
+                        }, colIt->second);
+                    }
+                }
+                std::cout << std::endl;
+            }
+        }
+    }
+}
+
 void Table::save(std::ofstream& file) const {
     auto rowCount = rows.size();
     file.write((char*)&rowCount, sizeof(rowCount));

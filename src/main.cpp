@@ -25,10 +25,12 @@ int main(int argv,char* argc[]){
     Query query(&databases, &currentDatabase);
     while(1){
         query.getQ();
+  
+        query.excQ();
         if (inputFile.eof()) {
             break;
         }
-        query.excQ();
+
     }
     for (auto& [name, db] : databases) {
         db.save(name + ".db");

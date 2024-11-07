@@ -106,9 +106,51 @@ void Parser::parse(const std::string& input, std::unordered_map<std::string, Dat
                 Table* table = db.getTable(tableName);
                 if (table) {
                     if (selectAll) {
-                        table->queryTable();
+                        if (i + 2 < tokens.size() && tokens[i + 1] == "WHERE") {
+                            std::string whereColumn = tokens[i + 2];
+                            std::string whereOperator = tokens[i + 3];
+                            std::string whereValueStr = tokens[i + 4];
+                            if (whereValueStr.back() == ';') {
+                                whereValueStr.pop_back(); // Remove ending semicolon
+                            }
+                            ColumnType whereValue;
+                            if (whereValueStr.front() == '"') {
+                                whereValue = whereValueStr.substr(1, whereValueStr.size() - 2); // Remove quotes
+                            } else if (whereValueStr.find('.') != std::string::npos) {
+                                whereValue = std::stod(whereValueStr);
+                            } else {
+                                whereValue = std::stoi(whereValueStr);
+                            }
+                            table->queryTable(columns, whereColumn, whereOperator, whereValue);
+                        } else {
+                            table->queryTable();
+                        }
                     } else {
-                        table->queryTable(columns);
+                        std::cout<<"i + 2 < tokens.size()"<<(i + 2 < tokens.size())<<std::endl;
+                        std::cout<<"tokens[i + 1] == WHERE"<<(tokens[i + 1] == "WHERE")<<std::endl;
+                        if (i + 2 < tokens.size() && tokens[i + 1] == "WHERE") {
+                            std::string whereColumn = tokens[i + 2];
+                            std::cout<<"whereColumn: "<<whereColumn<<std::endl;
+                            std::string whereOperator = tokens[i + 3];
+                            std::cout<<"whereOperator: "<<whereOperator<<std::endl;
+                            std::string whereValueStr = tokens[i + 4];
+                            std::cout<<"whereValueStr: "<<whereValueStr<<std::endl;
+
+                            if (whereValueStr.back() == ';') {
+                                whereValueStr.pop_back(); // Remove ending semicolon
+                            }
+                            ColumnType whereValue;
+                            if (whereValueStr.front() == '"') {
+                                whereValue = whereValueStr.substr(1, whereValueStr.size() - 2); // Remove quotes
+                            } else if (whereValueStr.find('.') != std::string::npos) {
+                                whereValue = std::stod(whereValueStr);
+                            } else {
+                                whereValue = std::stoi(whereValueStr);
+                            }
+                            table->queryTable(columns, whereColumn, whereOperator, whereValue);
+                        } else {
+                            table->queryTable(columns);
+                        }
                     }
                 } else {
                     std::cerr << "Table " << tableName << " does not exist." << std::endl;
