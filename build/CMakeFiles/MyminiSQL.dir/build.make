@@ -69,24 +69,10 @@ include CMakeFiles/MyminiSQL.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/MyminiSQL.dir/flags.make
 
-CMakeFiles/MyminiSQL.dir/src/main.cpp.o: CMakeFiles/MyminiSQL.dir/flags.make
-CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp
-CMakeFiles/MyminiSQL.dir/src/main.cpp.o: CMakeFiles/MyminiSQL.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/nyz/MyminiSQL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/MyminiSQL.dir/src/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MyminiSQL.dir/src/main.cpp.o -MF CMakeFiles/MyminiSQL.dir/src/main.cpp.o.d -o CMakeFiles/MyminiSQL.dir/src/main.cpp.o -c /home/nyz/MyminiSQL/src/main.cpp
-
-CMakeFiles/MyminiSQL.dir/src/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MyminiSQL.dir/src/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/nyz/MyminiSQL/src/main.cpp > CMakeFiles/MyminiSQL.dir/src/main.cpp.i
-
-CMakeFiles/MyminiSQL.dir/src/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MyminiSQL.dir/src/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/nyz/MyminiSQL/src/main.cpp -o CMakeFiles/MyminiSQL.dir/src/main.cpp.s
-
 CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.o: CMakeFiles/MyminiSQL.dir/flags.make
 CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.o: ../src/includes/database.cpp
 CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.o: CMakeFiles/MyminiSQL.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/nyz/MyminiSQL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/nyz/MyminiSQL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.o -MF CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.o.d -o CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.o -c /home/nyz/MyminiSQL/src/includes/database.cpp
 
 CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.i: cmake_force
@@ -96,6 +82,20 @@ CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.i: cmake_force
 CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/nyz/MyminiSQL/src/includes/database.cpp -o CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.s
+
+CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.o: CMakeFiles/MyminiSQL.dir/flags.make
+CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.o: ../src/includes/globals.cpp
+CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.o: CMakeFiles/MyminiSQL.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/nyz/MyminiSQL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.o -MF CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.o.d -o CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.o -c /home/nyz/MyminiSQL/src/includes/globals.cpp
+
+CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/nyz/MyminiSQL/src/includes/globals.cpp > CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.i
+
+CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/nyz/MyminiSQL/src/includes/globals.cpp -o CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.s
 
 CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o: CMakeFiles/MyminiSQL.dir/flags.make
 CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o: ../src/includes/parser.cpp
@@ -139,25 +139,41 @@ CMakeFiles/MyminiSQL.dir/src/includes/table.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MyminiSQL.dir/src/includes/table.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/nyz/MyminiSQL/src/includes/table.cpp -o CMakeFiles/MyminiSQL.dir/src/includes/table.cpp.s
 
+CMakeFiles/MyminiSQL.dir/src/main.cpp.o: CMakeFiles/MyminiSQL.dir/flags.make
+CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp
+CMakeFiles/MyminiSQL.dir/src/main.cpp.o: CMakeFiles/MyminiSQL.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/nyz/MyminiSQL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/MyminiSQL.dir/src/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MyminiSQL.dir/src/main.cpp.o -MF CMakeFiles/MyminiSQL.dir/src/main.cpp.o.d -o CMakeFiles/MyminiSQL.dir/src/main.cpp.o -c /home/nyz/MyminiSQL/src/main.cpp
+
+CMakeFiles/MyminiSQL.dir/src/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MyminiSQL.dir/src/main.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/nyz/MyminiSQL/src/main.cpp > CMakeFiles/MyminiSQL.dir/src/main.cpp.i
+
+CMakeFiles/MyminiSQL.dir/src/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MyminiSQL.dir/src/main.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/nyz/MyminiSQL/src/main.cpp -o CMakeFiles/MyminiSQL.dir/src/main.cpp.s
+
 # Object files for target MyminiSQL
 MyminiSQL_OBJECTS = \
-"CMakeFiles/MyminiSQL.dir/src/main.cpp.o" \
 "CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.o" \
+"CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.o" \
 "CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o" \
 "CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.o" \
-"CMakeFiles/MyminiSQL.dir/src/includes/table.cpp.o"
+"CMakeFiles/MyminiSQL.dir/src/includes/table.cpp.o" \
+"CMakeFiles/MyminiSQL.dir/src/main.cpp.o"
 
 # External object files for target MyminiSQL
 MyminiSQL_EXTERNAL_OBJECTS =
 
-../bin/MyminiSQL: CMakeFiles/MyminiSQL.dir/src/main.cpp.o
 ../bin/MyminiSQL: CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.o
+../bin/MyminiSQL: CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.o
 ../bin/MyminiSQL: CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o
 ../bin/MyminiSQL: CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.o
 ../bin/MyminiSQL: CMakeFiles/MyminiSQL.dir/src/includes/table.cpp.o
+../bin/MyminiSQL: CMakeFiles/MyminiSQL.dir/src/main.cpp.o
 ../bin/MyminiSQL: CMakeFiles/MyminiSQL.dir/build.make
 ../bin/MyminiSQL: CMakeFiles/MyminiSQL.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/nyz/MyminiSQL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable ../bin/MyminiSQL"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/nyz/MyminiSQL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable ../bin/MyminiSQL"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/MyminiSQL.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

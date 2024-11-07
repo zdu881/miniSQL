@@ -153,6 +153,30 @@ src/includes/database.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyminiSQL.dir/build.make CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.s
 .PHONY : src/includes/database.cpp.s
 
+src/includes/globals.o: src/includes/globals.cpp.o
+.PHONY : src/includes/globals.o
+
+# target to build an object file
+src/includes/globals.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyminiSQL.dir/build.make CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.o
+.PHONY : src/includes/globals.cpp.o
+
+src/includes/globals.i: src/includes/globals.cpp.i
+.PHONY : src/includes/globals.i
+
+# target to preprocess a source file
+src/includes/globals.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyminiSQL.dir/build.make CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.i
+.PHONY : src/includes/globals.cpp.i
+
+src/includes/globals.s: src/includes/globals.cpp.s
+.PHONY : src/includes/globals.s
+
+# target to generate assembly for a file
+src/includes/globals.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyminiSQL.dir/build.make CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.s
+.PHONY : src/includes/globals.cpp.s
+
 src/includes/parser.o: src/includes/parser.cpp.o
 .PHONY : src/includes/parser.o
 
@@ -261,6 +285,9 @@ help:
 	@echo "... src/includes/database.o"
 	@echo "... src/includes/database.i"
 	@echo "... src/includes/database.s"
+	@echo "... src/includes/globals.o"
+	@echo "... src/includes/globals.i"
+	@echo "... src/includes/globals.s"
 	@echo "... src/includes/parser.o"
 	@echo "... src/includes/parser.i"
 	@echo "... src/includes/parser.s"

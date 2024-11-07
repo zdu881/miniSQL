@@ -173,8 +173,11 @@ CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.o: ../src/includes/database.c
   /usr/include/c++/11/bits/stl_vector.h \
   /usr/include/c++/11/bits/stl_bvector.h \
   /usr/include/c++/11/bits/vector.tcc \
-  /usr/include/c++/11/iostream \
-  /usr/include/c++/11/ostream \
+  /usr/include/c++/11/variant \
+  /usr/include/c++/11/bits/parse_numbers.h \
+  ../src/includes/globals.hpp \
+  /usr/include/c++/11/fstream \
+  /usr/include/c++/11/istream \
   /usr/include/c++/11/ios \
   /usr/include/c++/11/exception \
   /usr/include/c++/11/bits/exception_ptr.h \
@@ -199,14 +202,14 @@ CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.o: ../src/includes/database.c
   /usr/include/x86_64-linux-gnu/c++/11/bits/ctype_inline.h \
   /usr/include/c++/11/bits/locale_facets.tcc \
   /usr/include/c++/11/bits/basic_ios.tcc \
+  /usr/include/c++/11/ostream \
   /usr/include/c++/11/bits/ostream.tcc \
-  /usr/include/c++/11/istream \
   /usr/include/c++/11/bits/istream.tcc \
-  /usr/include/c++/11/fstream \
   /usr/include/c++/11/bits/codecvt.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
-  /usr/include/c++/11/bits/fstream.tcc
+  /usr/include/c++/11/bits/fstream.tcc \
+  /usr/include/c++/11/iostream
 
 CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o: ../src/includes/parser.cpp \
   /usr/include/stdc-predef.h \
@@ -381,7 +384,10 @@ CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o: ../src/includes/parser.cpp \
   /usr/include/c++/11/bits/stl_vector.h \
   /usr/include/c++/11/bits/stl_bvector.h \
   /usr/include/c++/11/bits/vector.tcc \
-  /usr/include/c++/11/sstream \
+  /usr/include/c++/11/variant \
+  /usr/include/c++/11/bits/parse_numbers.h \
+  ../src/includes/globals.hpp \
+  /usr/include/c++/11/fstream \
   /usr/include/c++/11/istream \
   /usr/include/c++/11/ios \
   /usr/include/c++/11/exception \
@@ -410,6 +416,11 @@ CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o: ../src/includes/parser.cpp \
   /usr/include/c++/11/ostream \
   /usr/include/c++/11/bits/ostream.tcc \
   /usr/include/c++/11/bits/istream.tcc \
+  /usr/include/c++/11/bits/codecvt.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
+  /usr/include/c++/11/bits/fstream.tcc \
+  /usr/include/c++/11/sstream \
   /usr/include/c++/11/bits/sstream.tcc \
   /usr/include/c++/11/iostream
 
@@ -586,9 +597,11 @@ CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.o: ../src/includes/query.cpp \
   /usr/include/c++/11/bits/stl_vector.h \
   /usr/include/c++/11/bits/stl_bvector.h \
   /usr/include/c++/11/bits/vector.tcc \
-  ../src/includes/parser.hpp \
-  /usr/include/c++/11/iostream \
-  /usr/include/c++/11/ostream \
+  /usr/include/c++/11/variant \
+  /usr/include/c++/11/bits/parse_numbers.h \
+  ../src/includes/globals.hpp \
+  /usr/include/c++/11/fstream \
+  /usr/include/c++/11/istream \
   /usr/include/c++/11/ios \
   /usr/include/c++/11/exception \
   /usr/include/c++/11/bits/exception_ptr.h \
@@ -613,9 +626,17 @@ CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.o: ../src/includes/query.cpp \
   /usr/include/x86_64-linux-gnu/c++/11/bits/ctype_inline.h \
   /usr/include/c++/11/bits/locale_facets.tcc \
   /usr/include/c++/11/bits/basic_ios.tcc \
+  /usr/include/c++/11/ostream \
   /usr/include/c++/11/bits/ostream.tcc \
-  /usr/include/c++/11/istream \
-  /usr/include/c++/11/bits/istream.tcc
+  /usr/include/c++/11/bits/istream.tcc \
+  /usr/include/c++/11/bits/codecvt.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
+  /usr/include/c++/11/bits/fstream.tcc \
+  ../src/includes/parser.hpp \
+  /usr/include/c++/11/iostream \
+  /usr/include/c++/11/sstream \
+  /usr/include/c++/11/bits/sstream.tcc
 
 CMakeFiles/MyminiSQL.dir/src/includes/table.cpp.o: ../src/includes/table.cpp \
   /usr/include/stdc-predef.h \
@@ -788,8 +809,11 @@ CMakeFiles/MyminiSQL.dir/src/includes/table.cpp.o: ../src/includes/table.cpp \
   /usr/include/c++/11/bits/node_handle.h \
   /usr/include/c++/11/bits/unordered_map.h \
   /usr/include/c++/11/bits/erase_if.h \
-  /usr/include/c++/11/iostream \
-  /usr/include/c++/11/ostream \
+  /usr/include/c++/11/variant \
+  /usr/include/c++/11/bits/parse_numbers.h \
+  ../src/includes/globals.hpp \
+  /usr/include/c++/11/fstream \
+  /usr/include/c++/11/istream \
   /usr/include/c++/11/ios \
   /usr/include/c++/11/exception \
   /usr/include/c++/11/bits/exception_ptr.h \
@@ -814,14 +838,14 @@ CMakeFiles/MyminiSQL.dir/src/includes/table.cpp.o: ../src/includes/table.cpp \
   /usr/include/x86_64-linux-gnu/c++/11/bits/ctype_inline.h \
   /usr/include/c++/11/bits/locale_facets.tcc \
   /usr/include/c++/11/bits/basic_ios.tcc \
+  /usr/include/c++/11/ostream \
   /usr/include/c++/11/bits/ostream.tcc \
-  /usr/include/c++/11/istream \
   /usr/include/c++/11/bits/istream.tcc \
-  /usr/include/c++/11/fstream \
   /usr/include/c++/11/bits/codecvt.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
-  /usr/include/c++/11/bits/fstream.tcc
+  /usr/include/c++/11/bits/fstream.tcc \
+  /usr/include/c++/11/iostream
 
 CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
   /usr/include/stdc-predef.h \
@@ -1003,6 +1027,11 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
   /usr/include/c++/11/bits/ostream.tcc \
   /usr/include/c++/11/istream \
   /usr/include/c++/11/bits/istream.tcc \
+  /usr/include/c++/11/fstream \
+  /usr/include/c++/11/bits/codecvt.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
+  /usr/include/c++/11/bits/fstream.tcc \
   ../src/includes/query.hpp \
   ../src/includes/database.hpp \
   /usr/include/c++/11/unordered_map \
@@ -1024,7 +1053,11 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
   /usr/include/c++/11/bits/stl_uninitialized.h \
   /usr/include/c++/11/bits/stl_vector.h \
   /usr/include/c++/11/bits/stl_bvector.h \
-  /usr/include/c++/11/bits/vector.tcc
+  /usr/include/c++/11/bits/vector.tcc \
+  /usr/include/c++/11/variant \
+  /usr/include/c++/11/bits/parse_numbers.h \
+  ../src/includes/globals.hpp \
+  ../src/includes/globals.hpp
 
 
 ../src/main.cpp:
@@ -1045,7 +1078,7 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/c++/11/bits/istream.tcc:
 
-/usr/include/c++/11/istream:
+/usr/include/c++/11/ostream:
 
 /usr/include/c++/11/bits/basic_ios.tcc:
 
@@ -1079,7 +1112,11 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/c++/11/exception:
 
-/usr/include/c++/11/ostream:
+/usr/include/c++/11/istream:
+
+/usr/include/c++/11/bits/parse_numbers.h:
+
+/usr/include/c++/11/variant:
 
 /usr/include/c++/11/bits/vector.tcc:
 
@@ -1294,6 +1331,8 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/c++/11/initializer_list:
 
 /usr/include/c++/11/streambuf:
+
+../src/includes/globals.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/types/sigset_t.h:
 

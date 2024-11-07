@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/nyz/MyminiSQL/src/includes/database.cpp" "CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.o" "gcc" "CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.o.d"
+  "/home/nyz/MyminiSQL/src/includes/globals.cpp" "CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.o" "gcc" "CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.o.d"
   "/home/nyz/MyminiSQL/src/includes/parser.cpp" "CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o" "gcc" "CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o.d"
   "/home/nyz/MyminiSQL/src/includes/query.cpp" "CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.o" "gcc" "CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.o.d"
   "/home/nyz/MyminiSQL/src/includes/table.cpp" "CMakeFiles/MyminiSQL.dir/src/includes/table.cpp.o" "gcc" "CMakeFiles/MyminiSQL.dir/src/includes/table.cpp.o.d"

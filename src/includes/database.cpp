@@ -27,45 +27,38 @@ Table* Database::getTable(const std::string& name) {
     return nullptr;
 }
 
-void Database::save(const std::string& filename){
-    std::ofstream file(filename, std::ios::out);
-    if (!file){
-        std::cerr<<"Cannot open the file for saving:"<<filename<<std::endl;
+void Database::save(const std::string& filename) {
+    std::ofstream file(filename, std::ios::binary);
+    if (!file) {
+        std::cerr << "Cannot open file: " << filename << std::endl;
         return;
     }
-
-    auto tableCount= tables.size();
+    size_t tableCount = tables.size();
     file.write((char*)&tableCount, sizeof(tableCount));
-    for (const auto& [name,table] : tables){
-        auto nameLength = name.size(); 
+    for (const auto& [name, table] : tables) {
+        size_t nameLength = name.size();
         file.write((char*)&nameLength, sizeof(nameLength));
         file.write(name.c_str(), nameLength);
         table.save(file);
     }
-
-    file.close();
 }
-void Database::load(const std::string& filename){
-    std::ifstream input(filename, std::ios::in);
-    if (!input){
-        std::cerr<<"Cannot open the file for loading:"<<filename<<std::endl;
+
+void Database::load(const std::string& filename) {
+    std::ifstream file(filename, std::ios::binary);
+    if (!file) {
+        std::cerr << "Cannot open file: " << filename << std::endl;
         return;
     }
-
     size_t tableCount;
-    input.read((char*)&tableCount, sizeof(tableCount));
-
-    tables.clear(); // 清空当前的表
-
-    for (size_t i = 0; i < tableCount; ++i){
+    file.read((char*)&tableCount, sizeof(tableCount));
+    tables.clear();
+    for (size_t i = 0; i < tableCount; ++i) {
         size_t nameLength;
-        input.read((char*)&nameLength, sizeof(nameLength));
-
-        std::string name(nameLength, ' ');
-        input.read(&name[0], nameLength);
-
-        Table table;
-        table.load(input);
+        file.read((char*)&nameLength, sizeof(nameLength));
+        std::string name(nameLength, '\0');
+        file.read(&name[0], nameLength);
+        Table table(name);
+        table.load(file);
+        tables[name] = table;
     }
-    input.close();
 }

@@ -1,7 +1,10 @@
 #include <iostream>
 #include <fstream>
+#include <unordered_map>
 #include "query.hpp"
 #include "globals.hpp"
+#include "database.hpp"
+
 int main(int argv,char* argc[]){
     //input: MySQL input.sql output.csv
     if(argv!=3){
@@ -16,12 +19,16 @@ int main(int argv,char* argc[]){
         std::cerr<<"Cannot open the input file:"<<inputFilename<<std::endl;
         return 0;
     }
+    std::unordered_map<std::string, Database> databases;
+    std::string currentDatabase;
     std::cout<<">_< Welcome to MiniSQL"<<std::endl;
-    Query query;
+    Query query(&databases, &currentDatabase);
     while(1){
         query.getQ();
         query.excQ();
     }
-
+    for (auto& [name, db] : databases) {
+        db.save(name + ".db");
+    }
     return 0;
 }

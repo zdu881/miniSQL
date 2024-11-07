@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <variant>
 #include "globals.hpp"
+#include <fstream>
 class Table {
 public:
     Table();
@@ -19,6 +20,7 @@ public:
     void load(std::ifstream& file);
     friend std::ostream& operator<<(std::ostream& os, const Table& table);
 private:
+    std::vector<std::pair<std::string, std::string>> columnsNT; // Name - Type
     std::string name;
     std::vector<std::unordered_map<ColumnType,ColumnType>> rows;
 };
