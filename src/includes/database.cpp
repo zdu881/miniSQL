@@ -41,6 +41,7 @@ void Database::save(const std::string& filename) {
         file.write(name.c_str(), nameLength);
         table.save(file);
     }
+    file.close();
 }
 
 void Database::load(const std::string& filename) {

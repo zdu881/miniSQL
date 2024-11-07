@@ -90,6 +90,46 @@ void Parser::parse(const std::string& input, std::unordered_map<std::string, Dat
             } else {
                 std::cout << "Table " << tableName << " does not exist." << std::endl;
             }
+        } else if (command == "INSERT" && tokens[1] == "INTO") {
+            std::string tableName = tokens[2];
+            if (tokens[3] == "VALUES" && tokens[4] == "(" && tokens.back() == ")") {
+                Table* table = db.getTable(tableName);
+                if (table) {
+                    std::unordered_map<ColumnType, ColumnType> row;
+                    for (size_t i = 5; i < tokens.size() - 1; ++i) {
+                        if (tokens[i] == ",") continue; // Ignore commas
+                        ColumnType value;
+                        if (tokens[i].front() == '"' ) {
+                            std::string strValue = tokens[i].substr(1); // Remove starting quote
+                            while (i < tokens.size() - 1 && tokens[i].back() != '"') {
+                                strValue += " " + tokens[++i];
+                            }
+                            strValue.pop_back(); // Remove ending quote
+                            value = strValue;
+                        } else {
+                            try {
+                                if (tokens[i].find('.') != std::string::npos) {
+                                    value = std::stod(tokens[i]);
+                                } else {
+                                    value = std::stoi(tokens[i]);
+                                }
+                            } catch (const std::invalid_argument& e) {
+                                std::cerr << "Invalid value: " << tokens[i] << std::endl;
+                                return;
+                            } catch (const std::out_of_range& e) {
+                                std::cerr << "Value out of range: " << tokens[i] << std::endl;
+                                return;
+                            }
+                        }
+                        row[tokens[i - 1]] = value; // Use the correct key type
+                    }
+                    table->insertRow(row);
+                } else {
+                    std::cerr << "Table " << tableName << " does not exist." << std::endl;
+                }
+            } else {
+                std::cerr << "Invalid INSERT INTO syntax." << std::endl;
+            }
         } else if (command == "EXIT") {
             std::cout << "See ya next time!" << std::endl;
             exit(0);
