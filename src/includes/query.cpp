@@ -15,6 +15,7 @@ Query::Query(std::unordered_map<std::string, Database>* dbs, std::string* curren
 Query::~Query() {}
 
 void Query::getQ() {
+    userInput.clear();
     std::cout << "MiniSQL> ";
     if (inputFile.is_open()) {
         std::string line;
@@ -37,6 +38,9 @@ void Query::getQ() {
         }
         userInput = queryStream.str();
     }
+    // Remove leading and trailing whitespace
+
+    std::cout << "Processed user input: " << userInput << std::endl;
 }
 
 void Query::excQ() {

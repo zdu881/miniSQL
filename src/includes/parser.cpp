@@ -12,7 +12,9 @@ std::vector<std::string> split(const std::string& str, char delimiter) {
     std::string token;
     std::istringstream tokenStream(str);
     while (std::getline(tokenStream, token, delimiter)) {
-        tokens.push_back(token);
+        if (!token.empty()) {
+            tokens.push_back(token);
+        }
     }
     return tokens;
 }
@@ -24,10 +26,14 @@ void Parser::parse(const std::string& input, std::unordered_map<std::string, Dat
 
     while (std::getline(inputStream, line)) {
         std::vector<std::string> lineTokens = split(line, ' ');
-        tokens.insert(tokens.end(), lineTokens.begin(), lineTokens.end());
+        for (auto& token : lineTokens) {
+            std::vector<std::string> subTokens = split(token, ';');
+            tokens.insert(tokens.end(), subTokens.begin(), subTokens.end());
+        }
     }
 
     if (tokens.empty()) {
+        std::cout<<"Please input the correct command"<<std::endl;
         return;
     }
 
@@ -35,7 +41,14 @@ void Parser::parse(const std::string& input, std::unordered_map<std::string, Dat
     if (command == "CREATE" && tokens[1] == "DATABASE") {
         std::string dbName = tokens[2];
         databases[dbName] = Database();
-        std::cout << "Database " << dbName << " created." << std::endl;
+        // 创建 dbName.db 文件
+        std::ofstream dbFile(dbName + ".db");
+        if (dbFile) {
+            dbFile.close();
+            std::cout << "Database " << dbName << " created." << std::endl;
+        } else {
+            std::cerr << "Failed to create database file: " << dbName << ".db" << std::endl;
+        }
     } else if (command == "USE" && tokens[1] == "DATABASE") {
         std::string dbName = tokens[2];
         if (databases.find(dbName) != databases.end()) {
@@ -57,7 +70,7 @@ void Parser::parse(const std::string& input, std::unordered_map<std::string, Dat
                 std::string columnName = tokens[i];
                 std::string columnType = tokens[i + 1];
                 table.addColumn(columnName, columnType);
-                i += 3; // Skip "columnName columnType ,"
+                i += 2; 
             }
             db.createTable(tableName);
         } else if (command == "DROP") {

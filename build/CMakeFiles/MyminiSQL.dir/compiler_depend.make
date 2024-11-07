@@ -363,7 +363,6 @@ CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o: ../src/includes/parser.cpp \
   /usr/include/x86_64-linux-gnu/bits/types/error_t.h \
   /usr/include/c++/11/bits/charconv.h \
   /usr/include/c++/11/bits/basic_string.tcc \
-  ../src/includes/database.hpp \
   /usr/include/c++/11/unordered_map \
   /usr/include/c++/11/ext/aligned_buffer.h \
   /usr/include/c++/11/bits/hashtable.h \
@@ -378,6 +377,7 @@ CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o: ../src/includes/parser.cpp \
   /usr/include/c++/11/bits/node_handle.h \
   /usr/include/c++/11/bits/unordered_map.h \
   /usr/include/c++/11/bits/erase_if.h \
+  ../src/includes/database.hpp \
   ../src/includes/table.hpp \
   /usr/include/c++/11/vector \
   /usr/include/c++/11/bits/stl_uninitialized.h \
@@ -576,7 +576,6 @@ CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.o: ../src/includes/query.cpp \
   /usr/include/x86_64-linux-gnu/bits/types/error_t.h \
   /usr/include/c++/11/bits/charconv.h \
   /usr/include/c++/11/bits/basic_string.tcc \
-  ../src/includes/database.hpp \
   /usr/include/c++/11/unordered_map \
   /usr/include/c++/11/ext/aligned_buffer.h \
   /usr/include/c++/11/bits/hashtable.h \
@@ -591,6 +590,7 @@ CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.o: ../src/includes/query.cpp \
   /usr/include/c++/11/bits/node_handle.h \
   /usr/include/c++/11/bits/unordered_map.h \
   /usr/include/c++/11/bits/erase_if.h \
+  ../src/includes/database.hpp \
   ../src/includes/table.hpp \
   /usr/include/c++/11/vector \
   /usr/include/c++/11/bits/stl_uninitialized.h \
@@ -1032,8 +1032,6 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
   /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
   /usr/include/c++/11/bits/fstream.tcc \
-  ../src/includes/query.hpp \
-  ../src/includes/database.hpp \
   /usr/include/c++/11/unordered_map \
   /usr/include/c++/11/ext/aligned_buffer.h \
   /usr/include/c++/11/bits/hashtable.h \
@@ -1048,6 +1046,8 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
   /usr/include/c++/11/bits/node_handle.h \
   /usr/include/c++/11/bits/unordered_map.h \
   /usr/include/c++/11/bits/erase_if.h \
+  ../src/includes/query.hpp \
+  ../src/includes/database.hpp \
   ../src/includes/table.hpp \
   /usr/include/c++/11/vector \
   /usr/include/c++/11/bits/stl_uninitialized.h \
@@ -1057,7 +1057,8 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
   /usr/include/c++/11/variant \
   /usr/include/c++/11/bits/parse_numbers.h \
   ../src/includes/globals.hpp \
-  ../src/includes/globals.hpp
+  ../src/includes/globals.hpp \
+  ../src/includes/database.hpp
 
 
 ../src/main.cpp:

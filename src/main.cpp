@@ -25,6 +25,9 @@ int main(int argv,char* argc[]){
     Query query(&databases, &currentDatabase);
     while(1){
         query.getQ();
+        if (inputFile.eof()) {
+            break;
+        }
         query.excQ();
     }
     for (auto& [name, db] : databases) {
