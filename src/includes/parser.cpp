@@ -28,7 +28,11 @@ void Parser::parse(const std::string& input, std::unordered_map<std::string, Dat
         std::vector<std::string> lineTokens = split(line, ' ');
         for (auto& token : lineTokens) {
             std::vector<std::string> subTokens = split(token, ';');
-            tokens.insert(tokens.end(), subTokens.begin(), subTokens.end());
+            for (auto& subToken : subTokens) {
+                if (!subToken.empty() && subToken != " " && subToken != ",") {
+                    tokens.push_back(subToken);
+                }
+            }
         }
     }
 
@@ -72,7 +76,7 @@ void Parser::parse(const std::string& input, std::unordered_map<std::string, Dat
                 table.addColumn(columnName, columnType);
                 i += 2; 
             }
-            db.createTable(tableName);
+            db.createTable(tableName, table);
         } else if (command == "DROP") {
             std::string table;
             inputStream >> table;
@@ -83,19 +87,42 @@ void Parser::parse(const std::string& input, std::unordered_map<std::string, Dat
             }
         } else if (command == "SELECT") {
             std::string tableName;
-            inputStream >> tableName;
-            Table* table = db.getTable(tableName);
-            if (table) {
-                table->queryTable();
+            std::vector<std::string> columns;
+            bool selectAll = false;
+            size_t i = 1;
+            if (tokens[i] == "*") {
+                selectAll = true;
+                i++;
             } else {
-                std::cout << "Table " << tableName << " does not exist." << std::endl;
+                while (i < tokens.size() && tokens[i] != "FROM") {
+                    if (tokens[i] != ",") {
+                        columns.push_back(tokens[i]);
+                    }
+                    i++;
+                }
+            }
+            if (tokens[i] == "FROM") {
+                tableName = tokens[++i];
+                Table* table = db.getTable(tableName);
+                if (table) {
+                    if (selectAll) {
+                        table->queryTable();
+                    } else {
+                        table->queryTable(columns);
+                    }
+                } else {
+                    std::cerr << "Table " << tableName << " does not exist." << std::endl;
+                }
+            } else {
+                std::cerr << "Invalid SELECT syntax." << std::endl;
             }
         } else if (command == "INSERT" && tokens[1] == "INTO") {
             std::string tableName = tokens[2];
             if (tokens[3] == "VALUES" && tokens[4] == "(" && tokens.back() == ")") {
+                std::cout<<"Inserting into table: "<<tableName<<std::endl;
                 Table* table = db.getTable(tableName);
                 if (table) {
-                    std::unordered_map<ColumnType, ColumnType> row;
+                    std::vector<ColumnType> values;
                     for (size_t i = 5; i < tokens.size() - 1; ++i) {
                         if (tokens[i] == ",") continue; // Ignore commas
                         ColumnType value;
@@ -104,7 +131,9 @@ void Parser::parse(const std::string& input, std::unordered_map<std::string, Dat
                             while (i < tokens.size() - 1 && tokens[i].back() != '"') {
                                 strValue += " " + tokens[++i];
                             }
-                            strValue.pop_back(); // Remove ending quote
+                            if (tokens[i].back() == '"') {
+                                strValue.pop_back(); // Remove ending quote
+                            }
                             value = strValue;
                         } else {
                             try {
@@ -121,9 +150,9 @@ void Parser::parse(const std::string& input, std::unordered_map<std::string, Dat
                                 return;
                             }
                         }
-                        row[tokens[i - 1]] = value; // Use the correct key type
+                        values.push_back(value);
                     }
-                    table->insertRow(row);
+                    table->insertRow(values);
                 } else {
                     std::cerr << "Table " << tableName << " does not exist." << std::endl;
                 }

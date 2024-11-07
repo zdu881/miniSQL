@@ -2,9 +2,9 @@
 #include "database.hpp"
 #include <iostream>
 #include <fstream>
-void Database::createTable(const std::string& name) {
+void Database::createTable(const std::string& name, Table& table) {
     if (tables.find(name) == tables.end()) {
-        tables[name] = Table(name);
+        tables[name] = std::move(table);
         std::cout << "Table " << name << " created." << std::endl;
     } else {
         std::cout << "Table " << name << " already exists." << std::endl;

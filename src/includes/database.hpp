@@ -8,7 +8,7 @@
 
 class Database {
 public:
-    void createTable(const std::string& name);
+    void createTable(const std::string& name, Table& table);
     void dropTable(const std::string& name);
     Table* getTable(const std::string& name);
     void save(const std::string& filename);

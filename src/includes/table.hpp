@@ -11,9 +11,12 @@
 class Table {
 public:
     Table();
+    Table(const Table& other);
     Table(const std::string& name);
     void insertRow(const std::unordered_map<ColumnType, ColumnType>& row);
+    void insertRow(const std::vector<ColumnType>& values);
     void deleteRow(int id);
+    void queryTable(const std::vector<std::string>& columns) const;
     void queryTable() const;
     void addColumn(const std::string& name, const std::string& type);
     void save(std::ofstream& file) const;

@@ -3,13 +3,22 @@
 #include <iostream>
 #include <fstream>
 #include <variant>
+#include <algorithm>
 #include <unordered_map>
 #include "globals.hpp"
 Table::Table() : name(""), columnsNT() {}
 
 Table::Table(const std::string& name) : name(name), columnsNT() {}
 
-void Table::insertRow(const std::unordered_map<ColumnType, ColumnType>& row) {
+void Table::insertRow(const std::vector<ColumnType>& values) {
+    if (values.size() != columnsNT.size()) {
+        std::cerr << "Column count mismatch. Expected " << columnsNT.size() << " values." << std::endl;
+        return;
+    }
+    std::unordered_map<ColumnType, ColumnType> row;
+    for (size_t i = 0; i < columnsNT.size(); ++i) {
+        row[columnsNT[i].first] = values[i];
+    }
     rows.push_back(row);
     std::cout << "Row inserted into " << name << "." << std::endl;
 }
@@ -22,22 +31,46 @@ void Table::deleteRow(int id) {
         std::cout << "Row " << id << " does not exist in " << name << "." << std::endl;
     }
 }
-// not qualified
 void Table::queryTable() const {
     std::cout << "Table " << name << " contents:" << std::endl;
     for (const auto& row : rows) {
-        for (const auto& [key, value] : row) {
-            std::visit([](auto&& arg) {
-                std::cout << arg << " ";
-            }, key);
-            std::cout << ": ";
-            std::visit([](auto&& arg) {
-                std::cout << arg << " ";
-            }, value);
+        for (const auto& column : columnsNT) {
+            auto it = row.find(column.first);
+            if (it != row.end()) {
+                std::visit([](auto&& arg) {
+                    if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, std::string>) {
+                        std::cout << "\"" << arg << "\" ";
+                    } else {
+                        std::cout << arg << " ";
+                    }
+                }, it->second);
+            }
         }
         std::cout << std::endl;
     }
 }
+
+void Table::queryTable(const std::vector<std::string>& columns) const {
+    std::cout << "Table " << name << " contents:" << std::endl;
+    for (const auto& row : rows) {
+        for (const auto& column : columns) {
+            auto it = std::find_if(row.begin(), row.end(), [&column](const auto& pair) {
+                return std::get<std::string>(pair.first) == column;
+            });
+            if (it != row.end()) {
+                std::visit([](auto&& arg) {
+                    if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, std::string>) {
+                        std::cout << "\"" << arg << "\" ";
+                    } else {
+                        std::cout << arg << " ";
+                    }
+                }, it->second);
+            }
+        }
+        std::cout << std::endl;
+    }
+}
+
 void Table::save(std::ofstream& file) const {
     auto rowCount = rows.size();
     file.write((char*)&rowCount, sizeof(rowCount));
