@@ -21,16 +21,6 @@ void Table::insertRow(const std::vector<ColumnType>& values) {
     std::cout << "Row inserted into " << name << "." << std::endl;
 }
 
-void Table::deleteRow(int id) {
-    if (id >= 0 && id < columns.begin()->second.size()) {
-        for (auto& [colName, colData] : columns) {
-            colData.erase(colData.begin() + id);
-        }
-        std::cout << "Row " << id << " deleted from " << name << "." << std::endl;
-    } else {
-        std::cout << "Row " << id << " does not exist in " << name << "." << std::endl;
-    }
-}
 
 void Table::queryTable() const {
     std::cout << "Table " << name << " contents:" << std::endl;
