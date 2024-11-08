@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <unordered_map>
 #include "globals.hpp"
+#include <iomanip>
 Table::Table() : name(""), columnsNT() {}
 
 Table::Table(const std::string& name) : name(name), columnsNT() {}
@@ -32,6 +33,27 @@ void Table::deleteRow(int id) {
     }
 }
 
+void Table::deleteRows(const std::string& whereColumn, const std::string& whereOperator, const ColumnType& whereValue) {
+    const auto& whereColData = columns.at(whereColumn);
+    for (size_t i = 0; i < whereColData.size(); ++i) {
+        bool conditionMet = false;
+        if (whereOperator == "=") {
+            conditionMet = (whereColData[i] == whereValue);
+        } else if (whereOperator == "<") {
+            conditionMet = (whereColData[i] < whereValue);
+        } else if (whereOperator == ">") {
+            conditionMet = (whereColData[i] > whereValue);
+        }
+        if (conditionMet) {
+            for (auto& [colName, colData] : columns) {
+                colData.erase(colData.begin() + i);
+            }
+            --i; // Adjust index after deletion
+        }
+    }
+    std::cout << "Rows deleted from " << name << " where " << whereColumn << " " << whereOperator << " " << whereValue << "." << std::endl;
+}
+
 void Table::queryTable() const {
     std::cout << "Table " << name << " contents:" << std::endl;
     for (size_t i = 0; i < columns.begin()->second.size(); ++i) {
@@ -40,6 +62,8 @@ void Table::queryTable() const {
             std::visit([](auto&& arg) {
                 if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, std::string>) {
                     std::cout << "\"" << arg << "\" ";
+                } else if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, double>) {
+                    std::cout << std::fixed << std::setprecision(2) << arg << " ";
                 } else {
                     std::cout << arg << " ";
                 }
@@ -58,6 +82,8 @@ void Table::queryTable(const std::vector<std::string>& columns) const {
             std::visit([](auto&& arg) {
                 if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, std::string>) {
                     std::cout << "\"" << arg << "\" ";
+                } else if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, double>) {
+                    std::cout << std::fixed << std::setprecision(2) << arg << " ";
                 } else {
                     std::cout << arg << " ";
                 }
@@ -86,6 +112,8 @@ void Table::queryTable(const std::vector<std::string>& columns, const std::strin
                 std::visit([](auto&& arg) {
                     if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, std::string>) {
                         std::cout << "\"" << arg << "\" ";
+                    } else if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, double>) {
+                        std::cout << std::fixed << std::setprecision(2) << arg << " ";
                     } else {
                         std::cout << arg << " ";
                     }
@@ -187,4 +215,90 @@ void Table::load(std::ifstream& file) {
 void Table::addColumn(const std::string& name, const std::string& type) {
     columnsNT.push_back({name, type});
     std::cout << "Column " << name << " of type " << type << " added to " << this->name << "." << std::endl;
+}
+
+void Table::updateRow(const std::string& columnName, const std::string& operation, const ColumnType& value) {
+    for (size_t i = 0; i < columns[columnName].size(); ++i) {
+        std::visit([&](auto&& arg) {
+            using T = std::decay_t<decltype(arg)>;
+            if constexpr (std::is_same_v<T, int>) {
+                if (operation == "=") {
+                    arg = std::get<int>(value);
+                } else if (operation == "+") {
+                    arg += std::get<int>(value);
+                } else if (operation == "-") {
+                    arg -= std::get<int>(value);
+                }
+            } else if constexpr (std::is_same_v<T, double>) {
+                if (operation == "=") {
+                    arg = std::get<double>(value);
+                } else if (operation == "+") {
+                    arg += std::get<double>(value);
+                } else if (operation == "-") {
+                    arg -= std::get<double>(value);
+                }
+            }
+        }, columns[columnName][i]);
+    }
+}
+
+void Table::updateColumn(const std::string& columnName, const std::string& operation, const ColumnType& value) {
+    for (size_t i = 0; i < columns[columnName].size(); ++i) {
+        std::visit([&](auto&& arg) {
+            using T = std::decay_t<decltype(arg)>;
+            if constexpr (std::is_same_v<T, int>) {
+                if (operation == "=") {
+                    arg = std::get<int>(value);
+                } else if (operation == "+") {
+                    arg += std::get<int>(value);
+                } else if (operation == "-") {
+                    arg -= std::get<int>(value);
+                }
+            } else if constexpr (std::is_same_v<T, double>) {
+                if (operation == "=") {
+                    arg = std::get<double>(value);
+                } else if (operation == "+") {
+                    arg += std::get<double>(value);
+                } else if (operation == "-") {
+                    arg -= std::get<double>(value);
+                }
+            }
+        }, columns[columnName][i]);
+    }
+}
+
+void Table::updateColumn(const std::string& columnName, const std::string& operation, const ColumnType& value, const std::string& whereColumn, const std::string& whereOperator, const ColumnType& whereValue) {
+    const auto& whereColData = columns.at(whereColumn);
+    for (size_t i = 0; i < whereColData.size(); ++i) {
+        bool conditionMet = false;
+        if (whereOperator == "=") {
+            conditionMet = (whereColData[i] == whereValue);
+        } else if (whereOperator == "<") {
+            conditionMet = (whereColData[i] < whereValue);
+        } else if (whereOperator == ">") {
+            conditionMet = (whereColData[i] > whereValue);
+        }
+        if (conditionMet) {
+            std::visit([&](auto&& arg) {
+                using T = std::decay_t<decltype(arg)>;
+                if constexpr (std::is_same_v<T, int>) {
+                    if (operation == "=") {
+                        arg = std::get<int>(value);
+                    } else if (operation == "+") {
+                        arg += std::get<int>(value);
+                    } else if (operation == "-") {
+                        arg -= std::get<int>(value);
+                    }
+                } else if constexpr (std::is_same_v<T, double>) {
+                    if (operation == "=") {
+                        arg = std::get<double>(value);
+                    } else if (operation == "+") {
+                        arg += std::get<double>(value);
+                    } else if (operation == "-") {
+                        arg -= std::get<double>(value);
+                    }
+                }
+            }, columns[columnName][i]);
+        }
+    }
 }

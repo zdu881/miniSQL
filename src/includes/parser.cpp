@@ -201,6 +201,79 @@ void Parser::parse(const std::string& input, std::unordered_map<std::string, Dat
             } else {
                 std::cerr << "Invalid INSERT INTO syntax." << std::endl;
             }
+        } else if (command == "UPDATE") {
+            std::string tableName = tokens[1];
+            if (tokens[2] == "SET") {
+                std::string columnName = tokens[3];
+                std::string operation = tokens[4];
+                std::string valueStr = tokens[5];
+                ColumnType value;
+                if (valueStr.front() == '"') {
+                    value = valueStr.substr(1, valueStr.size() - 2); // Remove quotes
+                } else if (valueStr.find('.') != std::string::npos) {
+                    value = std::stod(valueStr);
+                } else {
+                    value = std::stoi(valueStr);
+                }
+
+                Table* table = db.getTable(tableName);
+                if (table) {
+                    if (tokens.size() > 6 && tokens[6] == "WHERE") {
+                        std::string whereColumn = tokens[7];
+                        std::string whereOperator = tokens[8];
+                        std::string whereValueStr = tokens[9];
+                        if (whereValueStr.back() == ';') {
+                            whereValueStr.pop_back(); // Remove ending semicolon
+                        }
+                        ColumnType whereValue;
+                        if (whereValueStr.front() == '"') {
+                            whereValue = whereValueStr.substr(1, whereValueStr.size() - 2); // Remove quotes
+                        } else if (whereValueStr.find('.') != std::string::npos) {
+                            whereValue = std::stod(whereValueStr);
+                        } else {
+                            whereValue = std::stoi(whereValueStr);
+                        }
+                        table->updateColumn(columnName, operation, value, whereColumn, whereOperator, whereValue);
+                    } else {
+                        table->updateColumn(columnName, operation, value);
+                    }
+                    std::cout << "Table " << tableName << " updated." << std::endl;
+                } else {
+                    std::cerr << "Table " << tableName << " does not exist." << std::endl;
+                }
+            } else {
+                std::cerr << "Invalid UPDATE syntax." << std::endl;
+            }
+        } else if (command == "DELETE") {
+            if (tokens[1] == "FROM") {
+                std::string tableName = tokens[2];
+                Table* table = db.getTable(tableName);
+                if (table) {
+                    if (tokens.size() > 3 && tokens[3] == "WHERE") {
+                        std::string whereColumn = tokens[4];
+                        std::string whereOperator = tokens[5];
+                        std::string whereValueStr = tokens[6];
+                        if (whereValueStr.back() == ';') {
+                            whereValueStr.pop_back(); // Remove ending semicolon
+                        }
+                        ColumnType whereValue;
+                        if (whereValueStr.front() == '"') {
+                            whereValue = whereValueStr.substr(1, whereValueStr.size() - 2); // Remove quotes
+                        } else if (whereValueStr.find('.') != std::string::npos) {
+                            whereValue = std::stod(whereValueStr);
+                        } else {
+                            whereValue = std::stoi(whereValueStr);
+                        }
+                        table->deleteRows(whereColumn, whereOperator, whereValue);
+                    } else {
+                        std::cerr << "Invalid DELETE syntax. Missing WHERE clause." << std::endl;
+                    }
+                } else {
+                    std::cerr << "Table " << tableName << " does not exist." << std::endl;
+                }
+            } else {
+                std::cerr << "Invalid DELETE syntax." << std::endl;
+            }
         } else if (command == "EXIT") {
             std::cout << "See ya next time!" << std::endl;
             exit(0);
