@@ -856,7 +856,20 @@ CMakeFiles/MyminiSQL.dir/src/includes/table.cpp.o: ../src/includes/table.cpp \
   /usr/include/c++/11/functional \
   /usr/include/c++/11/bits/refwrap.h \
   /usr/include/c++/11/bits/std_function.h \
-  /usr/include/c++/11/pstl/execution_defs.h
+  /usr/include/c++/11/pstl/execution_defs.h \
+  /usr/include/c++/11/iomanip \
+  /usr/include/c++/11/locale \
+  /usr/include/c++/11/bits/locale_facets_nonio.h \
+  /usr/include/c++/11/ctime \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/time_members.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/messages_members.h \
+  /usr/include/libintl.h \
+  /usr/include/c++/11/bits/locale_facets_nonio.tcc \
+  /usr/include/c++/11/bits/locale_conv.h \
+  /usr/include/c++/11/bits/unique_ptr.h \
+  /usr/include/c++/11/bits/quoted_string.h \
+  /usr/include/c++/11/sstream \
+  /usr/include/c++/11/bits/sstream.tcc
 
 CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
   /usr/include/stdc-predef.h \
@@ -1074,6 +1087,16 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 
 ../src/main.cpp:
 
+/usr/include/c++/11/bits/quoted_string.h:
+
+/usr/include/c++/11/bits/locale_conv.h:
+
+/usr/include/x86_64-linux-gnu/c++/11/bits/messages_members.h:
+
+/usr/include/x86_64-linux-gnu/c++/11/bits/time_members.h:
+
+/usr/include/c++/11/bits/locale_facets_nonio.h:
+
 /usr/include/c++/11/bits/refwrap.h:
 
 /usr/include/c++/11/bits/stl_heap.h:
@@ -1097,6 +1120,8 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h:
 
 /usr/include/c++/11/bits/istream.tcc:
+
+/usr/include/c++/11/bits/unique_ptr.h:
 
 /usr/include/c++/11/ostream:
 
@@ -1280,6 +1305,8 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/features-time64.h:
 
+/usr/include/c++/11/locale:
+
 /usr/include/linux/errno.h:
 
 /usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h:
@@ -1337,6 +1364,8 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/features.h:
 
 /usr/include/c++/11/ext/numeric_traits.h:
+
+/usr/include/c++/11/ctime:
 
 /usr/include/c++/11/bits/codecvt.h:
 
@@ -1444,6 +1473,8 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/locale.h:
 
+/usr/include/libintl.h:
+
 /usr/include/x86_64-linux-gnu/bits/endianness.h:
 
 /usr/include/c++/11/algorithm:
@@ -1472,6 +1503,8 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/time.h:
 
+/usr/include/c++/11/bits/locale_facets_nonio.tcc:
+
 /usr/include/c++/11/bits/stl_pair.h:
 
 /usr/include/c++/11/ext/atomicity.h:
@@ -1489,6 +1522,8 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/endian.h:
 
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
+
+/usr/include/c++/11/iomanip:
 
 /usr/include/c++/11/ext/new_allocator.h:
 
