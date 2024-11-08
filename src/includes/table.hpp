@@ -25,9 +25,8 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Table& table);
 private:
     std::vector<std::pair<std::string, std::string>> columnsNT; // Name - Type
+    std::unordered_map<std::string, std::vector<ColumnType>> columns; // 列存储
     std::string name;
-    std::vector<std::unordered_map<ColumnType,ColumnType>> rows;
 };
 
-// Overload the << operator to print the table contents
 #endif // TABLE_HPP

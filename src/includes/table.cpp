@@ -15,36 +15,35 @@ void Table::insertRow(const std::vector<ColumnType>& values) {
         std::cerr << "Column count mismatch. Expected " << columnsNT.size() << " values." << std::endl;
         return;
     }
-    std::unordered_map<ColumnType, ColumnType> row;
     for (size_t i = 0; i < columnsNT.size(); ++i) {
-        row[columnsNT[i].first] = values[i];
+        columns[columnsNT[i].first].push_back(values[i]);
     }
-    rows.push_back(row);
     std::cout << "Row inserted into " << name << "." << std::endl;
 }
 
 void Table::deleteRow(int id) {
-    if (id >= 0 && id < rows.size()) {
-        rows.erase(rows.begin() + id);
+    if (id >= 0 && id < columns.begin()->second.size()) {
+        for (auto& [colName, colData] : columns) {
+            colData.erase(colData.begin() + id);
+        }
         std::cout << "Row " << id << " deleted from " << name << "." << std::endl;
     } else {
         std::cout << "Row " << id << " does not exist in " << name << "." << std::endl;
     }
 }
+
 void Table::queryTable() const {
     std::cout << "Table " << name << " contents:" << std::endl;
-    for (const auto& row : rows) {
+    for (size_t i = 0; i < columns.begin()->second.size(); ++i) {
         for (const auto& column : columnsNT) {
-            auto it = row.find(column.first);
-            if (it != row.end()) {
-                std::visit([](auto&& arg) {
-                    if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, std::string>) {
-                        std::cout << "\"" << arg << "\" ";
-                    } else {
-                        std::cout << arg << " ";
-                    }
-                }, it->second);
-            }
+            const auto& colData = columns.at(column.first);
+            std::visit([](auto&& arg) {
+                if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, std::string>) {
+                    std::cout << "\"" << arg << "\" ";
+                } else {
+                    std::cout << arg << " ";
+                }
+            }, colData[i]);
         }
         std::cout << std::endl;
     }
@@ -52,20 +51,17 @@ void Table::queryTable() const {
 
 void Table::queryTable(const std::vector<std::string>& columns) const {
     std::cout << "Table " << name << " contents:" << std::endl;
-    for (const auto& row : rows) {
+    size_t rowCount = this->columns.begin()->second.size();
+    for (size_t i = 0; i < rowCount; ++i) {
         for (const auto& column : columns) {
-            auto it = std::find_if(row.begin(), row.end(), [&column](const auto& pair) {
-                return std::get<std::string>(pair.first) == column;
-            });
-            if (it != row.end()) {
-                std::visit([](auto&& arg) {
-                    if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, std::string>) {
-                        std::cout << "\"" << arg << "\" ";
-                    } else {
-                        std::cout << arg << " ";
-                    }
-                }, it->second);
-            }
+            const auto& colData = this->columns.at(column);
+            std::visit([](auto&& arg) {
+                if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, std::string>) {
+                    std::cout << "\"" << arg << "\" ";
+                } else {
+                    std::cout << arg << " ";
+                }
+            }, colData[i]);
         }
         std::cout << std::endl;
     }
@@ -73,42 +69,35 @@ void Table::queryTable(const std::vector<std::string>& columns) const {
 
 void Table::queryTable(const std::vector<std::string>& columns, const std::string& whereColumn, const std::string& whereOperator, const ColumnType& whereValue) const {
     std::cout << "Table " << name << " contents:" << std::endl;
-    for (const auto& row : rows) {
-        auto it = std::find_if(row.begin(), row.end(), [&whereColumn](const auto& pair) {
-            return std::get<std::string>(pair.first) == whereColumn;
-        });
-        if (it != row.end()) {
-            bool conditionMet = false;
-            if (whereOperator == "=") {
-                conditionMet = (it->second == whereValue);
-            } else if (whereOperator == "<") {
-                conditionMet = (it->second < whereValue);
-            } else if (whereOperator == ">") {
-                conditionMet = (it->second > whereValue);
-            }
-            if (conditionMet) {
-                for (const auto& column : columns) {
-                    auto colIt = std::find_if(row.begin(), row.end(), [&column](const auto& pair) {
-                        return std::get<std::string>(pair.first) == column;
-                    });
-                    if (colIt != row.end()) {
-                        std::visit([](auto&& arg) {
-                            if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, std::string>) {
-                                std::cout << "\"" << arg << "\" ";
-                            } else {
-                                std::cout << arg << " ";
-                            }
-                        }, colIt->second);
+    const auto& whereColData = this->columns.at(whereColumn);
+    size_t rowCount = whereColData.size();
+    for (size_t i = 0; i < rowCount; ++i) {
+        bool conditionMet = false;
+        if (whereOperator == "=") {
+            conditionMet = (whereColData[i] == whereValue);
+        } else if (whereOperator == "<") {
+            conditionMet = (whereColData[i] < whereValue);
+        } else if (whereOperator == ">") {
+            conditionMet = (whereColData[i] > whereValue);
+        }
+        if (conditionMet) {
+            for (const auto& column : columns) {
+                const auto& colData = this->columns.at(column);
+                std::visit([](auto&& arg) {
+                    if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, std::string>) {
+                        std::cout << "\"" << arg << "\" ";
+                    } else {
+                        std::cout << arg << " ";
                     }
-                }
-                std::cout << std::endl;
+                }, colData[i]);
             }
+            std::cout << std::endl;
         }
     }
 }
 
 void Table::save(std::ofstream& file) const {
-    auto rowCount = rows.size();
+    auto rowCount = columns.begin()->second.size();
     file.write((char*)&rowCount, sizeof(rowCount));
     
     auto columnCount = columnsNT.size();
@@ -123,29 +112,8 @@ void Table::save(std::ofstream& file) const {
         file.write(column.second.c_str(), typeLength);
     }
 
-    for (const auto& row : rows) {
-        auto rowSize = row.size();
-        file.write((char*)&rowSize, sizeof(rowSize));
-        for (const auto& [key, value] : row) {
-            std::visit([&file](auto&& arg) {
-                using T = std::decay_t<decltype(arg)>;
-                if constexpr (std::is_same_v<T, int>) {
-                    char type = 'i';
-                    file.write(&type, sizeof(type));
-                    file.write((char*)&arg, sizeof(arg));
-                } else if constexpr (std::is_same_v<T, double>) {
-                    char type = 'd';
-                    file.write(&type, sizeof(type));
-                    file.write((char*)&arg, sizeof(arg));
-                } else if constexpr (std::is_same_v<T, std::string>) {
-                    char type = 's';
-                    file.write(&type, sizeof(type));
-                    auto length = arg.size();
-                    file.write((char*)&length, sizeof(length));
-                    file.write(arg.c_str(), length);
-                }
-            }, key);
-
+    for (const auto& [colName, colData] : columns) {
+        for (const auto& value : colData) {
             std::visit([&file](auto&& arg) {
                 using T = std::decay_t<decltype(arg)>;
                 if constexpr (std::is_same_v<T, int>) {
@@ -175,6 +143,7 @@ void Table::load(std::ifstream& file) {
     size_t columnCount;
     file.read((char*)&columnCount, sizeof(columnCount));
     columnsNT.clear();
+    columns.clear();
     for (size_t i = 0; i < columnCount; ++i) {
         size_t nameLength;
         file.read((char*)&nameLength, sizeof(nameLength));
@@ -187,37 +156,17 @@ void Table::load(std::ifstream& file) {
         file.read(&type[0], typeLength);
         
         columnsNT.push_back({name, type});
+        columns[name] = std::vector<ColumnType>(rowCount);
     }
 
     for (size_t i = 0; i < rowCount; ++i) {
-        size_t rowSize;
-        file.read((char*)&rowSize, sizeof(rowSize));
-        std::unordered_map<ColumnType, ColumnType> row;
-        for (size_t j = 0; j < rowSize; ++j) {
-            ColumnType key, value;
-
+        for (auto& [colName, colData] : columns) {
+            ColumnType value;
             char type;
             file.read(&type, sizeof(type));
             if (type == 'i') {
                 int temp;
                 file.read((char*)&temp, sizeof(temp));
-                key = temp;
-            } else if (type == 'd') {
-                double temp;
-                file.read((char*)&temp, sizeof(temp));
-                key = temp;
-            } else if (type == 's') {
-                size_t length;
-                file.read((char*)&length, sizeof(length));
-                std::string temp(length, '\0');
-                file.read(&temp[0], length);
-                key = temp;
-            }
-
-            file.read(&type, sizeof(type));
-            if (type == 'i') {
-                int temp;
-                file.read((char*)&temp, sizeof(temp));
                 value = temp;
             } else if (type == 'd') {
                 double temp;
@@ -230,12 +179,11 @@ void Table::load(std::ifstream& file) {
                 file.read(&temp[0], length);
                 value = temp;
             }
-
-            row[key] = value;
+            colData[i] = value;
         }
-        rows.push_back(row);
     }
 }
+
 void Table::addColumn(const std::string& name, const std::string& type) {
     columnsNT.push_back({name, type});
     std::cout << "Column " << name << " of type " << type << " added to " << this->name << "." << std::endl;
