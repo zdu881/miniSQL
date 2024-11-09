@@ -23,14 +23,11 @@ int main(int argv,char* argc[]){
     std::string currentDatabase;
     std::cout<<">_< Welcome to MiniSQL"<<std::endl;
     Query query(&databases, &currentDatabase);
-    while(1){
+    int cnt = 0;
+    while(!inputFile.eof()){
         query.getQ();
-  
         query.excQ();
-        if (inputFile.eof()) {
-            break;
-        }
-
+        cnt++;
     }
     for (auto& [name, db] : databases) {
         db.save(name + ".db");
