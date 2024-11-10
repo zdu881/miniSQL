@@ -5,7 +5,17 @@
 #include <string>
 #include <unordered_map>
 #include "database.hpp"
-
+class Command_line {
+public:
+    Command_line();
+    ~Command_line();
+    void get_command_line();
+    Command_type get_command_type() { return command_type; }
+    std::vector<std::string>& get_paratokens() { return paratokens; }
+private:
+    Command_type command_type;
+    std::vector <std::string> paratokens;
+};
 class Query {
 public:
     Query();
@@ -21,13 +31,7 @@ private:
     std::string* currentDatabase;
     Command_line command_line;
 };
-class Command_line {
-public:
-    Command_line();
-    ~Command_line();
-    void get_command_line();
-private:
-    Command_type command_type;
-    std::vector <std::string> paratokens;
-};
+
+
+
 #endif // QUERY_HPP

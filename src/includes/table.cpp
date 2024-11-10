@@ -5,6 +5,7 @@
 #include <variant>
 #include <algorithm>
 #include <unordered_map>
+#include <string>
 #include "globals.hpp"
 Table::Table() : name(""), columnsNT() {}
 
@@ -57,124 +58,62 @@ void Table::queryTable(const std::vector<std::string>& columns) const {
     }
 }
 
-void Table::queryTable(const std::vector<std::string>& columns, const std::string& whereColumn, const std::string& whereOperator, const ColumnType& whereValue) const {
-    std::cout << "Table " << name << " contents:" << std::endl;
-    const auto& whereColData = this->columns.at(whereColumn);
-    size_t rowCount = whereColData.size();
-    for (size_t i = 0; i < rowCount; ++i) {
-        bool conditionMet = false;
-        if (whereOperator == "=") {
-            conditionMet = (whereColData[i] == whereValue);
-        } else if (whereOperator == "<") {
-            conditionMet = (whereColData[i] < whereValue);
-        } else if (whereOperator == ">") {
-            conditionMet = (whereColData[i] > whereValue);
-        }
-        if (conditionMet) {
-            for (const auto& column : columns) {
-                const auto& colData = this->columns.at(column);
-                std::visit([](auto&& arg) {
-                    if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, std::string>) {
-                        std::cout << "\"" << arg << "\" ";
-                    } else {
-                        std::cout << arg << " ";
-                    }
-                }, colData[i]);
-            }
-            std::cout << std::endl;
-        }
-    }
+void Table::queryTable(const std::vector<std::string>& columns, const std::vector<Condition>& conditions) const {
+    std::cout << "Table " << name << " contents with conditions:" << std::endl;
+ 
 }
-
-void Table::save(std::ofstream& file) const {
-    auto rowCount = columns.begin()->second.size();
-    file.write((char*)&rowCount, sizeof(rowCount));
-    
-    auto columnCount = columnsNT.size();
-    file.write((char*)&columnCount, sizeof(columnCount));
-    for (const auto& column : columnsNT) {
-        auto nameLength = column.first.size();
-        file.write((char*)&nameLength, sizeof(nameLength));
-        file.write(column.first.c_str(), nameLength);
-        
-        auto typeLength = column.second.size();
-        file.write((char*)&typeLength, sizeof(typeLength));
-        file.write(column.second.c_str(), typeLength);
-    }
-
-    for (const auto& [colName, colData] : columns) {
-        for (const auto& value : colData) {
-            std::visit([&file](auto&& arg) {
-                using T = std::decay_t<decltype(arg)>;
-                if constexpr (std::is_same_v<T, int>) {
-                    char type = 'i';
-                    file.write(&type, sizeof(type));
-                    file.write((char*)&arg, sizeof(arg));
-                } else if constexpr (std::is_same_v<T, double>) {
-                    char type = 'd';
-                    file.write(&type, sizeof(type));
-                    file.write((char*)&arg, sizeof(arg));
-                } else if constexpr (std::is_same_v<T, std::string>) {
-                    char type = 's';
-                    file.write(&type, sizeof(type));
-                    auto length = arg.size();
-                    file.write((char*)&length, sizeof(length));
-                    file.write(arg.c_str(), length);
-                }
-            }, value);
+void Table::deleteRow(const std::vector<Condition>& conditions) {
+    std::vector<size_t> rowsToDelete;
+    for (size_t i = 0; i < columns.begin()->second.size(); ++i) {
+        bool deleteRow = true;
+        for (const auto& condition : conditions) {
+            const auto& colData = columns.at(condition.column);
+            const auto& colType = std::find_if(columnsNT.begin(), columnsNT.end(), 
+                                               [&condition](const auto& pair) { return pair.first == condition.column; })->second;
+        //wait to write
+        }
+        if (deleteRow) {
+            rowsToDelete.push_back(i);
         }
     }
+    for (auto& [columnName, columnData] : columns) {
+        for (size_t i = 0; i < rowsToDelete.size(); ++i) {
+            columnData.erase(columnData.begin() + rowsToDelete[i]);
+        }
+    }
+    std::cout << rowsToDelete.size() << " rows deleted from " << name << "." << std::endl;
+}
+void Table::updateRow(const std::vector<std::pair<std::string, ColumnType>>& setConfigs, const std::vector<Condition>& conditions){
+    std::vector<size_t> rowsToUpdate;
+    for (size_t i = 0; i < columns.begin()->second.size(); ++i) {
+        bool updateRow = true;
+        for (const auto& condition : conditions) {
+            const auto& colData = columns.at(condition.column);
+            const auto& colType = std::find_if(columnsNT.begin(), columnsNT.end(), 
+                                               [&condition](const auto& pair) { return pair.first == condition.column; })->second;
+            //wait to write
+        }
+        if (updateRow) {
+            rowsToUpdate.push_back(i);
+        }
+    }
+    for ( auto& [columnName, columnData] : columns) {
+        for (size_t i = 0; i < rowsToUpdate.size(); ++i) {
+            columnData[rowsToUpdate[i]] = std::find_if(setConfigs.begin(), setConfigs.end(), 
+                                                       [&columnName](const auto& pair) { return pair.first == columnName; })->second;
+        }
+    }
+    std::cout << rowsToUpdate.size() << " rows updated in " << name << "." << std::endl;
+}
+void Table::save(std::ofstream& file) const {
+
 }
 
 void Table::load(std::ifstream& file) {
-    size_t rowCount;
-    file.read((char*)&rowCount, sizeof(rowCount));
     
-    size_t columnCount;
-    file.read((char*)&columnCount, sizeof(columnCount));
-    columnsNT.clear();
-    columns.clear();
-    for (size_t i = 0; i < columnCount; ++i) {
-        size_t nameLength;
-        file.read((char*)&nameLength, sizeof(nameLength));
-        std::string name(nameLength, '\0');
-        file.read(&name[0], nameLength);
-        
-        size_t typeLength;
-        file.read((char*)&typeLength, sizeof(typeLength));
-        std::string type(typeLength, '\0');
-        file.read(&type[0], typeLength);
-        
-        columnsNT.push_back({name, type});
-        columns[name] = std::vector<ColumnType>(rowCount);
-    }
-
-    for (size_t i = 0; i < rowCount; ++i) {
-        for (auto& [colName, colData] : columns) {
-            ColumnType value;
-            char type;
-            file.read(&type, sizeof(type));
-            if (type == 'i') {
-                int temp;
-                file.read((char*)&temp, sizeof(temp));
-                value = temp;
-            } else if (type == 'd') {
-                double temp;
-                file.read((char*)&temp, sizeof(temp));
-                value = temp;
-            } else if (type == 's') {
-                size_t length;
-                file.read((char*)&length, sizeof(length));
-                std::string temp(length, '\0');
-                file.read(&temp[0], length);
-                value = temp;
-            }
-            colData[i] = value;
-        }
-    }
 }
 
-void Table::addColumn(const std::string& name, const std::string& type) {
+void Table::addColumn(const std::string& name, const Data_type& type) {
     columnsNT.push_back({name, type});
     std::cout << "Column " << name << " of type " << type << " added to " << this->name << "." << std::endl;
 }

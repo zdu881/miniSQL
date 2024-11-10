@@ -59,6 +59,15 @@ struct Condition_parameter{
     Table_content content;
 };
 */
+class Condition{
+    public:
+        Condition(const BOOL_OP &pre,const std::string &v1,const std::string &v2,const std::string & op);
+        BOOL_OP pre_bool_op;
+        std::string column;
+        ColumnType value;
+        Compare_sign sign;
+};
+
 using ColumnType = std::variant<int, double, std::string>;
 std::ostream& operator<<(std::ostream& os, const ColumnType& column);
 #endif // GLOBALS_HPP

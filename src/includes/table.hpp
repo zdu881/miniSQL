@@ -13,20 +13,22 @@ public:
     Table();
     Table(const Table& other);
     Table(const std::string& name);
-    void insertRow(const std::unordered_map<ColumnType, ColumnType>& row);
+    //void insertRow(const std::unordered_map<ColumnType, ColumnType>& row);
     void insertRow(const std::vector<ColumnType>& values);
-    void deleteRow(int id);
+    //void deleteRow(int id);
+    void deleteRow(const std::vector<Condition>& conditions);
     void queryTable(const std::vector<std::string>& columns) const;
-    void queryTable(const std::vector<std::string>& columns, const std::string& whereColumn, const std::string& whereOperator, const ColumnType& whereValue) const;
+    void queryTable(const std::vector<std::string>& columns,const std::vector<Condition> &Conditions) const;
     void queryTable() const;
-    void addColumn(const std::string& name, const std::string& type);
+    void updateRow(const std::vector<std::pair<std::string, ColumnType>>& setConfigs, const std::vector<Condition>& conditions);
+    void addColumn(const std::string& name, const Data_type& type);
     void save(std::ofstream& file) const;
     void load(std::ifstream& file);
+
     friend std::ostream& operator<<(std::ostream& os, const Table& table);
+    std::vector<std::pair<std::string, Data_type>> columnsNT;//Name-Type
 private:
-    std::vector<std::pair<std::string, std::string>> columnsNT; // Name - Type
     std::unordered_map<std::string, std::vector<ColumnType>> columns; // 列存储
     std::string name;
 };
-
 #endif // TABLE_HPP

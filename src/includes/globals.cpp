@@ -28,3 +28,12 @@ std::string getColumnType(const ColumnType& column) {
         }
     }, column);
 }
+Condition::Condition(const BOOL_OP &pre,const std::string &v1,const std::string &v2,const std::string & op){
+    pre_bool_op = pre;
+    column = v1;
+    value = v2;
+    if(op == "=") sign = EQUAL;
+    else if(op == "<") sign = SMALLER;
+    else if(op == ">") sign = BIGER;
+    else sign = ERROR_COMPARE_SIGN;
+}
