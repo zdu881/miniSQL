@@ -27,8 +27,8 @@ public:
     Data_type getColumnType(const std::string& columnName) const;
     friend std::ostream& operator<<(std::ostream& os, const Table& table);
     std::vector<std::pair<std::string, Data_type>> columnsNT;//Name-Type
+    std::string name;
 private:
     std::unordered_map<std::string, std::vector<ColumnType>> columns; // 列存储
-    std::string name;
 };
 #endif // TABLE_HPP

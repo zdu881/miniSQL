@@ -8,9 +8,17 @@
 #include <string>
 #include "globals.hpp"
 Table::Table() : name(""), columnsNT() {}
-
+Table::Table(const Table& other) : name(other.name), columnsNT(other.columnsNT), columns(other.columns) {}
 Table::Table(const std::string& name) : name(name), columnsNT() {}
-
+// 添加辅助函数以从 columnsNT 获取数据类型
+Data_type Table::getColumnType(const std::string& columnName) const {
+    for (const auto& pair : columnsNT) {
+        if (pair.first == columnName) {
+            return pair.second;
+        }
+    }
+    return ERROR_TYPE;
+}
 void Table::insertRow(const std::vector<ColumnType>& values) {
     if (values.size() != columnsNT.size()) {
         std::cerr << "Column count mismatch. Expected " << columnsNT.size() << " values." << std::endl;
@@ -24,57 +32,61 @@ void Table::insertRow(const std::vector<ColumnType>& values) {
 
 
 void Table::queryTable() const {
-    std::cout << "Table " << name << " contents:" << std::endl;
+    // std::cout 替换为 outputFile
+    outputFile << "Table " << name << " contents:" << std::endl;
     for (size_t i = 0; i < columns.begin()->second.size(); ++i) {
         for (const auto& column : columnsNT) {
             const auto& colData = columns.at(column.first);
-            std::visit([](auto&& arg) {
+            std::visit([this](auto&& arg) {
                 if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, std::string>) {
-                    std::cout << "\"" << arg << "\" ";
+                    outputFile << "\"" << arg << "\" ";
                 } else {
-                    std::cout << arg << " ";
+                    outputFile << arg << " ";
                 }
             }, colData[i]);
         }
-        std::cout << std::endl;
+        outputFile << std::endl;
     }
 }
 
 void Table::queryTable(const std::vector<std::string>& columns) const {
-    std::cout << "Table " << name << " contents:" << std::endl;
+    // std::cout 替换为 outputFile
+    outputFile << "Table " << name << " contents:" << std::endl;
     size_t rowCount = this->columns.begin()->second.size();
+    std::cout << "Table " << name << " contents with conditions:" << std::endl;
+
     for (size_t i = 0; i < rowCount; ++i) {
         for (const auto& column : columns) {
+            if (this->columns.find(column) == this->columns.end()) {
+                std::cerr << "Column " << column << " does not exist in table " << name << std::endl;
+                continue;
+            }
+
             const auto& colData = this->columns.at(column);
-            std::visit([](auto&& arg) {
-                if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, std::string>) {
-                    std::cout << "\"" << arg << "\" ";
-                } else {
-                    std::cout << arg << " ";
-                }
-            }, colData[i]);
+
+            if (this->getColumnType(column) == INTEGER || this->getColumnType(column) == FLOAT) {
+                outputFile << " " << colData[i] << " " << std::endl;
+            } else if (this->getColumnType(column) == TEXT) {
+                outputFile << " \"" << std::get<std::string>(colData[i]) << "\" " << std::endl;
+            } else {
+                std::cerr << "ERROR: Unknown column type for column " << column << std::endl;
+            }
         }
-        std::cout << std::endl;
+        outputFile << std::endl;
     }
+    std::cout << "QueryTable" << std::endl;
 }
 
-// 添加辅助函数以从 columnsNT 获取数据类型
-Data_type Table::getColumnType(const std::string& columnName) const {
-    for (const auto& pair : columnsNT) {
-        if (pair.first == columnName) {
-            return pair.second;
-        }
-    }
-    return ERROR_TYPE;
-}
+
 
 void Table::queryTable(const std::vector<std::string>& columns, const std::vector<Condition>& conditions) const {
-    std::cout << "Table " << name << " contents with conditions:" << std::endl;
+    // std::cout 替换为 outputFile
+    outputFile << "Table " << name << " contents with conditions:" << std::endl;
     // 输出列名
     for (const auto& column : columns) {
-        std::cout << column << " ";
+        outputFile << column << " ";
     }
-    std::cout << std::endl;
+    outputFile << std::endl;
 
     // 输出符合条件的行
     for (size_t i = 0; i < this->columns.begin()->second.size(); ++i) {
@@ -84,7 +96,7 @@ void Table::queryTable(const std::vector<std::string>& columns, const std::vecto
             // 使用辅助函数获取列的数据类型
             Data_type colType = getColumnType(condition.column);
             if (colType == ERROR_TYPE) {
-                std::cerr << "Column " << condition.column << " does not exist." << std::endl;
+                outputFile << "Column " << condition.column << " does not exist." << std::endl;
                 match = false;
                 break;
             }
@@ -117,13 +129,13 @@ void Table::queryTable(const std::vector<std::string>& columns, const std::vecto
                 const auto& colData = this->columns.at(column);
                 std::visit([](auto&& arg) {
                     if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, std::string>) {
-                        std::cout << "\"" << arg << "\" ";
+                        outputFile << "\"" << arg << "\" ";
                     } else {
-                        std::cout << arg << " ";
+                        outputFile << arg << " ";
                     }
                 }, colData[i]);
             }
-            std::cout << std::endl;
+            outputFile << std::endl;
         }
     }
 }

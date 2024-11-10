@@ -29,13 +29,7 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
         std::string dbName = paratokens[0];
         (*databases)[dbName] = Database();
         // 创建 dbName.db 文件
-        std::ofstream dbFile(dbName + ".db");
-        if (dbFile) {
-            dbFile.close();
-            std::cout << "Database " << dbName << " created." << std::endl;
-        } else {
-            std::cerr << "Failed to create database file: " << dbName << ".db" << std::endl;
-        }
+        (*databases)[dbName].save(dbName + ".db");
     } else if (command_type == USE_DATABASE) {
         std::string dbName = paratokens[0];
         if (databases->find(dbName) != databases->end()) {
@@ -45,7 +39,7 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
     } else if (command_type == CREATE_TABLE) {
         std::string tableName = paratokens[0];
         Table table(tableName);
-        for (size_t i = 2; i < paratokens.size() - 1; i += 2) {
+        for (size_t i = 1; i < paratokens.size() - 1; i += 2) {
             table.addColumn(paratokens[i], fromrawStringtoData_type(paratokens[i + 1]));
         }
         databases->at(*currentDatabase).createTable(tableName, table);
@@ -54,26 +48,41 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
         databases->at(*currentDatabase).dropTable(tableName);
     } else if (command_type == INSERT_INTO) {
         std::string tableName = paratokens[0];
-        if (paratokens[1] == "VALUES" && paratokens[2] == "(" && paratokens.back() == ")") {
+        std::cout<<std::endl;
+        for(auto i:paratokens) std::cout<<i<<" ";
+        std::cout<<std::endl;
+        //if (paratokens[1] == "VALUES" && paratokens[2] == "(" && paratokens.back() == ")") {
+        if (1){
             Table* table = databases->at(*currentDatabase).getTable(tableName);
                 if (table) {
                     std::vector<ColumnType> values;
                     const auto& columns = table->columnsNT;
+                    //output columnsNT
+                    for(auto i:columns) std::cout<<i.first<<" "<<i.second<<std::endl;
                     size_t colIndex = 0;
-                    for (size_t i = 3; i < paratokens.size() - 1; ++i) {
+                    for (size_t i = 1; i < paratokens.size() ; ++i) {
                         if (paratokens[i] == ",") continue; // Ignore commas
                         ColumnType value;
                         const auto& columnType = columns[colIndex].second;
+                        //std::cout<<columnType<<" "<<paratokens[i]<<std::endl;
                         if (columnType == TEXT) {
-                            std::string strValue;
-                            while (i < paratokens.size() - 1 && paratokens[i] != "\"") {
+                            //std::cout<<paratokens[i]<<std::endl;
+                            std::string strValue = "";
+                            //std::cout<<strValue<<std::endl;
+                            i+=1;
+                            while (i < paratokens.size()  && paratokens[i] != "\"") {
+                                //std::cout<<"strValue"<<i<<strValue<<std::endl;
                                 strValue += paratokens[i] + " ";
+                                std::cout<<"paratokens[i]"<<paratokens[i]<<std::endl;
+                                //std::cout<<"strValue"<<i<<strValue<<std::endl;
                                 ++i;
                             }
-                            if (i < paratokens.size() - 1 && paratokens[i] == "\"") {
+                            if (i < paratokens.size()  && paratokens[i] == "\"") {
                                 strValue.pop_back(); // Remove trailing space
                             }
+                            std::cout<<"strValue"<<strValue<<std::endl;
                             value = strValue;
+
                         } else if (columnType == INTEGER) {
                             try {
                                 value = std::stoi(paratokens[i]);
@@ -98,7 +107,10 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
                         values.push_back(value);
                         ++colIndex;
                     }
+                    //output values
+                    for(auto i:values) std::cout<<i<<" ";
                     table->insertRow(values);
+                    //table 
                 } else {
                     std::cerr << "Table " << tableName << " does not exist." << std::endl;
                 }
@@ -118,15 +130,20 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
                 tableName = paratokens[++i];
                 break;
             }else if(paratokens[i] == "*") {
+                tableName = paratokens[i+2];
                 for (auto& column : databases->at(*currentDatabase).getTable(tableName)->columnsNT) {
                     columns.push_back(column.first);
                 }
+                break;
+                //output columns
+                for(auto i:columns) std::cout<<i<<" ";
                 
             }
             else {
-                columns.push_back(paratokens[i]);
+                if(paratokens[i]!=",")columns.push_back(paratokens[i]);
             }
         }
+        //std::cout<<"BEFORE WHERE"<<std::endl;
         ++i;//skip "WHERE"
         for (; i +3< paratokens.size(); i += 4) {
                 std::string column = paratokens[i] ;
@@ -139,13 +156,19 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
                     pre_bool_op = OR;
                 }
         }
+        //std::cout<<"JUST AFTER WHERE"<<std::endl;
         if (columns.size() == 0) {
             std::cerr << "No columns specified." << std::endl;
             return;
         }
-        Table* table = databases->at(*currentDatabase).getTable(tableName);
+ 
+        for(auto i:*databases) std::cout<<i.first<<std::endl;
+        //Table *table = nullptr;
+        Table* table = &(databases->at(*currentDatabase).tables[tableName]);
+            //std::cout<<"JUST AFTER GET TABLE"<<std::endl;
         if (table) {
             if (conditions.size() == 0) {
+
                 table->queryTable(columns);
             } else {
                 table->queryTable(columns, conditions);

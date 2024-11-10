@@ -22,7 +22,9 @@ void Query::getQ() {
 }
 
 void Query::excQ() {
+    //std::cout<<"excQ"<<std::endl;
     Parser parser;
+    std::cout<<"parser"<<std::endl;
     parser.parse(command_line, databases, currentDatabase);
     //传入的后两个参数是指针
 }
@@ -37,7 +39,7 @@ bool is_special(const std::string & a){
     return !(a[0]=='_'||('a'<=a[0]&&a[0]<'z')||('A'<=a[0]&&a[0]<'Z')||('1'<=a[0]&&a[0]<'9'));
 }
 bool is_special(const char & a){
-    return a==' '||a=='\n'||a==')'||a=='('||a==','||a=='\''||a==';'||a=='<'||a=='='||a=='>'||a=='*'||a=='/'||a=='+'||a=='-';
+    return a==' '||a=='\n'||a==')'||a=='('||a==','||a=='\''||a==';'||a=='<'||a=='='||a=='>'||a=='*'||a=='/'||a=='+'||a=='-'||a=='\"';
 }
 bool _is_empty(const char & a){
     return a==' '||a=='\n';
@@ -58,7 +60,7 @@ void Command_line::get_command_line() {
     paratokens.clear();
 
     while (true) {
-        lin = std::cin.get();
+        lin = inputFile.get();
         if (in_ || lin == '\'') {
             input << lin;
         } else {
@@ -91,7 +93,7 @@ void Command_line::get_command_line() {
             paratokens.push_back(para_string);
             iss >> para_string; // (
             while (iss >> para_string && para_string != ")") {
-                paratokens.push_back(para_string);
+                if(para_string!=",")paratokens.push_back(para_string);
             }
         }
     } else if (command == "USE") {
@@ -120,6 +122,7 @@ void Command_line::get_command_line() {
             iss >> para_string; // VALUES
             iss >> para_string; // (
             while (iss >> para_string && para_string != ")") {
+            //while (iss>>para_string) {
                 paratokens.push_back(para_string);
             }
         }

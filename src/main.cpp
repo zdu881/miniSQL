@@ -19,10 +19,26 @@ int main(int argv,char* argc[]){
         std::cerr<<"Cannot open the input file:"<<inputFilename<<std::endl;
         return 0;
     }
+    outputFile << "MiniSQL output:" << std::endl;
     std::unordered_map<std::string, Database> databases;
     std::string currentDatabase;
     std::cout<<">_< Welcome to MiniSQL"<<std::endl;
     Query query(&databases, &currentDatabase);
+
+    // 读取 databaselist.txt 并加载数据库
+    std::ifstream dbListFile("../database/databaselist.txt");
+    if (dbListFile) {
+        std::string dbName;
+        while (std::getline(dbListFile, dbName)) {
+            if (!dbName.empty()) {
+                databases[dbName] = Database();
+                databases[dbName].load(dbName + ".db");
+                std::cout << "Database " << dbName << " loaded from databaselist.txt." << std::endl;
+            }
+        }
+        dbListFile.close();
+    }
+
     int cnt = 0;
     while(!inputFile.eof()){
         query.getQ();
@@ -32,5 +48,20 @@ int main(int argv,char* argc[]){
     for (auto& [name, db] : databases) {
         db.save(name + ".db");
     }
+    std::cout << cnt << " commands executed." << std::endl;
+    inputFile.close();
+    outputFile.close();
+
+    // 程序结束前，写回 databaselist.txt
+    std::ofstream dbListOut("databaselist.txt", std::ios::trunc);
+    if (dbListOut) {
+        for (const auto& [name, db] : databases) {
+            dbListOut << name << std::endl;
+        }
+        dbListOut.close();
+    } else {
+        std::cerr << "Cannot open databaselist.txt for writing." << std::endl;
+    }
+    
     return 0;
 }
