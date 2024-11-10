@@ -41,9 +41,12 @@ int main(int argv,char* argc[]){
 
     int cnt = 0;
     while(!inputFile.eof()){
+        if(inputFile.peek() == EOF) break;
+        std::cout<<"STARQ"<<std::endl;
         query.getQ();
         query.excQ();
         cnt++;
+        std::cout<<"ENDQ"<<std::endl;
     }
     for (auto& [name, db] : databases) {
         db.save(name + ".db");
@@ -53,7 +56,7 @@ int main(int argv,char* argc[]){
     outputFile.close();
 
     // 程序结束前，写回 databaselist.txt
-    std::ofstream dbListOut("databaselist.txt", std::ios::trunc);
+    std::ofstream dbListOut("../database/databaselist.txt", std::ios::trunc);
     if (dbListOut) {
         for (const auto& [name, db] : databases) {
             dbListOut << name << std::endl;

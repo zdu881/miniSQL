@@ -134,6 +134,7 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
                 for (auto& column : databases->at(*currentDatabase).getTable(tableName)->columnsNT) {
                     columns.push_back(column.first);
                 }
+                i+=2;
                 break;
                 //output columns
                 for(auto i:columns) std::cout<<i<<" ";
@@ -144,7 +145,7 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
             }
         }
         //std::cout<<"BEFORE WHERE"<<std::endl;
-        ++i;//skip "WHERE"
+        i+=2;//skip "WHERE"
         for (; i +3< paratokens.size(); i += 4) {
                 std::string column = paratokens[i] ;
                 std::string op = paratokens[i + 1];
