@@ -2,30 +2,31 @@ MiniSQL output:
 Table students contents:
  1000 
  "Jay Chou" 
- 3 
+ 3.5 
 
  1002 
  "David Tao" 
- 3.8 
+ 3.5 
 
  1003 
  "JJ Lin" 
- 3.9 
+ 3.5 
 
 Table students contents:
  1000 
  "Jay Chou" 
- 3 
+ 3.5 
 
  1002 
  "David Tao" 
- 3.8 
+ 3.5 
 
  1003 
  "JJ Lin" 
- 3.9 
+ 3.5 
 
 Table students contents with conditions:
 ID Name GPA 
-1002 "David Tao" 3.8 
-1003 "JJ Lin" 3.9 
+1000 "Jay Chou" 3.5 
+1002 "David Tao" 3.5 
+1003 "JJ Lin" 3.5 

@@ -11,4 +11,4 @@ INSERT INTO students VALUES ( 1003 , "JJ Lin" , 3.9 );
 UPDATE students SET GPA = 3.5 WHERE ID = 1000;
 SELECT ID , Name , GPA FROM students;
 SELECT * FROM students;
-SELECT ID , Name , GPA FROM students WHERE GPA > 3.5;
+SELECT ID , Name , GPA FROM students WHERE GPA > 3.4;

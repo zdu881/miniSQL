@@ -205,45 +205,39 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
 
     }else if(command_type == UPDATE_SET_WHERE){
         //input::UPDATE table_name SET column_name1 = value1, column_name2 = value2 WHERE ID = 1 AND NAME = "John"
-        //paratokens = {"table_name", "SET", "column_name1", "=", "value1", ",", "column_name2", "=", "value2", "WHERE", "ID", "=", "1", "AND", "NAME", "=", "John"}
+        //paratokens = {"table_name", "column_name1", "=", "value1", ",", "column_name2", "=", "value2", "WHERE", "ID", "=", "1", "AND", "NAME", "=", "John"}
         //doing
         std::string tableName = paratokens[0];
         std::vector<Condition> conditions;
         BOOL_OP pre_bool_op = AND;
         std::vector<std::pair<std::string, ColumnType>> setConfigs;
-        size_t i = 2;
-        for (; i < paratokens.size(); i += 3) {
+        size_t i = 1;
+        for (; i < paratokens.size()&& paratokens[i-1] != "WHERE"; i += 4) {
             std::string column = paratokens[i];
             ColumnType value;
             if (paratokens[i + 1] == "=") {
-                if (paratokens[i + 2] == "NULL") {
-                    value = "NULL";
-                } else {
-                    try {
-                        value = std::stoi(paratokens[i + 2]);
-                    } catch (const std::invalid_argument& e) {
-                        try {
-                            value = std::stod(paratokens[i + 2]);
-                        } catch (const std::invalid_argument& e) {
-                            value = paratokens[i + 2];
-                        }
-                    }
-                }
+                value = paratokens[i + 2];
             }
+            std::cout<<"SET"<<column<<value<<std::endl;
             setConfigs.push_back({column, value});
         }
-        i += 1;//skip "WHERE"
+        
+        std::cout<<"WHERE"<<paratokens[i]<<std::endl;
+        i += 4;//skip "WHERE"
         for (; i + 3 < paratokens.size(); i += 4) {
             std::string column = paratokens[i];
             std::string op = paratokens[i + 1];
             std::string value = paratokens[i + 2];
             conditions.push_back(Condition(pre_bool_op, column, value, op));
+            
             if (paratokens[i + 3] == "AND") {
                 pre_bool_op = AND;
             } else if (paratokens[i + 3] == "OR") {
                 pre_bool_op = OR;
             }
+            
         }
+        std::cout<<"BEFORE GET TABLE"<<std::endl;
         Table* table = databases->at(*currentDatabase).getTable(tableName);
         if (table) {
             table->updateRow(setConfigs, conditions);

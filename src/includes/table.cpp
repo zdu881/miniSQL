@@ -87,33 +87,44 @@ void Table::queryTable(const std::vector<std::string>& columns, const std::vecto
         outputFile << column << " ";
     }
     outputFile << std::endl;
+    std::cout << "Table " << name << " contents with conditions:" << std::endl;
 
     // 输出符合条件的行
     for (size_t i = 0; i < this->columns.begin()->second.size(); ++i) {
         bool match = true;
         for (const auto& condition : conditions) {
+            if (this->columns.find(condition.column) == this->columns.end()) {
+                std::cerr << "Column " << condition.column << " does not exist in table " << name << std::endl;
+                match = false;
+                break;
+            }
+
             const auto& colData = this->columns.at(condition.column);
-            // 使用辅助函数获取列的数据类型
             Data_type colType = getColumnType(condition.column);
             if (colType == ERROR_TYPE) {
                 outputFile << "Column " << condition.column << " does not exist." << std::endl;
                 match = false;
                 break;
             }
-            bool conditionMatch = std::visit([&condition, colType](ColumnType&& arg) -> bool {
-                using T = std::decay_t<decltype(arg)>;
-                if (colType == INTEGER) {
-                    int condValue = std::stoi(std::get<std::string>(condition.value));
-                    if (condition.sign == EQUAL) return std::get<int>(arg) == condValue;
-                    else if (condition.sign == BIGGER) return std::get<int>(arg) > condValue;
-                    else if (condition.sign == SMALLER) return std::get<int>(arg) < condValue;
-                } else if (colType == FLOAT) {
-                    double condValue = std::stod(std::get<std::string>(condition.value));
-                    if (condition.sign == EQUAL) return std::get<double>(arg) == condValue;
-                    else if (condition.sign == BIGGER) return std::get<double>(arg) > condValue;
-                    else if (condition.sign == SMALLER) return std::get<double>(arg) < condValue;
-                } else if (colType == TEXT) {
-                    if (condition.sign == EQUAL) return std::get<std::string>(arg) == std::get<std::string>(condition.value);
+
+            bool conditionMatch = std::visit([&condition, colType](const ColumnType& arg) -> bool {
+                try {
+                    if (colType == INTEGER) {
+                        int condValue = std::stoi(std::get<std::string>(condition.value));
+                        if (condition.sign == EQUAL) return std::get<int>(arg) == condValue;
+                        else if (condition.sign == BIGGER) return std::get<int>(arg) > condValue;
+                        else if (condition.sign == SMALLER) return std::get<int>(arg) < condValue;
+                    } else if (colType == FLOAT) {
+                        double condValue = std::stod(std::get<std::string>(condition.value));
+                        if (condition.sign == EQUAL) return std::get<double>(arg) == condValue;
+                        else if (condition.sign == BIGGER) return std::get<double>(arg) > condValue;
+                        else if (condition.sign == SMALLER) return std::get<double>(arg) < condValue;
+                    } else if (colType == TEXT) {
+                        if (condition.sign == EQUAL) return std::get<std::string>(arg) == std::get<std::string>(condition.value);
+                    }
+                } catch (const std::bad_variant_access&) {
+                    std::cerr << "Bad variant access for column " << condition.column << std::endl;
+                    return false;
                 }
                 return false;
             }, colData[i]);
@@ -126,8 +137,13 @@ void Table::queryTable(const std::vector<std::string>& columns, const std::vecto
 
         if (match) {
             for (const auto& column : columns) {
+                if (this->columns.find(column) == this->columns.end()) {
+                    std::cerr << "Column " << column << " does not exist in table " << name << std::endl;
+                    continue;
+                }
+
                 const auto& colData = this->columns.at(column);
-                std::visit([](auto&& arg) {
+                std::visit([](const auto& arg) {
                     if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, std::string>) {
                         outputFile << "\"" << arg << "\" ";
                     } else {
@@ -139,7 +155,6 @@ void Table::queryTable(const std::vector<std::string>& columns, const std::vecto
         }
     }
 }
-
 void Table::deleteRow(const std::vector<Condition>& conditions) {
     std::vector<size_t> rowsToDelete;
     for (size_t i = 0; i < columns.begin()->second.size(); ++i) {
@@ -161,26 +176,72 @@ void Table::deleteRow(const std::vector<Condition>& conditions) {
     }
     std::cout << rowsToDelete.size() << " rows deleted from " << name << "." << std::endl;
 }
-void Table::updateRow(const std::vector<std::pair<std::string, ColumnType>>& setConfigs, const std::vector<Condition>& conditions){
+void Table::updateRow(const std::vector<std::pair<std::string, ColumnType>>& setConfigs, const std::vector<Condition>& conditions) {
     std::vector<size_t> rowsToUpdate;
-    for (size_t i = 0; i < columns.begin()->second.size(); ++i) {
+
+    for (size_t i = 0; i < this->columns.begin()->second.size(); ++i) {
         bool updateRow = true;
         for (const auto& condition : conditions) {
-            const auto& colData = columns.at(condition.column);
-            const auto& colType = std::find_if(columnsNT.begin(), columnsNT.end(), 
-                                               [&condition](const auto& pair) { return pair.first == condition.column; })->second;
-            //wait to write
+            if (this->columns.find(condition.column) == this->columns.end()) {
+                std::cerr << "Column " << condition.column << " does not exist in table " << name << std::endl;
+                updateRow = false;
+                break;
+            }
+
+            const auto& colData = this->columns.at(condition.column);
+            Data_type colType = getColumnType(condition.column);
+            if (colType == ERROR_TYPE) {
+                std::cerr << "Column " << condition.column << " does not exist." << std::endl;
+                updateRow = false;
+                break;
+            }
+
+            bool conditionMatch = std::visit([&](ColumnType&& arg) -> bool {
+                if (colType == INTEGER) {
+                    int condValue = std::stoi(std::get<std::string>(condition.value));
+                    if (condition.sign == EQUAL) return std::get<int>(arg) == condValue;
+                    else if (condition.sign == BIGGER) return std::get<int>(arg) > condValue;
+                    else if (condition.sign == SMALLER) return std::get<int>(arg) < condValue;
+                } else if (colType == FLOAT) {
+                    double condValue = std::stod(std::get<std::string>(condition.value));
+                    if (condition.sign == EQUAL) return std::get<double>(arg) == condValue;
+                    else if (condition.sign == BIGGER) return std::get<double>(arg) > condValue;
+                    else if (condition.sign == SMALLER) return std::get<double>(arg) < condValue;
+                } else if (colType == TEXT) {
+                    if (condition.sign == EQUAL) return std::get<std::string>(arg) == std::get<std::string>(condition.value);
+                }
+                return false;
+            }, colData[i]);
+
+            if (!conditionMatch) {
+                updateRow = false;
+                break;
+            }
         }
         if (updateRow) {
             rowsToUpdate.push_back(i);
         }
     }
-    for ( auto& [columnName, columnData] : columns) {
+
+    std::cout << "rowsToUpdate.size() " << rowsToUpdate.size() << std::endl;
+    //outputsetConfigs
+    std::cout<<"setConfigs"<<std::endl;
+    for(auto i:setConfigs) std::cout<<i.first<<" "<<i.second<<std::endl;
+    for (auto& [columnName, columnData] : columns) {
         for (size_t i = 0; i < rowsToUpdate.size(); ++i) {
-            columnData[rowsToUpdate[i]] = std::find_if(setConfigs.begin(), setConfigs.end(), 
-                                                       [&columnName](const auto& pair) { return pair.first == columnName; })->second;
+            auto it = std::find_if(setConfigs.begin(), setConfigs.end(), [&columnName](const auto& pair) { return pair.first == columnName; });
+            if (it != setConfigs.end()) {
+                if(getColumnType(it->first) == INTEGER) columnData[rowsToUpdate[i]] = std::stoi(std::get<std::string>(it->second));
+                else if(getColumnType(it->first) == FLOAT) columnData[rowsToUpdate[i]] = std::stod(std::get<std::string>(it->second));
+                else if(getColumnType(it->first) == TEXT)columnData[rowsToUpdate[i]] = it->second;
+                
+                std::cout<<"columnData[rowsToUpdate[i]]"<<columnData[rowsToUpdate[i]]<<std::endl;
+            } else {
+                std::cerr << "Column " << columnName << " not found in setConfigs." << std::endl;
+            }
         }
     }
+
     std::cout << rowsToUpdate.size() << " rows updated in " << name << "." << std::endl;
 }
 void Table::save(std::ofstream& file) const {
