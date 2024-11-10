@@ -97,19 +97,19 @@ CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/nyz/MyminiSQL/src/includes/globals.cpp -o CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.s
 
-CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o: CMakeFiles/MyminiSQL.dir/flags.make
-CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o: ../src/includes/parser.cpp
-CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o: CMakeFiles/MyminiSQL.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/nyz/MyminiSQL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o -MF CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o.d -o CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o -c /home/nyz/MyminiSQL/src/includes/parser.cpp
+CMakeFiles/MyminiSQL.dir/src/includes/parser-re.cpp.o: CMakeFiles/MyminiSQL.dir/flags.make
+CMakeFiles/MyminiSQL.dir/src/includes/parser-re.cpp.o: ../src/includes/parser-re.cpp
+CMakeFiles/MyminiSQL.dir/src/includes/parser-re.cpp.o: CMakeFiles/MyminiSQL.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/nyz/MyminiSQL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/MyminiSQL.dir/src/includes/parser-re.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MyminiSQL.dir/src/includes/parser-re.cpp.o -MF CMakeFiles/MyminiSQL.dir/src/includes/parser-re.cpp.o.d -o CMakeFiles/MyminiSQL.dir/src/includes/parser-re.cpp.o -c /home/nyz/MyminiSQL/src/includes/parser-re.cpp
 
-CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/nyz/MyminiSQL/src/includes/parser.cpp > CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.i
+CMakeFiles/MyminiSQL.dir/src/includes/parser-re.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MyminiSQL.dir/src/includes/parser-re.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/nyz/MyminiSQL/src/includes/parser-re.cpp > CMakeFiles/MyminiSQL.dir/src/includes/parser-re.cpp.i
 
-CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/nyz/MyminiSQL/src/includes/parser.cpp -o CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.s
+CMakeFiles/MyminiSQL.dir/src/includes/parser-re.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MyminiSQL.dir/src/includes/parser-re.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/nyz/MyminiSQL/src/includes/parser-re.cpp -o CMakeFiles/MyminiSQL.dir/src/includes/parser-re.cpp.s
 
 CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.o: CMakeFiles/MyminiSQL.dir/flags.make
 CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.o: ../src/includes/query.cpp
@@ -157,7 +157,7 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.s: cmake_force
 MyminiSQL_OBJECTS = \
 "CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.o" \
 "CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.o" \
-"CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o" \
+"CMakeFiles/MyminiSQL.dir/src/includes/parser-re.cpp.o" \
 "CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.o" \
 "CMakeFiles/MyminiSQL.dir/src/includes/table.cpp.o" \
 "CMakeFiles/MyminiSQL.dir/src/main.cpp.o"
@@ -167,7 +167,7 @@ MyminiSQL_EXTERNAL_OBJECTS =
 
 ../bin/MyminiSQL: CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.o
 ../bin/MyminiSQL: CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.o
-../bin/MyminiSQL: CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o
+../bin/MyminiSQL: CMakeFiles/MyminiSQL.dir/src/includes/parser-re.cpp.o
 ../bin/MyminiSQL: CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.o
 ../bin/MyminiSQL: CMakeFiles/MyminiSQL.dir/src/includes/table.cpp.o
 ../bin/MyminiSQL: CMakeFiles/MyminiSQL.dir/src/main.cpp.o

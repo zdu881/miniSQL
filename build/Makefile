@@ -177,29 +177,29 @@ src/includes/globals.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyminiSQL.dir/build.make CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.s
 .PHONY : src/includes/globals.cpp.s
 
-src/includes/parser.o: src/includes/parser.cpp.o
-.PHONY : src/includes/parser.o
+src/includes/parser-re.o: src/includes/parser-re.cpp.o
+.PHONY : src/includes/parser-re.o
 
 # target to build an object file
-src/includes/parser.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyminiSQL.dir/build.make CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.o
-.PHONY : src/includes/parser.cpp.o
+src/includes/parser-re.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyminiSQL.dir/build.make CMakeFiles/MyminiSQL.dir/src/includes/parser-re.cpp.o
+.PHONY : src/includes/parser-re.cpp.o
 
-src/includes/parser.i: src/includes/parser.cpp.i
-.PHONY : src/includes/parser.i
+src/includes/parser-re.i: src/includes/parser-re.cpp.i
+.PHONY : src/includes/parser-re.i
 
 # target to preprocess a source file
-src/includes/parser.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyminiSQL.dir/build.make CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.i
-.PHONY : src/includes/parser.cpp.i
+src/includes/parser-re.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyminiSQL.dir/build.make CMakeFiles/MyminiSQL.dir/src/includes/parser-re.cpp.i
+.PHONY : src/includes/parser-re.cpp.i
 
-src/includes/parser.s: src/includes/parser.cpp.s
-.PHONY : src/includes/parser.s
+src/includes/parser-re.s: src/includes/parser-re.cpp.s
+.PHONY : src/includes/parser-re.s
 
 # target to generate assembly for a file
-src/includes/parser.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyminiSQL.dir/build.make CMakeFiles/MyminiSQL.dir/src/includes/parser.cpp.s
-.PHONY : src/includes/parser.cpp.s
+src/includes/parser-re.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyminiSQL.dir/build.make CMakeFiles/MyminiSQL.dir/src/includes/parser-re.cpp.s
+.PHONY : src/includes/parser-re.cpp.s
 
 src/includes/query.o: src/includes/query.cpp.o
 .PHONY : src/includes/query.o
@@ -288,9 +288,9 @@ help:
 	@echo "... src/includes/globals.o"
 	@echo "... src/includes/globals.i"
 	@echo "... src/includes/globals.s"
-	@echo "... src/includes/parser.o"
-	@echo "... src/includes/parser.i"
-	@echo "... src/includes/parser.s"
+	@echo "... src/includes/parser-re.o"
+	@echo "... src/includes/parser-re.i"
+	@echo "... src/includes/parser-re.s"
 	@echo "... src/includes/query.o"
 	@echo "... src/includes/query.i"
 	@echo "... src/includes/query.s"
