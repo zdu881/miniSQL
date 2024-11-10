@@ -620,6 +620,7 @@ CMakeFiles/MyminiSQL.dir/src/includes/parser-re.cpp.o: ../src/includes/parser-re
 
 CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.o: ../src/includes/query.cpp \
   /usr/include/stdc-predef.h \
+  ../src/includes/parser-re.hpp \
   ../src/includes/query.hpp \
   /usr/include/c++/11/string \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
@@ -827,7 +828,8 @@ CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.o: ../src/includes/query.cpp \
   /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
   /usr/include/c++/11/bits/fstream.tcc \
-  ../src/includes/parser.hpp \
+  ../src/includes/globals.hpp \
+  ../src/includes/query.hpp \
   /usr/include/c++/11/iostream \
   /usr/include/c++/11/sstream \
   /usr/include/c++/11/bits/sstream.tcc
@@ -1523,8 +1525,6 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/c++/11/unordered_map:
 
 /usr/include/c++/11/cctype:
-
-../src/includes/parser.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h:
 

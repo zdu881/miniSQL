@@ -8,7 +8,20 @@
 #include <iostream>
 // "(",")"has not benn removed
 // input:command_type = CREATE_TABLE, paratokens = {"table_name", "(", "column_name1", "column_type1", ",", "column_name2", "column_type2", ",", ... , ")"}
+ColumnType fromrawStringtoInt(ColumnType str){
+    return std::stoi(std::get<std::string>(str));
+}
 
+ColumnType fromrawStringtoDouble(ColumnType str){
+    return std::stod(std::get<std::string>(str));
+}
+
+Data_type fromrawStringtoData_type(const std::string &type){
+    if(type == "TEXT") return TEXT;
+    else if(type == "INTEGER") return INTEGER;
+    else if(type == "FLOAT") return FLOAT;
+    else return ERROR_TYPE;
+}
 void Parser::parse(Command_line command_line, std::unordered_map<std::string, Database>* databases, std::string* currentDatabase){
     std::vector<std::string>paratokens = command_line.get_paratokens();
     Command_type command_type = command_line.get_command_type();
@@ -216,19 +229,4 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
     } else if (1 ){
 
     }
-}
-
-ColumnType fromrawStringtoInt(ColumnType str){
-    return std::stoi(std::get<std::string>(str));
-}
-
-ColumnType fromrawStringtoDouble(ColumnType str){
-    return std::stod(std::get<std::string>(str));
-}
-
-Data_type fromrawStringtoData_type(const std::string &type){
-    if(type == "TEXT") return TEXT;
-    else if(type == "INTEGER") return INTEGER;
-    else if(type == "FLOAT") return FLOAT;
-    else return ERROR_TYPE;
 }

@@ -1,5 +1,6 @@
 CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.o: \
  /home/nyz/MyminiSQL/src/includes/query.cpp /usr/include/stdc-predef.h \
+ /home/nyz/MyminiSQL/src/includes/parser-re.hpp \
  /home/nyz/MyminiSQL/src/includes/query.hpp /usr/include/c++/11/string \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -171,5 +172,6 @@ CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.o: \
  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
  /usr/include/c++/11/bits/fstream.tcc \
- /home/nyz/MyminiSQL/src/includes/parser.hpp /usr/include/c++/11/iostream \
+ /home/nyz/MyminiSQL/src/includes/globals.hpp \
+ /home/nyz/MyminiSQL/src/includes/query.hpp /usr/include/c++/11/iostream \
  /usr/include/c++/11/sstream /usr/include/c++/11/bits/sstream.tcc

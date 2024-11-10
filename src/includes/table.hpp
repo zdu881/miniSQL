@@ -24,7 +24,7 @@ public:
     void addColumn(const std::string& name, const Data_type& type);
     void save(std::ofstream& file) const;
     void load(std::ifstream& file);
-
+    Data_type getColumnType(const std::string& columnName) const;
     friend std::ostream& operator<<(std::ostream& os, const Table& table);
     std::vector<std::pair<std::string, Data_type>> columnsNT;//Name-Type
 private:

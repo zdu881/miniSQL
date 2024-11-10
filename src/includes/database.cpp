@@ -2,6 +2,7 @@
 #include "database.hpp"
 #include <iostream>
 #include <fstream>
+#include "globals.hpp"
 void Database::createTable(const std::string& name, Table& table) {
     if (tables.find(name) == tables.end()) {
         tables[name] = std::move(table);

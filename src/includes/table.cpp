@@ -58,10 +58,76 @@ void Table::queryTable(const std::vector<std::string>& columns) const {
     }
 }
 
+// 添加辅助函数以从 columnsNT 获取数据类型
+Data_type Table::getColumnType(const std::string& columnName) const {
+    for (const auto& pair : columnsNT) {
+        if (pair.first == columnName) {
+            return pair.second;
+        }
+    }
+    return ERROR_TYPE;
+}
+
 void Table::queryTable(const std::vector<std::string>& columns, const std::vector<Condition>& conditions) const {
     std::cout << "Table " << name << " contents with conditions:" << std::endl;
- 
+    // 输出列名
+    for (const auto& column : columns) {
+        std::cout << column << " ";
+    }
+    std::cout << std::endl;
+
+    // 输出符合条件的行
+    for (size_t i = 0; i < this->columns.begin()->second.size(); ++i) {
+        bool match = true;
+        for (const auto& condition : conditions) {
+            const auto& colData = this->columns.at(condition.column);
+            // 使用辅助函数获取列的数据类型
+            Data_type colType = getColumnType(condition.column);
+            if (colType == ERROR_TYPE) {
+                std::cerr << "Column " << condition.column << " does not exist." << std::endl;
+                match = false;
+                break;
+            }
+            bool conditionMatch = std::visit([&condition, colType](ColumnType&& arg) -> bool {
+                using T = std::decay_t<decltype(arg)>;
+                if (colType == INTEGER) {
+                    int condValue = std::stoi(std::get<std::string>(condition.value));
+                    if (condition.sign == EQUAL) return std::get<int>(arg) == condValue;
+                    else if (condition.sign == BIGGER) return std::get<int>(arg) > condValue;
+                    else if (condition.sign == SMALLER) return std::get<int>(arg) < condValue;
+                } else if (colType == FLOAT) {
+                    double condValue = std::stod(std::get<std::string>(condition.value));
+                    if (condition.sign == EQUAL) return std::get<double>(arg) == condValue;
+                    else if (condition.sign == BIGGER) return std::get<double>(arg) > condValue;
+                    else if (condition.sign == SMALLER) return std::get<double>(arg) < condValue;
+                } else if (colType == TEXT) {
+                    if (condition.sign == EQUAL) return std::get<std::string>(arg) == std::get<std::string>(condition.value);
+                }
+                return false;
+            }, colData[i]);
+
+            if (!conditionMatch) {
+                match = false;
+                break;
+            }
+        }
+
+        if (match) {
+            for (const auto& column : columns) {
+                const auto& colData = this->columns.at(column);
+                std::visit([](auto&& arg) {
+                    if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, std::string>) {
+                        std::cout << "\"" << arg << "\" ";
+                    } else {
+                        std::cout << arg << " ";
+                    }
+                }, colData[i]);
+            }
+            std::cout << std::endl;
+        }
+    }
 }
+
 void Table::deleteRow(const std::vector<Condition>& conditions) {
     std::vector<size_t> rowsToDelete;
     for (size_t i = 0; i < columns.begin()->second.size(); ++i) {

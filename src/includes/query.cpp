@@ -42,10 +42,13 @@ bool is_special(const char & a){
 bool _is_empty(const char & a){
     return a==' '||a=='\n';
 }
+Command_line::Command_line() {}
+Command_line::~Command_line() {}
 //input: CREATE DATABASE db_name;
 //output: command_type = CREATE_DATABASE, paratokens = {"db_name"}
 //input: CREATE TABLE table_name (column_name1 column_type1, column_name2 column_type2, ...);
 //output: command_type = CREATE_TABLE, paratokens = {"table_name", "(", "column_name1", "column_type1", ",", "column_name2", "column_type2", ",", ... , ")"}
+
 void Command_line::get_command_line() {
     std::stringstream input;
     std::string ans, para_string;

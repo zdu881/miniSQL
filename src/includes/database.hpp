@@ -5,7 +5,7 @@
 #include <string>
 #include <unordered_map>
 #include "table.hpp"
-
+#include "globals.hpp"
 class Database {
 public:
     void createTable(const std::string& name, Table& table);

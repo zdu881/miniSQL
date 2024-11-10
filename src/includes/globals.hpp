@@ -31,7 +31,7 @@ enum Command_type:int{
 
 enum Compare_sign:int{
     EQUAL,
-    BIGER,
+    BIGGER,
     SMALLER,
     ERROR_COMPARE_SIGN
 };
@@ -59,6 +59,9 @@ struct Condition_parameter{
     Table_content content;
 };
 */
+
+using ColumnType = std::variant<int, double, std::string>;
+std::ostream& operator<<(std::ostream& os, const ColumnType& column);
 class Condition{
     public:
         Condition(const BOOL_OP &pre,const std::string &v1,const std::string &v2,const std::string & op);
@@ -68,6 +71,4 @@ class Condition{
         Compare_sign sign;
 };
 
-using ColumnType = std::variant<int, double, std::string>;
-std::ostream& operator<<(std::ostream& os, const ColumnType& column);
 #endif // GLOBALS_HPP
