@@ -1,17 +1,34 @@
 MiniSQL output:
 ---------------------------------
 ID,Name,GPA
+0,"",0
+1000,"Jay Chou",3.5
+1003,"JJ Lin",5.9
 1000,"Jay Chou",3.5
 1003,"JJ Lin",4.9
 ---------------------------------
 ID,Name,GPA
+0,"",0
+1000,"Jay Chou",3.5
+1003,"JJ Lin",5.9
 1000,"Jay Chou",3.5
 1003,"JJ Lin",4.9
 ---------------------------------
 ID,Name,GPA
+1003,"JJ Lin",5.9
 1003,"JJ Lin",4.9
 ---------------------------------
 ID,Name,GPA,CourseName
+0,,0,
 1000,Jay Chou,3.5,Math
 1000,Jay Chou,3.5,History
+1000,Jay Chou,3.5,Math
+1000,Jay Chou,3.5,History
+1003,JJ Lin,5.9,Science
+1003,JJ Lin,5.9,Science
+1000,Jay Chou,3.5,Math
+1000,Jay Chou,3.5,History
+1000,Jay Chou,3.5,Math
+1000,Jay Chou,3.5,History
+1003,JJ Lin,4.9,Science
 1003,JJ Lin,4.9,Science

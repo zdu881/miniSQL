@@ -27,6 +27,10 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
     Command_type command_type = command_line.get_command_type();
     if(command_line.get_command_type() == CREATE_DATABASE){
         std::string dbName = paratokens[0];
+        if (databases->find(dbName) != databases->end()) {
+            std::cerr << "Database " << dbName << " already exists." << std::endl;
+            return;
+        }
         (*databases)[dbName] = Database();
         // 创建 dbName.db 文件
         (*databases)[dbName].save(dbName + ".db");

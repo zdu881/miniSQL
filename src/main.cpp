@@ -26,7 +26,7 @@ int main(int argv,char* argc[]){
     Query query(&databases, &currentDatabase);
 
     // 读取 databaselist.txt 并加载数据库
-    std::ifstream dbListFile("../database/databaselist.txt");
+    std::ifstream dbListFile("databaselist.txt");
     if (dbListFile) {
         std::string dbName;
         while (std::getline(dbListFile, dbName)) {
@@ -56,7 +56,7 @@ int main(int argv,char* argc[]){
     outputFile.close();
 
     // 程序结束前，写回 databaselist.txt
-    std::ofstream dbListOut("../database/databaselist.txt", std::ios::trunc);
+    std::ofstream dbListOut("databaselist.txt", std::ios::trunc);
     if (dbListOut) {
         for (const auto& [name, db] : databases) {
             dbListOut << name << std::endl;
