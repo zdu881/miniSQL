@@ -184,6 +184,8 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
         std::string tableName = paratokens[0];
         std::vector<Condition> conditions;
         BOOL_OP pre_bool_op = AND;
+        Table* table = databases->at(*currentDatabase).getTable(tableName);
+
         for (size_t i = 2; i < paratokens.size(); i += 4) {
             std::string column = paratokens[i];
             std::string op = paratokens[i + 1];
@@ -195,7 +197,6 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
                 pre_bool_op = OR;
             }
         }
-        Table* table = databases->at(*currentDatabase).getTable(tableName);
         if (table) {
             table->deleteRow(conditions);
         } else {
@@ -210,16 +211,35 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
         std::string tableName = paratokens[0];
         std::vector<Condition> conditions;
         BOOL_OP pre_bool_op = AND;
-        std::vector<std::pair<std::string, ColumnType>> setConfigs;
+        std::vector<UpdateConfig> setConfigs;
         size_t i = 1;
         for (; i < paratokens.size()&& paratokens[i-1] != "WHERE"; i += 4) {
             std::string column = paratokens[i];
             ColumnType value;
-            if (paratokens[i + 1] == "=") {
+            if (paratokens[i + 1] == "="&&paratokens[i + 3] == "+") {
+                value = paratokens[i + 4];
+                setConfigs.push_back(UpdateConfig{column, ADD, value});
+                i+=2;
+            } else if (paratokens[i + 1] == "="&&paratokens[i + 3] == "-") {
+                value = paratokens[i + 4];
+                setConfigs.push_back(UpdateConfig{column, SUBTRACT, value});
+                i+=2;
+            } else if (paratokens[i + 1] == "="&&paratokens[i + 3] == "*") {
+                value = paratokens[i + 4];
+                setConfigs.push_back(UpdateConfig{column, MULTIPLY, value});
+                i+=2;
+            } else if (paratokens[i + 1] == "="&&paratokens[i + 3] == "/") {
+                value = paratokens[i + 4];
+                setConfigs.push_back(UpdateConfig{column, DIVIDE, value});
+                i+=2;
+            } else if (paratokens[i + 1] == "=") {
                 value = paratokens[i + 2];
+                setConfigs.push_back(UpdateConfig{column, SET, value});
+            } else {
+                std::cerr << "Invalid update operation." << std::endl;
+                return;
             }
             std::cout<<"SET"<<column<<value<<std::endl;
-            setConfigs.push_back({column, value});
         }
         
         

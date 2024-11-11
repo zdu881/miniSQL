@@ -6,6 +6,7 @@
 
 extern std::ifstream inputFile;
 extern std::ofstream outputFile;
+using ColumnType = std::variant<int, double, std::string>;
 enum Data_type:int{
     TEXT,
     INTEGER,
@@ -37,7 +38,7 @@ enum Compare_sign:int{
 };
 
 enum Compute_op{
-    ADD,
+    ADD_OP,
     SUB,
     DIV,
     MUT,
@@ -50,6 +51,22 @@ enum BOOL_OP:int{
     ERROR_BOOL_OP
 };
 
+enum Update_op : int {
+    SET,
+    ADD,
+    SUBTRACT,
+    MULTIPLY,
+    DIVIDE,
+    ERROR_UPDATE_OP
+};
+
+struct UpdateConfig {
+    std::string column;
+    Update_op operation;
+    ColumnType value;
+};
+
+std::ostream& operator<<(std::ostream& os, const ColumnType& column);
 /*
 struct Condition_parameter{
     Condition_parameter(const BOOL_OP &pre,const string &v1,const string &v2,const string & op);
@@ -59,9 +76,6 @@ struct Condition_parameter{
     Table_content content;
 };
 */
-
-using ColumnType = std::variant<int, double, std::string>;
-std::ostream& operator<<(std::ostream& os, const ColumnType& column);
 class Condition{
     public:
         Condition(const BOOL_OP &pre,const std::string &v1,const std::string &v2,const std::string & op);

@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <globals.hpp>
 #include <vector>
+
 class Parser{
     public :
         void parse(Command_line command_line, std::unordered_map<std::string, Database>* databases, std::string* currentDatabase);

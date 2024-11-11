@@ -20,7 +20,7 @@ public:
     void queryTable(const std::vector<std::string>& columns) const;
     void queryTable(const std::vector<std::string>& columns,const std::vector<Condition> &Conditions) const;
     void queryTable() const;
-    void updateRow(const std::vector<std::pair<std::string, ColumnType>>& setConfigs, const std::vector<Condition>& conditions);
+    void updateRow(const std::vector<UpdateConfig>& setConfigs, const std::vector<Condition>& conditions);
     void addColumn(const std::string& name, const Data_type& type);
     void save(std::ofstream& file) const;
     void load(std::ifstream& file);
