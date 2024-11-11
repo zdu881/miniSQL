@@ -51,10 +51,10 @@ void Table::queryTable() const {
 
 void Table::queryTable(const std::vector<std::string>& columns) const {
     // std::cout 替换为 outputFile
-    outputFile << "Table " << name << " contents:" << std::endl;
     size_t rowCount = this->columns.begin()->second.size();
-    std::cout << "Table " << name << " contents with conditions:" << std::endl;
-
+        for (const auto& column : columns) {
+        outputFile << column << " ";
+    }
     for (size_t i = 0; i < rowCount; ++i) {
         for (const auto& column : columns) {
             if (this->columns.find(column) == this->columns.end()) {
@@ -65,11 +65,11 @@ void Table::queryTable(const std::vector<std::string>& columns) const {
             const auto& colData = this->columns.at(column);
 
             if (this->getColumnType(column) == INTEGER || this->getColumnType(column) == FLOAT) {
-                outputFile << " " << colData[i] << " " << std::endl;
+                outputFile << " " << colData[i] << " " ;
             } else if (this->getColumnType(column) == TEXT) {
-                outputFile << " \"" << std::get<std::string>(colData[i]) << "\" " << std::endl;
+                outputFile << " \"" << std::get<std::string>(colData[i]) << "\" " ;
             } else {
-                std::cerr << "ERROR: Unknown column type for column " << column << std::endl;
+                std::cerr << "ERROR: Unknown column type for column " << column ;
             }
         }
         outputFile << std::endl;
@@ -81,8 +81,8 @@ void Table::queryTable(const std::vector<std::string>& columns) const {
 
 void Table::queryTable(const std::vector<std::string>& columns, const std::vector<Condition>& conditions) const {
     // std::cout 替换为 outputFile
-    outputFile << "Table " << name << " contents with conditions:" << std::endl;
     // 输出列名
+    outputFile << "-----------------------------" << std::endl;
     for (const auto& column : columns) {
         outputFile << column << " ";
     }
