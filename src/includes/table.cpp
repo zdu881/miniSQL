@@ -50,13 +50,21 @@ void Table::queryTable() const {
 }
 
 void Table::queryTable(const std::vector<std::string>& columns) const {
-    // std::cout 替换为 outputFile
-    size_t rowCount = this->columns.begin()->second.size();
-        for (const auto& column : columns) {
-        outputFile << column << " ";
+    // 
+    outputFile<<"---------------------------------"<<std::endl;
+    for (size_t j = 0; j < columns.size(); ++j) {
+        outputFile << columns[j];
+        if (j < columns.size() - 1) {
+            outputFile << ",";
+        }
     }
+    outputFile << std::endl;
+
+    // 输出所有行
+    size_t rowCount = this->columns.begin()->second.size();
     for (size_t i = 0; i < rowCount; ++i) {
-        for (const auto& column : columns) {
+        for (size_t j = 0; j < columns.size(); ++j) {
+            const auto& column = columns[j];
             if (this->columns.find(column) == this->columns.end()) {
                 std::cerr << "Column " << column << " does not exist in table " << name << std::endl;
                 continue;
@@ -65,29 +73,32 @@ void Table::queryTable(const std::vector<std::string>& columns) const {
             const auto& colData = this->columns.at(column);
 
             if (this->getColumnType(column) == INTEGER || this->getColumnType(column) == FLOAT) {
-                outputFile << " " << colData[i] << " " ;
+                outputFile << colData[i];
             } else if (this->getColumnType(column) == TEXT) {
-                outputFile << " \"" << std::get<std::string>(colData[i]) << "\" " ;
+                outputFile << "\"" << std::get<std::string>(colData[i]) << "\"";
             } else {
-                std::cerr << "ERROR: Unknown column type for column " << column ;
+                std::cerr << "ERROR: Unknown column type for column " << column << std::endl;
+            }
+
+            if (j < columns.size() - 1) {
+                outputFile << ",";
             }
         }
         outputFile << std::endl;
     }
-    std::cout << "QueryTable" << std::endl;
+    //std::cout << "QueryTable" << std::endl;
 }
 
-
-
 void Table::queryTable(const std::vector<std::string>& columns, const std::vector<Condition>& conditions) const {
-    // std::cout 替换为 outputFile
     // 输出列名
-    outputFile << "-----------------------------" << std::endl;
-    for (const auto& column : columns) {
-        outputFile << column << " ";
+    outputFile<<"---------------------------------"<<std::endl;
+    for (size_t j = 0; j < columns.size(); ++j) {
+        outputFile << columns[j];
+        if (j < columns.size() - 1) {
+            outputFile << ",";
+        }
     }
     outputFile << std::endl;
-    std::cout << "Table " << name << " contents with conditions:" << std::endl;
 
     // 输出符合条件的行
     for (size_t i = 0; i < this->columns.begin()->second.size(); ++i) {
@@ -107,28 +118,33 @@ void Table::queryTable(const std::vector<std::string>& columns, const std::vecto
                 break;
             }
 
-            bool conditionMatch = std::visit([&condition, colType](const ColumnType& arg) -> bool {
+            bool conditionMatch = std::visit([&condition, colType](const auto& arg) -> bool {
+                using T = std::decay_t<decltype(arg)>;
                 try {
                     if (colType == INTEGER) {
-                        int condValue = std::stoi(std::get<std::string>(condition.value));
-                        if (condition.sign == EQUAL) return std::get<int>(arg) == condValue;
-                        else if (condition.sign == BIGGER) return std::get<int>(arg) > condValue;
-                        else if (condition.sign == SMALLER) return std::get<int>(arg) < condValue;
+                        if constexpr (std::is_same_v<T, int>) {
+                            int condValue = std::stoi(std::get<std::string>(condition.value));
+                            if (condition.sign == EQUAL) return arg == condValue;
+                            else if (condition.sign == BIGGER) return arg > condValue;
+                            else if (condition.sign == SMALLER) return arg < condValue;
+                        }
                     } else if (colType == FLOAT) {
-                        double condValue = std::stod(std::get<std::string>(condition.value));
-                        if (condition.sign == EQUAL) return std::get<double>(arg) == condValue;
-                        else if (condition.sign == BIGGER) return std::get<double>(arg) > condValue;
-                        else if (condition.sign == SMALLER) return std::get<double>(arg) < condValue;
+                        if constexpr (std::is_same_v<T, double>) {
+                            double condValue = std::stod(std::get<std::string>(condition.value));
+                            if (condition.sign == EQUAL) return arg == condValue;
+                            else if (condition.sign == BIGGER) return arg > condValue;
+                            else if (condition.sign == SMALLER) return arg < condValue;
+                        }
                     } else if (colType == TEXT) {
-                        if (condition.sign == EQUAL) return std::get<std::string>(arg) == std::get<std::string>(condition.value);
+                        if constexpr (std::is_same_v<T, std::string>) {
+                            if (condition.sign == EQUAL) return arg == std::get<std::string>(condition.value);
+                        }
                     }
                 } catch (const std::bad_variant_access&) {
                     std::cerr << "Bad variant access for column " << condition.column << std::endl;
                     return false;
-                } catch (const std::exception& e) {
-                    std::cerr << "Error: " << e.what() << std::endl;
-                    return false;
                 }
+                return false;
             }, colData[i]);
 
             if (!conditionMatch) {
@@ -138,25 +154,32 @@ void Table::queryTable(const std::vector<std::string>& columns, const std::vecto
         }
 
         if (match) {
-            for (const auto& column : columns) {
+            for (size_t j = 0; j < columns.size(); ++j) {
+                const auto& column = columns[j];
                 if (this->columns.find(column) == this->columns.end()) {
                     std::cerr << "Column " << column << " does not exist in table " << name << std::endl;
                     continue;
                 }
 
                 const auto& colData = this->columns.at(column);
-                std::visit([](const auto& arg) {
+                std::visit([&](const auto& arg) {
                     if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, std::string>) {
-                        outputFile << "\"" << arg << "\" ";
+                        outputFile << "\"" << arg << "\"";
                     } else {
-                        outputFile << arg << " ";
+                        outputFile << arg;
                     }
                 }, colData[i]);
+
+                if (j < columns.size() - 1) {
+                    outputFile << ",";
+                }
             }
             outputFile << std::endl;
         }
     }
 }
+
+// Removed duplicate definition of queryTable with conditions
 void Table::deleteRow(const std::vector<Condition>& conditions) {
     std::vector<size_t> rowsToDelete;
     for (size_t i = 0; i < columns.begin()->second.size(); ++i) {

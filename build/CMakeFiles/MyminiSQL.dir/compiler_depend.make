@@ -209,7 +209,18 @@ CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.o: ../src/includes/database.c
   /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
   /usr/include/c++/11/bits/fstream.tcc \
-  /usr/include/c++/11/iostream
+  /usr/include/c++/11/iostream \
+  /usr/include/c++/11/algorithm \
+  /usr/include/c++/11/bits/stl_algo.h \
+  /usr/include/c++/11/bits/algorithmfwd.h \
+  /usr/include/c++/11/bits/stl_heap.h \
+  /usr/include/c++/11/bits/stl_tempbuf.h \
+  /usr/include/c++/11/bits/uniform_int_dist.h \
+  /usr/include/c++/11/pstl/glue_algorithm_defs.h \
+  /usr/include/c++/11/functional \
+  /usr/include/c++/11/bits/refwrap.h \
+  /usr/include/c++/11/bits/std_function.h \
+  /usr/include/c++/11/pstl/execution_defs.h
 
 CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.o: ../src/includes/globals.cpp \
   /usr/include/stdc-predef.h \
@@ -832,7 +843,18 @@ CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.o: ../src/includes/query.cpp \
   ../src/includes/query.hpp \
   /usr/include/c++/11/iostream \
   /usr/include/c++/11/sstream \
-  /usr/include/c++/11/bits/sstream.tcc
+  /usr/include/c++/11/bits/sstream.tcc \
+  /usr/include/c++/11/algorithm \
+  /usr/include/c++/11/bits/stl_algo.h \
+  /usr/include/c++/11/bits/algorithmfwd.h \
+  /usr/include/c++/11/bits/stl_heap.h \
+  /usr/include/c++/11/bits/stl_tempbuf.h \
+  /usr/include/c++/11/bits/uniform_int_dist.h \
+  /usr/include/c++/11/pstl/glue_algorithm_defs.h \
+  /usr/include/c++/11/functional \
+  /usr/include/c++/11/bits/refwrap.h \
+  /usr/include/c++/11/bits/std_function.h \
+  /usr/include/c++/11/pstl/execution_defs.h
 
 CMakeFiles/MyminiSQL.dir/src/includes/table.cpp.o: ../src/includes/table.cpp \
   /usr/include/stdc-predef.h \
@@ -1270,14 +1292,6 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 
 ../src/main.cpp:
 
-/usr/include/c++/11/bits/refwrap.h:
-
-/usr/include/c++/11/bits/stl_heap.h:
-
-/usr/include/c++/11/bits/algorithmfwd.h:
-
-/usr/include/c++/11/bits/stl_algo.h:
-
 /usr/include/c++/11/sstream:
 
 ../src/includes/query.cpp:
@@ -1285,6 +1299,14 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 ../src/includes/query.hpp:
 
 ../src/includes/parser-re.hpp:
+
+/usr/include/c++/11/bits/refwrap.h:
+
+/usr/include/c++/11/bits/stl_heap.h:
+
+/usr/include/c++/11/bits/algorithmfwd.h:
+
+/usr/include/c++/11/bits/stl_algo.h:
 
 /usr/include/c++/11/bits/fstream.tcc:
 

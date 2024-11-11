@@ -177,7 +177,33 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
         } else {
             std::cerr << "Table " << tableName << " does not exist." << std::endl;
         }
+    } else if (command_type == SELECT_FROM_INNER_JOIN_ON) {
+        //SELECT column_name1, column_name2 FROM table_name1 INNER JOIN table_name2 ON table_name1.column_name1 = table_name2.column_name2
+        //paratokens = {"column_name1", "column_name2", "FROM", "table_name1", "INNER", "JOIN", "table_name2", "ON", "table_name1.column_name1", "=", "table_name2.column_name2"}
+        std::vector<std::string> columns;
+        std::string tableName1;
+        std::string tableName2;
+        std::string column1;
+        std::string column2;
+        size_t i = 0;
+        for (; i < paratokens.size(); ++i) {
+            if (paratokens[i] == "FROM") {
+                tableName1 = paratokens[++i];
+                break;
+            } else {
+                if(paratokens[i]!=",")columns.push_back(paratokens[i]);
+            }
+        }
+        //對columns取.之後的字符串
+        for(auto& i:columns) i = i.substr(i.find('.') + 1);
+        i += 3; // Skip "INNER JOIN"
+        tableName2 = paratokens[i];
+        i += 2; // Skip "ON"
+        column1 = paratokens[i].substr(paratokens[i].find('.') + 1);
 
+        i += 2; // Skip "="
+        column2 = paratokens[i].substr(paratokens[i].find('.') + 1);
+        databases->at(*currentDatabase).innerJoinQuery(columns, tableName1, tableName2, column1, column2);
     } else if (command_type == DELETE_FROM_WHERE){
         //input::DELETE FROM table_name WHERE ID = 1 AND NAME = "John"
         //paratokens = {"table_name", "WHERE", "ID", "=", "1", "AND", "NAME", "=", "John"}

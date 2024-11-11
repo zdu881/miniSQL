@@ -5,7 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-
+#include <algorithm>
 
 Query::Query() {}
 
@@ -131,6 +131,9 @@ void Command_line::get_command_line() {
         while (iss >> para_string ) {
             paratokens.push_back(para_string);
         }
+        //INNER JOIN
+        //command: SELECT column_name1, column_name2 FROM table_name1 INNER JOIN table_name2 ON table_name1.column_name1 = table_name2.column_name2
+        if(std::find(paratokens.begin(), paratokens.end(), "INNER") != paratokens.end())command_type = SELECT_FROM_INNER_JOIN_ON;   
     } else if (command == "UPDATE") {
         command_type = UPDATE_SET_WHERE;
         iss >> para_string;// table name

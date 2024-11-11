@@ -20,6 +20,8 @@ public:
     void queryTable(const std::vector<std::string>& columns) const;
     void queryTable(const std::vector<std::string>& columns,const std::vector<Condition> &Conditions) const;
     void queryTable() const;
+    //inner join input
+    //SELECT column_name1, column_name2 FROM table_name1 INNER JOIN table_name2 ON table_name1.column_name1 = table_name2.column_name2
     void updateRow(const std::vector<UpdateConfig>& setConfigs, const std::vector<Condition>& conditions);
     void addColumn(const std::string& name, const Data_type& type);
     void save(std::ofstream& file) const;
@@ -28,7 +30,7 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Table& table);
     std::vector<std::pair<std::string, Data_type>> columnsNT;//Name-Type
     std::string name;
-private:
     std::unordered_map<std::string, std::vector<ColumnType>> columns; // 列存储
+private:
 };
 #endif // TABLE_HPP
