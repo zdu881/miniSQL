@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Add the executable
 file(GLOB_RECURSE SOURCES "src/includes/*.cpp" "src/includes/*.hpp" "src/main.cpp")
 add_executable(MyminiSQL ${SOURCES})
-
+set(CMAKE_BUILD_TYPE Debug)
 # Include directories
 include_directories(${PROJECT_SOURCE_DIR}/src/includes)
 

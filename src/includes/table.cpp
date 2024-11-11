@@ -163,7 +163,33 @@ void Table::deleteRow(const std::vector<Condition>& conditions) {
             const auto& colData = columns.at(condition.column);
             const auto& colType = std::find_if(columnsNT.begin(), columnsNT.end(), 
                                                [&condition](const auto& pair) { return pair.first == condition.column; })->second;
-        //wait to write
+            // 添加条件匹配逻辑
+            bool conditionMatch = std::visit([&condition, colType](const ColumnType& arg) -> bool {
+                try {
+                    if (colType == INTEGER) {
+                        int condValue = std::stoi(std::get<std::string>(condition.value));
+                        if (condition.sign == EQUAL) return std::get<int>(arg) == condValue;
+                        else if (condition.sign == BIGGER) return std::get<int>(arg) > condValue;
+                        else if (condition.sign == SMALLER) return std::get<int>(arg) < condValue;
+                    } else if (colType == FLOAT) {
+                        double condValue = std::stod(std::get<std::string>(condition.value));
+                        if (condition.sign == EQUAL) return std::get<double>(arg) == condValue;
+                        else if (condition.sign == BIGGER) return std::get<double>(arg) > condValue;
+                        else if (condition.sign == SMALLER) return std::get<double>(arg) < condValue;
+                    } else if (colType == TEXT) {
+                        if (condition.sign == EQUAL) return std::get<std::string>(arg) == std::get<std::string>(condition.value);
+                    }
+                } catch (const std::bad_variant_access&) {
+                    std::cerr << "Bad variant access for column " << condition.column << std::endl;
+                    return false;
+                }
+                return false;
+            }, colData[i]);
+
+            if (!conditionMatch) {
+                deleteRow = false;
+                break;
+            }
         }
         if (deleteRow) {
             rowsToDelete.push_back(i);
@@ -178,7 +204,8 @@ void Table::deleteRow(const std::vector<Condition>& conditions) {
 }
 void Table::updateRow(const std::vector<std::pair<std::string, ColumnType>>& setConfigs, const std::vector<Condition>& conditions) {
     std::vector<size_t> rowsToUpdate;
-
+    std::cout<<"conditions.size()"<<conditions.size()<<std::endl;
+    //0!!!!!!!!!!!!!!!!
     for (size_t i = 0; i < this->columns.begin()->second.size(); ++i) {
         bool updateRow = true;
         for (const auto& condition : conditions) {
@@ -195,20 +222,27 @@ void Table::updateRow(const std::vector<std::pair<std::string, ColumnType>>& set
                 updateRow = false;
                 break;
             }
-
-            bool conditionMatch = std::visit([&](ColumnType&& arg) -> bool {
-                if (colType == INTEGER) {
-                    int condValue = std::stoi(std::get<std::string>(condition.value));
-                    if (condition.sign == EQUAL) return std::get<int>(arg) == condValue;
-                    else if (condition.sign == BIGGER) return std::get<int>(arg) > condValue;
-                    else if (condition.sign == SMALLER) return std::get<int>(arg) < condValue;
-                } else if (colType == FLOAT) {
-                    double condValue = std::stod(std::get<std::string>(condition.value));
-                    if (condition.sign == EQUAL) return std::get<double>(arg) == condValue;
-                    else if (condition.sign == BIGGER) return std::get<double>(arg) > condValue;
-                    else if (condition.sign == SMALLER) return std::get<double>(arg) < condValue;
-                } else if (colType == TEXT) {
-                    if (condition.sign == EQUAL) return std::get<std::string>(arg) == std::get<std::string>(condition.value);
+            std::cout<<"BEFORE CONDITION"<<std::endl;
+            bool conditionMatch = std::visit([&condition, colType](const ColumnType& arg) -> bool {
+                try {
+                    std::cout<<"value"<<std::get<std::string>(condition.value)<<std::endl;
+                    std::cout<<"arg"<<arg<<std::endl;  
+                    if (colType == INTEGER) {
+                        int condValue = std::stoi(std::get<std::string>(condition.value));
+                        if (condition.sign == EQUAL) return std::get<int>(arg) == condValue;
+                        else if (condition.sign == BIGGER) return std::get<int>(arg) > condValue;
+                        else if (condition.sign == SMALLER) return std::get<int>(arg) < condValue;
+                    } else if (colType == FLOAT) {
+                        double condValue = std::stod(std::get<std::string>(condition.value));
+                        if (condition.sign == EQUAL) return std::get<double>(arg) == condValue;
+                        else if (condition.sign == BIGGER) return std::get<double>(arg) > condValue;
+                        else if (condition.sign == SMALLER) return std::get<double>(arg) < condValue;
+                    } else if (colType == TEXT) {
+                        if (condition.sign == EQUAL) return std::get<std::string>(arg) == std::get<std::string>(condition.value);
+                    }
+                } catch (const std::bad_variant_access&) {
+                    std::cerr << "Bad variant access for column " << condition.column << std::endl;
+                    return false;
                 }
                 return false;
             }, colData[i]);

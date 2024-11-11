@@ -222,8 +222,9 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
             setConfigs.push_back({column, value});
         }
         
+        
+        //skip "WHERE"
         std::cout<<"WHERE"<<paratokens[i]<<std::endl;
-        i += 4;//skip "WHERE"
         for (; i + 3 < paratokens.size(); i += 4) {
             std::string column = paratokens[i];
             std::string op = paratokens[i + 1];
