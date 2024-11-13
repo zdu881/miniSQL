@@ -3,9 +3,10 @@
 #define GLOBALS_HPP
 #include <variant>
 #include <fstream>
-
+#include <iomanip>
 extern std::ifstream inputFile;
 extern std::ofstream outputFile;
+extern int linenumber;
 using ColumnType = std::variant<int, double, std::string>;
 enum Data_type:int{
     TEXT,

@@ -209,6 +209,19 @@ CMakeFiles/MyminiSQL.dir/src/includes/database.cpp.o: ../src/includes/database.c
   /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
   /usr/include/c++/11/bits/fstream.tcc \
+  /usr/include/c++/11/iomanip \
+  /usr/include/c++/11/locale \
+  /usr/include/c++/11/bits/locale_facets_nonio.h \
+  /usr/include/c++/11/ctime \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/time_members.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/messages_members.h \
+  /usr/include/libintl.h \
+  /usr/include/c++/11/bits/locale_facets_nonio.tcc \
+  /usr/include/c++/11/bits/locale_conv.h \
+  /usr/include/c++/11/bits/unique_ptr.h \
+  /usr/include/c++/11/bits/quoted_string.h \
+  /usr/include/c++/11/sstream \
+  /usr/include/c++/11/bits/sstream.tcc \
   /usr/include/c++/11/iostream \
   /usr/include/c++/11/algorithm \
   /usr/include/c++/11/bits/stl_algo.h \
@@ -413,7 +426,23 @@ CMakeFiles/MyminiSQL.dir/src/includes/globals.cpp.o: ../src/includes/globals.cpp
   /usr/include/c++/11/bits/codecvt.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
-  /usr/include/c++/11/bits/fstream.tcc
+  /usr/include/c++/11/bits/fstream.tcc \
+  /usr/include/c++/11/iomanip \
+  /usr/include/c++/11/locale \
+  /usr/include/c++/11/bits/locale_facets_nonio.h \
+  /usr/include/c++/11/ctime \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/time_members.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/messages_members.h \
+  /usr/include/libintl.h \
+  /usr/include/c++/11/bits/locale_facets_nonio.tcc \
+  /usr/include/c++/11/bits/locale_conv.h \
+  /usr/include/c++/11/bits/unique_ptr.h \
+  /usr/include/c++/11/tuple \
+  /usr/include/c++/11/array \
+  /usr/include/c++/11/bits/uses_allocator.h \
+  /usr/include/c++/11/bits/quoted_string.h \
+  /usr/include/c++/11/sstream \
+  /usr/include/c++/11/bits/sstream.tcc
 
 CMakeFiles/MyminiSQL.dir/src/includes/parser-re.cpp.o: ../src/includes/parser-re.cpp \
   /usr/include/stdc-predef.h \
@@ -625,6 +654,19 @@ CMakeFiles/MyminiSQL.dir/src/includes/parser-re.cpp.o: ../src/includes/parser-re
   /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
   /usr/include/c++/11/bits/fstream.tcc \
+  /usr/include/c++/11/iomanip \
+  /usr/include/c++/11/locale \
+  /usr/include/c++/11/bits/locale_facets_nonio.h \
+  /usr/include/c++/11/ctime \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/time_members.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/messages_members.h \
+  /usr/include/libintl.h \
+  /usr/include/c++/11/bits/locale_facets_nonio.tcc \
+  /usr/include/c++/11/bits/locale_conv.h \
+  /usr/include/c++/11/bits/unique_ptr.h \
+  /usr/include/c++/11/bits/quoted_string.h \
+  /usr/include/c++/11/sstream \
+  /usr/include/c++/11/bits/sstream.tcc \
   ../src/includes/globals.hpp \
   ../src/includes/query.hpp \
   /usr/include/c++/11/iostream
@@ -839,11 +881,22 @@ CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.o: ../src/includes/query.cpp \
   /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
   /usr/include/c++/11/bits/fstream.tcc \
+  /usr/include/c++/11/iomanip \
+  /usr/include/c++/11/locale \
+  /usr/include/c++/11/bits/locale_facets_nonio.h \
+  /usr/include/c++/11/ctime \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/time_members.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/messages_members.h \
+  /usr/include/libintl.h \
+  /usr/include/c++/11/bits/locale_facets_nonio.tcc \
+  /usr/include/c++/11/bits/locale_conv.h \
+  /usr/include/c++/11/bits/unique_ptr.h \
+  /usr/include/c++/11/bits/quoted_string.h \
+  /usr/include/c++/11/sstream \
+  /usr/include/c++/11/bits/sstream.tcc \
   ../src/includes/globals.hpp \
   ../src/includes/query.hpp \
   /usr/include/c++/11/iostream \
-  /usr/include/c++/11/sstream \
-  /usr/include/c++/11/bits/sstream.tcc \
   /usr/include/c++/11/algorithm \
   /usr/include/c++/11/bits/stl_algo.h \
   /usr/include/c++/11/bits/algorithmfwd.h \
@@ -1063,6 +1116,19 @@ CMakeFiles/MyminiSQL.dir/src/includes/table.cpp.o: ../src/includes/table.cpp \
   /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
   /usr/include/c++/11/bits/fstream.tcc \
+  /usr/include/c++/11/iomanip \
+  /usr/include/c++/11/locale \
+  /usr/include/c++/11/bits/locale_facets_nonio.h \
+  /usr/include/c++/11/ctime \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/time_members.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/messages_members.h \
+  /usr/include/libintl.h \
+  /usr/include/c++/11/bits/locale_facets_nonio.tcc \
+  /usr/include/c++/11/bits/locale_conv.h \
+  /usr/include/c++/11/bits/unique_ptr.h \
+  /usr/include/c++/11/bits/quoted_string.h \
+  /usr/include/c++/11/sstream \
+  /usr/include/c++/11/bits/sstream.tcc \
   /usr/include/c++/11/iostream \
   /usr/include/c++/11/algorithm \
   /usr/include/c++/11/bits/stl_algo.h \
@@ -1286,15 +1352,24 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
   /usr/include/c++/11/variant \
   /usr/include/c++/11/bits/parse_numbers.h \
   ../src/includes/globals.hpp \
+  /usr/include/c++/11/iomanip \
+  /usr/include/c++/11/locale \
+  /usr/include/c++/11/bits/locale_facets_nonio.h \
+  /usr/include/c++/11/ctime \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/time_members.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/messages_members.h \
+  /usr/include/libintl.h \
+  /usr/include/c++/11/bits/locale_facets_nonio.tcc \
+  /usr/include/c++/11/bits/locale_conv.h \
+  /usr/include/c++/11/bits/unique_ptr.h \
+  /usr/include/c++/11/bits/quoted_string.h \
+  /usr/include/c++/11/sstream \
+  /usr/include/c++/11/bits/sstream.tcc \
   ../src/includes/globals.hpp \
   ../src/includes/database.hpp
 
 
 ../src/main.cpp:
-
-/usr/include/c++/11/sstream:
-
-../src/includes/query.cpp:
 
 ../src/includes/query.hpp:
 
@@ -1308,6 +1383,20 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/c++/11/bits/stl_algo.h:
 
+../src/includes/query.cpp:
+
+/usr/include/c++/11/sstream:
+
+/usr/include/c++/11/bits/quoted_string.h:
+
+/usr/include/c++/11/bits/locale_conv.h:
+
+/usr/include/x86_64-linux-gnu/c++/11/bits/messages_members.h:
+
+/usr/include/x86_64-linux-gnu/c++/11/bits/time_members.h:
+
+/usr/include/c++/11/bits/locale_facets_nonio.h:
+
 /usr/include/c++/11/bits/fstream.tcc:
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h:
@@ -1315,6 +1404,8 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h:
 
 /usr/include/c++/11/bits/istream.tcc:
+
+/usr/include/c++/11/bits/unique_ptr.h:
 
 /usr/include/c++/11/ostream:
 
@@ -1500,6 +1591,8 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/features-time64.h:
 
+/usr/include/c++/11/locale:
+
 /usr/include/linux/errno.h:
 
 /usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h:
@@ -1555,6 +1648,8 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/features.h:
 
 /usr/include/c++/11/ext/numeric_traits.h:
+
+/usr/include/c++/11/ctime:
 
 /usr/include/c++/11/bits/codecvt.h:
 
@@ -1662,6 +1757,8 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/locale.h:
 
+/usr/include/libintl.h:
+
 /usr/include/x86_64-linux-gnu/bits/endianness.h:
 
 /usr/include/c++/11/algorithm:
@@ -1692,6 +1789,8 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 
 ../src/includes/parser-re.cpp:
 
+/usr/include/c++/11/bits/locale_facets_nonio.tcc:
+
 /usr/include/c++/11/bits/stl_pair.h:
 
 /usr/include/c++/11/ext/atomicity.h:
@@ -1709,6 +1808,8 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/endian.h:
 
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
+
+/usr/include/c++/11/iomanip:
 
 /usr/include/c++/11/ext/new_allocator.h:
 

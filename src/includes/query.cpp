@@ -17,14 +17,11 @@ Query::Query(std::unordered_map<std::string, Database>* dbs, std::string* curren
 Query::~Query() {}
 
 void Query::getQ() {
-    std::cout << "MiniSQL> ";
     command_line.get_command_line();
 }
 
 void Query::excQ() {
-    //std::cout<<"excQ"<<std::endl;
     Parser parser;
-    std::cout<<"parser"<<std::endl;
     parser.parse(command_line, databases, currentDatabase);
     //传入的后两个参数是指针
 }
@@ -74,7 +71,6 @@ void Command_line::get_command_line() {
     }
 
     ans = input.str();
-    std::cout << ans << std::endl;
 
     std::istringstream iss(ans);
     std::string command;

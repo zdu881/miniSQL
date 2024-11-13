@@ -8,7 +8,7 @@
 int main(int argv,char* argc[]){
     //input: MySQL input.sql output.csv
     if(argv!=3){
-        std::cout<<"Please input the correct command"<<std::endl;
+        std::cerr << "Command " << linenumber<<": " <<"Please input the correct command"<<std::endl;
         return 0;
     }
     std::string inputFilename = argc[1];
@@ -16,10 +16,10 @@ int main(int argv,char* argc[]){
     inputFile.open(inputFilename);
     outputFile.open(outputFilename);
     if (!inputFile|| !outputFile){
-        std::cerr<<"Cannot open the input file:"<<inputFilename<<std::endl;
+        std::cerr << "Command " << linenumber<<": "<<"Cannot open the input file:"<<inputFilename<<std::endl;
         return 0;
     }
-    outputFile << "MiniSQL output:" << std::endl;
+    //outputFile << "MiniSQL output:" << std::endl;
     std::unordered_map<std::string, Database> databases;
     std::string currentDatabase;
     std::cout<<">_< Welcome to MiniSQL"<<std::endl;
@@ -39,19 +39,18 @@ int main(int argv,char* argc[]){
         dbListFile.close();
     }
 
-    int cnt = 0;
     while(!inputFile.eof()){
+        linenumber++;
         if(inputFile.peek() == EOF) break;
-        std::cout<<"STARQ"<<std::endl;
+        //std::cout<<"STARQ"<<std::endl;
         query.getQ();
         query.excQ();
-        cnt++;
-        std::cout<<"ENDQ"<<std::endl;
+        //std::cout<<"ENDQ"<<std::endl;
     }
     for (auto& [name, db] : databases) {
         db.save(name + ".db");
     }
-    std::cout << cnt << " commands executed." << std::endl;
+    //std::cout << cnt << " commands executed." << std::endl;
     inputFile.close();
     outputFile.close();
 
@@ -63,7 +62,7 @@ int main(int argv,char* argc[]){
         }
         dbListOut.close();
     } else {
-        std::cerr << "Cannot open databaselist.txt for writing." << std::endl;
+        std::cerr << "Command " << linenumber<<": " << "Cannot open databaselist.txt for writing." << std::endl;
     }
     
     return 0;

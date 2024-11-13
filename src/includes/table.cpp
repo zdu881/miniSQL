@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <string>
 #include "globals.hpp"
+
 Table::Table() : name(""), columnsNT() {}
 Table::Table(const Table& other) : name(other.name), columnsNT(other.columnsNT), columns(other.columns) {}
 Table::Table(const std::string& name) : name(name), columnsNT() {}
@@ -21,19 +22,18 @@ Data_type Table::getColumnType(const std::string& columnName) const {
 }
 void Table::insertRow(const std::vector<ColumnType>& values) {
     if (values.size() != columnsNT.size()) {
-        std::cerr << "Column count mismatch. Expected " << columnsNT.size() << " values." << std::endl;
+        std::cerr << "Command " << linenumber<<": " << "Column count mismatch. Expected " << columnsNT.size() << " values." << std::endl;
         return;
     }
     for (size_t i = 0; i < columnsNT.size(); ++i) {
         columns[columnsNT[i].first].push_back(values[i]);
     }
-    std::cout << "Row inserted into " << name << "." << std::endl;
+   
 }
 
 
 void Table::queryTable() const {
     // std::cout 替换为 outputFile
-    outputFile << "Table " << name << " contents:" << std::endl;
     for (size_t i = 0; i < columns.begin()->second.size(); ++i) {
         for (const auto& column : columnsNT) {
             const auto& colData = columns.at(column.first);
@@ -66,7 +66,7 @@ void Table::queryTable(const std::vector<std::string>& columns) const {
         for (size_t j = 0; j < columns.size(); ++j) {
             const auto& column = columns[j];
             if (this->columns.find(column) == this->columns.end()) {
-                std::cerr << "Column " << column << " does not exist in table " << name << std::endl;
+                std::cerr << "Command " << linenumber<<": " << "Column " << column << " does not exist in table " << name << std::endl;
                 continue;
             }
 
@@ -77,7 +77,7 @@ void Table::queryTable(const std::vector<std::string>& columns) const {
             } else if (this->getColumnType(column) == TEXT) {
                 outputFile << "\"" << std::get<std::string>(colData[i]) << "\"";
             } else {
-                std::cerr << "ERROR: Unknown column type for column " << column << std::endl;
+                std::cerr << "Command " << linenumber<<": " << "ERROR: Unknown column type for column " << column << std::endl;
             }
 
             if (j < columns.size() - 1) {
@@ -105,7 +105,7 @@ void Table::queryTable(const std::vector<std::string>& columns, const std::vecto
         bool match = true;
         for (const auto& condition : conditions) {
             if (this->columns.find(condition.column) == this->columns.end()) {
-                std::cerr << "Column " << condition.column << " does not exist in table " << name << std::endl;
+                std::cerr << "Command " << linenumber<<": " << "Column " << condition.column << " does not exist in table " << name << std::endl;
                 match = false;
                 break;
             }
@@ -141,7 +141,7 @@ void Table::queryTable(const std::vector<std::string>& columns, const std::vecto
                         }
                     }
                 } catch (const std::bad_variant_access&) {
-                    std::cerr << "Bad variant access for column " << condition.column << std::endl;
+                    std::cerr << "Command " << linenumber<<": " << "Bad variant access for column " << condition.column << std::endl;
                     return false;
                 }
                 return false;
@@ -157,7 +157,7 @@ void Table::queryTable(const std::vector<std::string>& columns, const std::vecto
             for (size_t j = 0; j < columns.size(); ++j) {
                 const auto& column = columns[j];
                 if (this->columns.find(column) == this->columns.end()) {
-                    std::cerr << "Column " << column << " does not exist in table " << name << std::endl;
+                    std::cerr << "Command " << linenumber<<": " << "Column " << column << " does not exist in table " << name << std::endl;
                     continue;
                 }
 
@@ -205,7 +205,7 @@ void Table::deleteRow(const std::vector<Condition>& conditions) {
                         if (condition.sign == EQUAL) return std::get<std::string>(arg) == std::get<std::string>(condition.value);
                     }
                 } catch (const std::bad_variant_access&) {
-                    std::cerr << "Bad variant access for column " << condition.column << std::endl;
+                    std::cerr << "Command " << linenumber<<": " << "Bad variant access for column " << condition.column << std::endl;
                     return false;
                 }
                 return false;
@@ -225,17 +225,15 @@ void Table::deleteRow(const std::vector<Condition>& conditions) {
             columnData.erase(columnData.begin() + rowsToDelete[i]);
         }
     }
-    std::cout << rowsToDelete.size() << " rows deleted from " << name << "." << std::endl;
+    // std::cout << rowsToDelete.size() << " rows deleted from " << name << "." << std::endl;
 }
 void Table::updateRow(const std::vector<UpdateConfig>& setConfigs, const std::vector<Condition>& conditions) {
     std::vector<size_t> rowsToUpdate;
-    std::cout<<"conditions.size()"<<conditions.size()<<std::endl;
-    //0!!!!!!!!!!!!!!!!
     for (size_t i = 0; i < this->columns.begin()->second.size(); ++i) {
         bool updateRow = true;
         for (const auto& condition : conditions) {
             if (this->columns.find(condition.column) == this->columns.end()) {
-                std::cerr << "Column " << condition.column << " does not exist in table " << name << std::endl;
+                std::cerr << "Command " << linenumber<<": " << "Column " << condition.column << " does not exist in table " << name << std::endl;
                 updateRow = false;
                 break;
             }
@@ -243,15 +241,13 @@ void Table::updateRow(const std::vector<UpdateConfig>& setConfigs, const std::ve
             const auto& colData = this->columns.at(condition.column);
             Data_type colType = getColumnType(condition.column);
             if (colType == ERROR_TYPE) {
-                std::cerr << "Column " << condition.column << " does not exist." << std::endl;
+                std::cerr << "Command " << linenumber<<": " << "Column " << condition.column << " does not exist." << std::endl;
                 updateRow = false;
                 break;
-            }
-            std::cout<<"BEFORE CONDITION"<<std::endl;
-            bool conditionMatch = std::visit([&condition, colType](const ColumnType& arg) -> bool {
+            }            bool conditionMatch = std::visit([&condition, colType](const ColumnType& arg) -> bool {
                 try {
-                    std::cout<<"value"<<std::get<std::string>(condition.value)<<std::endl;
-                    std::cout<<"arg"<<arg<<std::endl;  
+                    //std::cout<<"value"<<std::get<std::string>(condition.value)<<std::endl;
+                    //std::cout<<"arg"<<arg<<std::endl;  
                     if (colType == INTEGER) {
                         int condValue = std::stoi(std::get<std::string>(condition.value));
                         if (condition.sign == EQUAL) return std::get<int>(arg) == condValue;
@@ -266,7 +262,7 @@ void Table::updateRow(const std::vector<UpdateConfig>& setConfigs, const std::ve
                         if (condition.sign == EQUAL) return std::get<std::string>(arg) == std::get<std::string>(condition.value);
                     }
                 } catch (const std::bad_variant_access&) {
-                    std::cerr << "Bad variant access for column " << condition.column << std::endl;
+                    std::cerr << "Command " << linenumber<<": " << "Bad variant access for column " << condition.column << std::endl;
                     return false;
                 }
                 return false;
@@ -282,10 +278,8 @@ void Table::updateRow(const std::vector<UpdateConfig>& setConfigs, const std::ve
         }
     }
 
-    std::cout << "rowsToUpdate.size() " << rowsToUpdate.size() << std::endl;
-    //outputsetConfigs
-    std::cout<<"setConfigs"<<std::endl;
-    for(const auto& config : setConfigs) std::cout << config.column << " " << config.value << std::endl;
+
+    //for(const auto& config : setConfigs) std::cout << config.column << " " << config.value << std::endl;
     for (auto& [columnName, columnData] : columns) {
         Data_type colType = getColumnType(columnName);
         for (size_t i = 0; i < rowsToUpdate.size(); ++i) {
@@ -307,7 +301,7 @@ void Table::updateRow(const std::vector<UpdateConfig>& setConfigs, const std::ve
                         } else if(colType == FLOAT) {
                             columnData[rowsToUpdate[i]] = std::get<double>(columnData[rowsToUpdate[i]]) + std::stod(std::get<std::string>(it->value));
                         } else {
-                            std::cerr << "Unsupported operation ADD on column " << columnName << std::endl;
+                            std::cerr << "Command " << linenumber<<": " << "Unsupported operation ADD on column " << columnName << std::endl;
                         }
                         break;
                     case SUBTRACT:
@@ -316,7 +310,7 @@ void Table::updateRow(const std::vector<UpdateConfig>& setConfigs, const std::ve
                         } else if(colType == FLOAT) {
                             columnData[rowsToUpdate[i]] = std::get<double>(columnData[rowsToUpdate[i]]) - std::stod(std::get<std::string>(it->value));
                         } else {
-                            std::cerr << "Unsupported operation SUBTRACT on column " << columnName << std::endl;
+                            std::cerr << "Command " << linenumber<<": " << "Unsupported operation SUBTRACT on column " << columnName << std::endl;
                         }
                         break;
                     case MULTIPLY:
@@ -325,7 +319,7 @@ void Table::updateRow(const std::vector<UpdateConfig>& setConfigs, const std::ve
                         } else if(colType == FLOAT) {
                             columnData[rowsToUpdate[i]] = std::get<double>(columnData[rowsToUpdate[i]]) * std::stod(std::get<std::string>(it->value));
                         } else {
-                            std::cerr << "Unsupported operation MULTIPLY on column " << columnName << std::endl;
+                            std::cerr << "Command " << linenumber<<": " << "Unsupported operation MULTIPLY on column " << columnName << std::endl;
                         }
                         break;
                     case DIVIDE:
@@ -334,18 +328,17 @@ void Table::updateRow(const std::vector<UpdateConfig>& setConfigs, const std::ve
                         } else if(colType == FLOAT) {
                             columnData[rowsToUpdate[i]] = std::get<double>(columnData[rowsToUpdate[i]]) / std::stod(std::get<std::string>(it->value));
                         } else {
-                            std::cerr << "Unsupported operation DIVIDE on column " << columnName << std::endl;
+                            std::cerr << "Command " << linenumber<<": " << "Unsupported operation DIVIDE on column " << columnName << std::endl;
                         }
                         break;
                     default:
-                        std::cerr << "Unsupported update operation." << std::endl;
+                        std::cerr << "Command " << linenumber<<": " << "Unsupported update operation." << std::endl;
                         break;
                 }
             }
         }
     }
 
-    std::cout << rowsToUpdate.size() << " rows updated in " << name << "." << std::endl;
 }
 void Table::save(std::ofstream& file) const {
     // 保存表名
@@ -464,5 +457,5 @@ void Table::load(std::ifstream& file) {
 
 void Table::addColumn(const std::string& name, const Data_type& type) {
     columnsNT.push_back({name, type});
-    std::cout << "Column " << name << " of type " << type << " added to " << this->name << "." << std::endl;
+    // std::cout << "Column " << name << " of type " << type << " added to " << this->name << "." << std::endl;
 }

@@ -8,17 +8,17 @@
 void Database::createTable(const std::string& name, Table& table) {
     if (tables.find(name) == tables.end()) {
         tables[name] = std::move(table);
-        std::cout << "Table " << name << " created." << std::endl;
+        // std::cout << "Table " << name << " created." << std::endl;
     } else {
-        std::cout << "Table " << name << " already exists." << std::endl;
+         std::cerr << "Command " << linenumber<<": " << "Table " << name << " already exists." << std::endl;
     }
 }
 
 void Database::dropTable(const std::string& name) {
     if (tables.erase(name)) {
-        std::cout << "Table " << name << " dropped." << std::endl;
+        // std::cout << "Table " << name << " dropped." << std::endl;
     } else {
-        std::cout << "Table " << name << " does not exist." << std::endl;
+        // std::cout << "Table " << name << " does not exist." << std::endl;
     }
 }
 
@@ -42,7 +42,7 @@ void Database::innerJoinQuery(const std::vector<std::string> columns, const std:
     Table* t1 = getTable(table1);
     Table* t2 = getTable(table2);
     if (t1 == nullptr || t2 == nullptr) {
-        std::cout << "Table not found" << std::endl;
+        // std::cout << "Table not found" << std::endl;
         return;
     }
 
@@ -57,7 +57,7 @@ void Database::innerJoinQuery(const std::vector<std::string> columns, const std:
     auto col2Index = (col2Iter != t2->columnsNT.end()) ? std::distance(t2->columnsNT.begin(), col2Iter) : t2->columnsNT.size();
 
     if (col1Index == t1->columnsNT.size() || col2Index == t2->columnsNT.size()) {
-        std::cout << "Column not found" << std::endl;
+        // std::cout << "Column not found" << std::endl;
         return;
     }
 
@@ -82,7 +82,7 @@ void Database::innerJoinQuery(const std::vector<std::string> columns, const std:
 void Database::save(const std::string& filename) {
     std::ofstream file(filename, std::ios::binary);
     if (!file) {
-        std::cerr << "Cannot open file: " << filename << std::endl;
+        // std::cerr << "Command " << linenumber<<": " << "Cannot open file: " << filename << std::endl;
         return;
     }
     size_t tableCount = tables.size();
@@ -99,7 +99,7 @@ void Database::save(const std::string& filename) {
 void Database::load(const std::string& filename) {
     std::ifstream file(filename, std::ios::binary);
     if (!file) {
-        std::cerr << "Cannot open file: " << filename << std::endl;
+        // std::cerr << "Command " << linenumber<<": " << "Cannot open file: " << filename << std::endl;
         return;
     }
     size_t tableCount;

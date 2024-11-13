@@ -51,7 +51,7 @@ void Parser::parse(const std::string& input, std::unordered_map<std::string, Dat
             dbFile.close();
             std::cout << "Database " << dbName << " created." << std::endl;
         } else {
-            std::cerr << "Failed to create database file: " << dbName << ".db" << std::endl;
+            std::cerr << "Command " << linenumber<<": " << "Failed to create database file: " << dbName << ".db" << std::endl;
         }
     } else if (command == "USE" && tokens[1] == "DATABASE") {
         std::string dbName = tokens[2];
@@ -60,10 +60,10 @@ void Parser::parse(const std::string& input, std::unordered_map<std::string, Dat
             databases[dbName].load(dbName + ".db");
             std::cout << "Using database " << dbName << "." << std::endl;
         } else {
-            std::cerr << "Database " << dbName << " does not exist." << std::endl;
+            std::cerr << "Command " << linenumber<<": " << "Database " << dbName << " does not exist." << std::endl;
         }
     } else if (currentDatabase.empty()) {
-        std::cerr << "No database selected." << std::endl;
+        std::cerr << "Command " << linenumber<<": " << "No database selected." << std::endl;
     } else {
         Database& db = databases[currentDatabase];
         if (command == "CREATE" && tokens[1] == "TABLE") {
@@ -153,10 +153,10 @@ void Parser::parse(const std::string& input, std::unordered_map<std::string, Dat
                         }
                     }
                 } else {
-                    std::cerr << "Table " << tableName << " does not exist." << std::endl;
+                    std::cerr << "Command " << linenumber<<": " << "Table " << tableName << " does not exist." << std::endl;
                 }
             } else {
-                std::cerr << "Invalid SELECT syntax." << std::endl;
+                std::cerr << "Command " << linenumber<<": " << "Invalid SELECT syntax." << std::endl;
             }
         } else if (command == "INSERT" && tokens[1] == "INTO") {
             std::string tableName = tokens[2];
@@ -185,10 +185,10 @@ void Parser::parse(const std::string& input, std::unordered_map<std::string, Dat
                                     value = std::stoi(tokens[i]);
                                 }
                             } catch (const std::invalid_argument& e) {
-                                std::cerr << "Invalid value: " << tokens[i] << std::endl;
+                                std::cerr << "Command " << linenumber<<": " << "Invalid value: " << tokens[i] << std::endl;
                                 return;
                             } catch (const std::out_of_range& e) {
-                                std::cerr << "Value out of range: " << tokens[i] << std::endl;
+                                std::cerr << "Command " << linenumber<<": " << "Value out of range: " << tokens[i] << std::endl;
                                 return;
                             }
                         }
@@ -196,10 +196,10 @@ void Parser::parse(const std::string& input, std::unordered_map<std::string, Dat
                     }
                     table->insertRow(values);
                 } else {
-                    std::cerr << "Table " << tableName << " does not exist." << std::endl;
+                    std::cerr << "Command " << linenumber<<": " << "Table " << tableName << " does not exist." << std::endl;
                 }
             } else {
-                std::cerr << "Invalid INSERT INTO syntax." << std::endl;
+                std::cerr << "Command " << linenumber<<": " << "Invalid INSERT INTO syntax." << std::endl;
             }
         } else if (command == "EXIT") {
             std::cout << "See ya next time!" << std::endl;

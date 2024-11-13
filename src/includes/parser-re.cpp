@@ -28,7 +28,7 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
     if(command_line.get_command_type() == CREATE_DATABASE){
         std::string dbName = paratokens[0];
         if (databases->find(dbName) != databases->end()) {
-            std::cerr << "Database " << dbName << " already exists." << std::endl;
+            // std::cerr << "Command " << linenumber<<": " << "Database " << dbName << " already exists." << std::endl;
             return;
         }
         (*databases)[dbName] = Database();
@@ -52,9 +52,9 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
         databases->at(*currentDatabase).dropTable(tableName);
     } else if (command_type == INSERT_INTO) {
         std::string tableName = paratokens[0];
-        std::cout<<std::endl;
-        for(auto i:paratokens) std::cout<<i<<" ";
-        std::cout<<std::endl;
+        // for(auto i:paratokens) 
+        // std::cout << i << " ";
+        // std::cout << std::endl;
         //if (paratokens[1] == "VALUES" && paratokens[2] == "(" && paratokens.back() == ")") {
         if (1){
             Table* table = databases->at(*currentDatabase).getTable(tableName);
@@ -62,13 +62,13 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
                     std::vector<ColumnType> values;
                     const auto& columns = table->columnsNT;
                     //output columnsNT
-                    for(auto i:columns) std::cout<<i.first<<" "<<i.second<<std::endl;
+                    // for(auto i:columns) std::cout<<i.first<<" "<<i.second<<std::endl;
                     size_t colIndex = 0;
                     for (size_t i = 1; i < paratokens.size() ; ++i) {
                         if (paratokens[i] == ",") continue; // Ignore commas
                         ColumnType value;
                         const auto& columnType = columns[colIndex].second;
-                        //std::cout<<columnType<<" "<<paratokens[i]<<std::endl;
+                        // std::cout << columnType << " " << paratokens[i] << std::endl;
                         if (columnType == TEXT) {
                             //std::cout<<paratokens[i]<<std::endl;
                             std::string strValue = "";
@@ -77,34 +77,33 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
                             while (i < paratokens.size()  && paratokens[i] != "\"") {
                                 //std::cout<<"strValue"<<i<<strValue<<std::endl;
                                 strValue += paratokens[i] + " ";
-                                std::cout<<"paratokens[i]"<<paratokens[i]<<std::endl;
+                                // std::cout << "paratokens[i]" << paratokens[i] << std::endl;
                                 //std::cout<<"strValue"<<i<<strValue<<std::endl;
                                 ++i;
                             }
                             if (i < paratokens.size()  && paratokens[i] == "\"") {
                                 strValue.pop_back(); // Remove trailing space
                             }
-                            std::cout<<"strValue"<<strValue<<std::endl;
                             value = strValue;
 
                         } else if (columnType == INTEGER) {
                             try {
                                 value = std::stoi(paratokens[i]);
                             } catch (const std::invalid_argument& e) {
-                                std::cerr << "Invalid integer value: " << paratokens[i] << std::endl;
+                                std::cerr << "Command " << linenumber<<": " << "Invalid integer value: " << paratokens[i] << std::endl;
                                 return;
                             } catch (const std::out_of_range& e) {
-                                std::cerr << "Integer value out of range: " << paratokens[i] << std::endl;
+                                std::cerr << "Command " << linenumber<<": " << "Integer value out of range: " << paratokens[i] << std::endl;
                                 return;
                             }
                         } else if (columnType == FLOAT) {
                             try {
                                 value = std::stod(paratokens[i]);
                             } catch (const std::invalid_argument& e) {
-                                std::cerr << "Invalid float value: " << paratokens[i] << std::endl;
+                                std::cerr << "Command " << linenumber<<": " << "Invalid float value: " << paratokens[i] << std::endl;
                                 return;
                             } catch (const std::out_of_range& e) {
-                                std::cerr << "Float value out of range: " << paratokens[i] << std::endl;
+                                std::cerr << "Command " << linenumber<<": " << "Float value out of range: " << paratokens[i] << std::endl;
                                 return;
                             }
                         }
@@ -112,14 +111,14 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
                         ++colIndex;
                     }
                     //output values
-                    for(auto i:values) std::cout<<i<<" ";
+                    // for(auto i:values) std::cout<<i<<" ";
                     table->insertRow(values);
                     //table 
                 } else {
-                    std::cerr << "Table " << tableName << " does not exist." << std::endl;
+                    std::cerr << "Command " << linenumber<<": " << "Table " << tableName << " does not exist." << std::endl;
                 }
             } else {
-                std::cerr << "Invalid INSERT INTO syntax." << std::endl;
+                std::cerr << "Command " << linenumber<<": " << "Invalid INSERT INTO syntax." << std::endl;
             } 
     } else if (command_type == SELECT_FROM) {
         // (SELECT) ID, NAME, AGE FROM table_name WHERE ID = 1 AND NAME = "John"
@@ -141,14 +140,13 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
                 i+=2;
                 break;
                 //output columns
-                for(auto i:columns) std::cout<<i<<" ";
                 
             }
             else {
                 if(paratokens[i]!=",")columns.push_back(paratokens[i]);
             }
         }
-        //std::cout<<"BEFORE WHERE"<<std::endl;
+        // std::cout << "BEFORE WHERE" << std::endl;
         i+=2;//skip "WHERE"
         for (; i +3< paratokens.size(); i += 4) {
                 std::string column = paratokens[i] ;
@@ -161,13 +159,12 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
                     pre_bool_op = OR;
                 }
         }
-        //std::cout<<"JUST AFTER WHERE"<<std::endl;
+        // std::cout << "JUST AFTER WHERE" << std::endl;
         if (columns.size() == 0) {
-            std::cerr << "No columns specified." << std::endl;
+            std::cerr << "Command " << linenumber<<": " << "No columns specified." << std::endl;
             return;
         }
  
-        for(auto i:*databases) std::cout<<i.first<<std::endl;
         //Table *table = nullptr;
         Table* table = &(databases->at(*currentDatabase).tables[tableName]);
             //std::cout<<"JUST AFTER GET TABLE"<<std::endl;
@@ -179,7 +176,7 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
                 table->queryTable(columns, conditions);
             }
         } else {
-            std::cerr << "Table " << tableName << " does not exist." << std::endl;
+            std::cerr << "Command " << linenumber<<": " << "Table " << tableName << " does not exist." << std::endl;
         }
     } else if (command_type == SELECT_FROM_INNER_JOIN_ON) {
         //SELECT column_name1, column_name2 FROM table_name1 INNER JOIN table_name2 ON table_name1.column_name1 = table_name2.column_name2
@@ -230,7 +227,7 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
         if (table) {
             table->deleteRow(conditions);
         } else {
-            std::cerr << "Table " << tableName << " does not exist." << std::endl;
+            std::cerr << "Command " << linenumber<<": " << "Table " << tableName << " does not exist." << std::endl;
         }
 
 
@@ -266,15 +263,15 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
                 value = paratokens[i + 2];
                 setConfigs.push_back(UpdateConfig{column, SET, value});
             } else {
-                std::cerr << "Invalid update operation." << std::endl;
+                std::cerr << "Command " << linenumber<<": " << "Invalid update operation." << std::endl;
                 return;
             }
-            std::cout<<"SET"<<column<<value<<std::endl;
+            // std::cout << "SET" << column << value << std::endl;
         }
         
         
         //skip "WHERE"
-        std::cout<<"WHERE"<<paratokens[i]<<std::endl;
+        // std::cout << "WHERE" << paratokens[i] << std::endl;
         for (; i + 3 < paratokens.size(); i += 4) {
             std::string column = paratokens[i];
             std::string op = paratokens[i + 1];
@@ -288,12 +285,12 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
             }
             
         }
-        std::cout<<"BEFORE GET TABLE"<<std::endl;
+        // std::cout << "BEFORE GET TABLE" << std::endl;
         Table* table = databases->at(*currentDatabase).getTable(tableName);
         if (table) {
             table->updateRow(setConfigs, conditions);
         } else {
-            std::cerr << "Table " << tableName << " does not exist." << std::endl;
+            std::cerr << "Command " << linenumber<<": " << "Table " << tableName << " does not exist." << std::endl;
         }
     } else if (1 ){
 

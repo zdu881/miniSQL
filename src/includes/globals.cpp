@@ -3,11 +3,15 @@
 
 std::ifstream inputFile;
 std::ofstream outputFile;
+int linenumber = 0;
 std::ostream& operator<<(std::ostream& os, const ColumnType& column) {
     std::visit([&os](auto&& arg) {
         using T = std::decay_t<decltype(arg)>;
-        if constexpr (std::is_same_v<T, int> || std::is_same_v<T, double>) {
+        if constexpr (std::is_same_v<T, int> ) {
             os << arg;
+        }else if( std::is_same_v<T, double>){
+            //fixed 2 decimal
+            os << std::fixed << std::setprecision(2) << arg;
         } else if constexpr (std::is_same_v<T, std::string>) {
             os << arg;
         }
