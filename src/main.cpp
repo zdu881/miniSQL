@@ -46,6 +46,11 @@ int main(int argv,char* argc[]){
         query.getQ();
         query.excQ();
         //std::cout<<"ENDQ"<<std::endl;
+        //清除空白符
+        while(inputFile.peek() == ' '||inputFile.peek() == '\n'){
+            //if(inputFile.peek() == '\n') linenumber++;
+            inputFile.get();
+        }
     }
     for (auto& [name, db] : databases) {
         db.save(name + ".db");
