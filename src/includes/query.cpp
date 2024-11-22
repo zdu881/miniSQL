@@ -160,7 +160,7 @@ void Command_line::get_command_line() {
     std::string temp= "" ;
     std::vector<std::string> paratoken2;
     for (auto& i: paratokens){
-        if(i=="\""){
+        if(i=="\""||i=="\'"){
             if(instr){
                 temp.pop_back();
                 instr = false;
