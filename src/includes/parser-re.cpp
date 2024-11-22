@@ -71,20 +71,7 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
                         // std::cout << columnType << " " << paratokens[i] << std::endl;
                         if (columnType == TEXT) {
                             //std::cout<<paratokens[i]<<std::endl;
-                            std::string strValue = "";
-                            //std::cout<<strValue<<std::endl;
-                            i+=1;
-                            while (i < paratokens.size()  && paratokens[i] != "\"") {
-                                //std::cout<<"strValue"<<i<<strValue<<std::endl;
-                                strValue += paratokens[i] + " ";
-                                // std::cout << "paratokens[i]" << paratokens[i] << std::endl;
-                                //std::cout<<"strValue"<<i<<strValue<<std::endl;
-                                ++i;
-                            }
-                            if (i < paratokens.size()  && paratokens[i] == "\"") {
-                                strValue.pop_back(); // Remove trailing space
-                            }
-                            value = strValue;
+                            value = paratokens[i];
 
                         } else if (columnType == INTEGER) {
                             try {
