@@ -1,16 +1,16 @@
 ---------------------------------
 ID,Name,GPA
-1000,"Jay Chou",3.50
-1003,"JJ Lin",4.90
 ---------------------------------
 ID,Name,GPA
-1000,"Jay Chou",3.50
-1003,"JJ Lin",4.90
+1000,"Jay Chou",3
+1000,"Jay Chou",3
 ---------------------------------
 ID,Name,GPA
-1003,"JJ Lin",4.90
 ---------------------------------
-ID,Name,GPA,CourseName
-1000,Jay Chou,3.50,Math
-1000,Jay Chou,3.50,History
-1003,JJ Lin,4.90,Science
+ID,Name,GPA
+---------------------------------
+ID,Name,GPA
+---------------------------------
+ID,Name,GPA
+1000,"Jay Chou",3
+1000,"Jay Chou",3

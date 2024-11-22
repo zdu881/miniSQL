@@ -405,13 +405,13 @@ void Table::load(std::ifstream& file) {
     for (auto& [colName, colType] : columnsNT) {
         switch (colType) {
             case INTEGER:
-                columns[colName].emplace_back(0);
+                //columns[colName].emplace_back(0);
                 break;
             case FLOAT:
-                columns[colName].emplace_back(0.0);
+                //columns[colName].emplace_back(0.0);
                 break;
             case TEXT:
-                columns[colName].emplace_back(std::string());
+                //columns[colName].emplace_back(std::string());
                 break;
             default:
                 // 处理错误类型
