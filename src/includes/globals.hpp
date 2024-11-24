@@ -35,6 +35,9 @@ enum Compare_sign:int{
     EQUAL,
     BIGGER,
     SMALLER,
+    UNEQUAL,
+    GREATER_EQUAL, // 添加 GREATER_EQUAL
+    LESS_EQUAL,    // 添加 LESS_EQUAL
     ERROR_COMPARE_SIGN
 };
 
@@ -87,3 +90,4 @@ class Condition{
 };
 
 #endif // GLOBALS_HPP
+

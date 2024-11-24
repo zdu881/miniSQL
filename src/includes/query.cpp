@@ -36,7 +36,7 @@ bool is_special(const std::string & a){
     return !(a[0]=='_'||('a'<=a[0]&&a[0]<'z')||('A'<=a[0]&&a[0]<'Z')||('1'<=a[0]&&a[0]<'9'));
 }
 bool is_special(const char & a){
-    return a==' '||a=='\n'||a==')'||a=='('||a==','||a=='\''||a==';'||a=='<'||a=='='||a=='>'||a=='*'||a=='/'||a=='+'||a=='-'||a=='\"';
+    return a==' '||a=='\n'||a==')'||a=='('||a==','||a=='\''||a==';'||a=='*'||a=='/'||a=='+'||a=='-'||a=='\"';
 }
 bool _is_empty(const char & a){
     return a==' '||a=='\n';

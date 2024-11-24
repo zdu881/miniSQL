@@ -24,7 +24,10 @@ Condition::Condition(const BOOL_OP &pre,const std::string &v1,const std::string 
     column = v1;
     value = v2;
     if(op == "=") sign = EQUAL;
+    else if(op == "!=") sign = UNEQUAL; // 添加对 != 的解析
     else if(op == "<") sign = SMALLER;
     else if(op == ">") sign = BIGGER;
+    else if(op == "<=") sign = LESS_EQUAL;       // 添加对 <= 的解析
+    else if(op == ">=") sign = GREATER_EQUAL;    // 添加对 >= 的解析
     else sign = ERROR_COMPARE_SIGN;
 }

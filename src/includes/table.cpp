@@ -124,24 +124,56 @@ void Table::queryTable(const std::vector<std::string>& columns, const std::vecto
                     if (colType == INTEGER) {
                         if constexpr (std::is_same_v<T, int>) {
                             int condValue = std::stoi(std::get<std::string>(condition.value));
-                            if (condition.sign == EQUAL) return arg == condValue;
-                            else if (condition.sign == BIGGER) return arg > condValue;
-                            else if (condition.sign == SMALLER) return arg < condValue;
+                            switch (condition.sign) {
+                                case EQUAL:
+                                    return arg == condValue;
+                                case UNEQUAL:
+                                    return arg != condValue;
+                                case SMALLER:
+                                    return arg < condValue;
+                                case BIGGER:
+                                    return arg > condValue;
+                                case GREATER_EQUAL:
+                                    return arg >= condValue;
+                                case LESS_EQUAL:
+                                    return arg <= condValue;
+                                default:
+                                    return false;
+                            }
                         }
                     } else if (colType == FLOAT) {
                         if constexpr (std::is_same_v<T, double>) {
                             double condValue = std::stod(std::get<std::string>(condition.value));
-                            if (condition.sign == EQUAL) return arg == condValue;
-                            else if (condition.sign == BIGGER) return arg > condValue;
-                            else if (condition.sign == SMALLER) return arg < condValue;
+                            switch (condition.sign) {
+                                case EQUAL:
+                                    return arg == condValue;
+                                case UNEQUAL:
+                                    return arg != condValue;
+                                case SMALLER:
+                                    return arg < condValue;
+                                case BIGGER:
+                                    return arg > condValue;
+                                case GREATER_EQUAL:
+                                    return arg >= condValue;
+                                case LESS_EQUAL:
+                                    return arg <= condValue;
+                                default:
+                                    return false;
+                            }
                         }
                     } else if (colType == TEXT) {
                         if constexpr (std::is_same_v<T, std::string>) {
-                            if (condition.sign == EQUAL) return arg == std::get<std::string>(condition.value);
+                            switch (condition.sign) {
+                                case EQUAL:
+                                    return arg == std::get<std::string>(condition.value);
+                                case UNEQUAL:
+                                    return arg != std::get<std::string>(condition.value);
+                                default:
+                                    return false;
+                            }
                         }
                     }
-                } catch (const std::bad_variant_access&) {
-                    std::cerr << "Command " << linenumber<<": " << "Bad variant access for column " << condition.column << std::endl;
+                } catch (...) {
                     return false;
                 }
                 return false;
@@ -196,13 +228,16 @@ void Table::deleteRow(const std::vector<Condition>& conditions) {
                         if (condition.sign == EQUAL) return std::get<int>(arg) == condValue;
                         else if (condition.sign == BIGGER) return std::get<int>(arg) > condValue;
                         else if (condition.sign == SMALLER) return std::get<int>(arg) < condValue;
+                        else if (condition.sign == UNEQUAL) return std::get<int>(arg) != condValue;
                     } else if (colType == FLOAT) {
                         double condValue = std::stod(std::get<std::string>(condition.value));
                         if (condition.sign == EQUAL) return std::get<double>(arg) == condValue;
                         else if (condition.sign == BIGGER) return std::get<double>(arg) > condValue;
                         else if (condition.sign == SMALLER) return std::get<double>(arg) < condValue;
+                        else if (condition.sign == UNEQUAL) return std::get<double>(arg) != condValue;
                     } else if (colType == TEXT) {
                         if (condition.sign == EQUAL) return std::get<std::string>(arg) == std::get<std::string>(condition.value);
+                        else if (condition.sign == UNEQUAL) return std::get<std::string>(arg) != std::get<std::string>(condition.value);
                     }
                 } catch (const std::bad_variant_access&) {
                     std::cerr << "Command " << linenumber<<": " << "Bad variant access for column " << condition.column << std::endl;
@@ -253,13 +288,16 @@ void Table::updateRow(const std::vector<UpdateConfig>& setConfigs, const std::ve
                         if (condition.sign == EQUAL) return std::get<int>(arg) == condValue;
                         else if (condition.sign == BIGGER) return std::get<int>(arg) > condValue;
                         else if (condition.sign == SMALLER) return std::get<int>(arg) < condValue;
+                        else if (condition.sign == UNEQUAL) return std::get<int>(arg) != condValue;
                     } else if (colType == FLOAT) {
                         double condValue = std::stod(std::get<std::string>(condition.value));
                         if (condition.sign == EQUAL) return std::get<double>(arg) == condValue;
                         else if (condition.sign == BIGGER) return std::get<double>(arg) > condValue;
                         else if (condition.sign == SMALLER) return std::get<double>(arg) < condValue;
+                        else if (condition.sign == UNEQUAL) return std::get<double>(arg) != condValue;
                     } else if (colType == TEXT) {
                         if (condition.sign == EQUAL) return std::get<std::string>(arg) == std::get<std::string>(condition.value);
+                        else if (condition.sign == UNEQUAL) return std::get<std::string>(arg) != std::get<std::string>(condition.value);
                     }
                 } catch (const std::bad_variant_access&) {
                     std::cerr << "Command " << linenumber<<": " << "Bad variant access for column " << condition.column << std::endl;
