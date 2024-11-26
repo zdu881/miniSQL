@@ -16,14 +16,13 @@ INSERT INTO student VALUES (1001, 'Taylor Swift', 3.2, 'Data Science');
 
 INSERT INTO student VALUES (1002, 'Bob Dylan', 3.5, 'Financial Technology');
 
-INSERT INTO student VALUES (1003, 'David Green', 3.7, 'Civil Engineering');
 
 INSERT INTO student VALUES (1004, 'Hatsune Miku', 3.3, 'Vocaloid');
 
 INSERT INTO student VALUES (1005, 'litterzy', 2.0, 'Cakewalk Producer');
 
 CREATE TABLE enrollment (
-StudentID INTERGER,
+StudentID INTEGER,
 Course TEXT
 );
 
@@ -52,13 +51,6 @@ weight FLOAT
 INSERT INTO healthData VALUES ('Hatsune Miku', 158, 42.0);
 
 INSERT INTO healthData VALUES ('litterzy', 178, 61.5);
-
-UPDATE student
-SET GPA = (GPA - 0.1) * 2 * (GPA - 1.5);
-
-UPDATE student
-SET GPA = (GPA -0.1) * 0.95
-WHERE Name = 'Bob Dylan';
 
 UPDATE healthData
 SET height = 180.6, weight = 65

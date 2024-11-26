@@ -58,7 +58,7 @@ void Command_line::get_command_line() {
 
     while (true) {
         lin = inputFile.get();
-        if (in_ || lin == '\'') {
+        if (in_) {
             input << lin;
         } else {
             if (is_special(lin)) {
