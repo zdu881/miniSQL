@@ -149,11 +149,7 @@ void Command_line::get_command_line() {
             }
         }
     } 
-    for (auto& temp: paratokens){
-        std::cout<<temp<<" ";
 
-    }
-    std::cout<<std::endl;
     //paratokens : courses 1 , " Math Analyze " , 1000
     //delete " " and merge whats inside
     bool instr = false;
@@ -177,10 +173,5 @@ void Command_line::get_command_line() {
         }
     }
     paratokens = std::move(paratoken2);
-        for (auto& temp: paratokens){
-        std::cout<<temp<<" ";
-
-    }
-    std::cout<<std::endl;
     //default : ERROR_COMMAND
 }

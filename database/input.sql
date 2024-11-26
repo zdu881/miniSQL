@@ -1,19 +1,94 @@
 
 CREATE DATABASE db_university;
+
 USE DATABASE db_university;
-CREATE TABLE students (
-    ID INTEGER,
-    Name TEXT,
-    GPA FLOAT
+
+CREATE TABLE student (
+ID INTEGER,
+Name TEXT,
+GPA FLOAT,
+Major TEXT
 );
 
-INSERT INTO students VALUES ( 1000 , "Jay Chou" , 3.0 );
-INSERT INTO students VALUES ( 1002 , "David Tao" , 3.8 );
-INSERT INTO students VALUES ( 1003 , "JJ Lin" , 3.9 );
+INSERT INTO student VALUES (1000, 'Jay Chou', 3.0, 'Microelectronics');
 
-SELECT * FROM students WHERE Name = Jay Chou;
-SELECT * FROM students WHERE Name = "Jay Chou";
-SELECT * FROM students WHERE Name = 'Jay Chou';
-SELECT * FROM students WHERE Name = 'Jay Chou' or GPA = 3.0;
-SELECT * FROM students WHERE Name = 'Jay Chou' and GPA = 3.0;
-SELECT * FROM students WHERE GPA = 3.0;
+INSERT INTO student VALUES (1001, 'Taylor Swift', 3.2, 'Data Science');
+
+INSERT INTO student VALUES (1002, 'Bob Dylan', 3.5, 'Financial Technology');
+
+INSERT INTO student VALUES (1003, 'David Green', 3.7, 'Civil Engineering');
+
+INSERT INTO student VALUES (1004, 'Hatsune Miku', 3.3, 'Vocaloid');
+
+INSERT INTO student VALUES (1005, 'litterzy', 2.0, 'Cakewalk Producer');
+
+CREATE TABLE enrollment (
+StudentID INTERGER,
+Course TEXT
+);
+
+INSERT INTO enrollment VALUES (1000, 'Microelectronics');
+
+INSERT INTO enrollment VALUES (1001, 'Data Science');
+
+INSERT INTO enrollment VALUES (1001, 'Machine Learning');
+
+INSERT INTO enrollment VALUES (1002, 'Financial technology');
+
+INSERT INTO enrollment VALUES (1003, 'Mapping Engineering');
+
+INSERT INTO enrollment VALUES (1004, 'Unknown Mother Goose');
+
+INSERT INTO enrollment VALUES (1004, 'Melt');
+
+INSERT INTO enrollment VALUES (1004, 'ODDS&ENDS');
+
+CREATE TABLE healthData (
+Name TEXT,
+height FLOAT,
+weight FLOAT
+);
+
+INSERT INTO healthData VALUES ('Hatsune Miku', 158, 42.0);
+
+INSERT INTO healthData VALUES ('litterzy', 178, 61.5);
+
+UPDATE student
+SET GPA = (GPA - 0.1) * 2 * (GPA - 1.5);
+
+UPDATE student
+SET GPA = (GPA -0.1) * 0.95
+WHERE Name = 'Bob Dylan';
+
+UPDATE healthData
+SET height = 180.6, weight = 65
+WHERE Name = 'litterzy';
+
+SELECT * FROM student;
+
+SELECT * FROM enrollment;
+
+SELECT * FROM healthData;
+
+SELECT student.Major, healthData.height
+FROM student
+INNER JOIN healthData
+ON student.Name = healthData.Name;
+
+DROP TABLE healthData;
+
+SELECT student.Name, enrollment.Course
+FROM student
+INNER JOIN enrollment
+ON student.ID = enrollment.StudentID;
+
+SELECT ID, Name, GPA FROM student WHERE GPA > 3.3 OR Major = 'Data Science';
+
+SELECT Name FROM student WHERE GPA < 3.1 OR Major = 'Financial Technology';
+
+SELECT Name FROM enrollment;
+
+DELETE FROM student
+WHERE GPA < 2.0;
+
+SELECT * FROM student;
