@@ -14,5 +14,5 @@ class Parser{
 ColumnType fromrawStringtoInt(ColumnType str);
 ColumnType fromrawStringtoDouble(ColumnType str);
 Data_type fromrawStringtoData_type(ColumnType str);
-double evaluate(const std::string& expression, const std::map<std::string, double>& variables);
+ColumnType evaluate(const std::string& expression, const std::map<std::string, ColumnType>& variables);
 #endif // PARSER_RE_HPP

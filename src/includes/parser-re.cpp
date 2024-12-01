@@ -7,10 +7,11 @@
 #include <fstream>
 #include <iostream>
 #include <stack>
+#include <algorithm>
 // "(",")"has not benn removed
 // input:command_type = CREATE_TABLE, paratokens = {"table_name", "(", "column_name1", "column_type1", ",", "column_name2", "column_type2", ",", ... , ")"}
-double evaluate(const std::string& expression, const std::map<std::string, double>& variables) {
-    std::stack<double> values;
+ColumnType evaluate(const std::string& expression, const std::map<std::string, ColumnType>& variables) {
+    std::stack<ColumnType> values;
     std::stack<char> operators;
 
     // 判断运算符优先级
@@ -21,21 +22,45 @@ double evaluate(const std::string& expression, const std::map<std::string, doubl
     };
 
     // 执行运算
-    auto applyOp = [](double a, double b, char op) {
+    auto applyOp = [](ColumnType a, ColumnType b, char op) -> ColumnType {
+        if (a.index() == 2 || b.index() == 2) {
+            throw std::runtime_error("Unsupported operation on strings");
+        }
+        double a_val = std::visit([](auto&& arg) -> double {
+            using T = std::decay_t<decltype(arg)>;
+            if constexpr (std::is_same_v<T, int> || std::is_same_v<T, double>) {
+                return arg;
+            } else {
+                throw std::runtime_error("Unsupported type");
+            }
+        }, a);
+        double b_val = std::visit([](auto&& arg) -> double {
+            using T = std::decay_t<decltype(arg)>;
+            if constexpr (std::is_same_v<T, int> || std::is_same_v<T, double>) {
+                return arg;
+            } else {
+                throw std::runtime_error("Unsupported type");
+            }
+        }, b);
+
         switch (op) {
-            case '+': return a + b;
-            case '-': return a - b;
-            case '*': return a * b;
-            case '/': if (b == 0) throw std::runtime_error("Division by zero");
-                      return a / b;
+            case '+': return a_val + b_val;
+            case '-': return a_val - b_val;
+            case '*': return a_val * b_val;
+            case '/': if (b_val == 0) throw std::runtime_error("Division by zero");
+                      return a_val / b_val;
             default: throw std::runtime_error("Unsupported operator");
         }
     };
 
     // 解析变量或数字
-    auto resolveVariable = [&](const std::string& token) -> double {
+    auto resolveVariable = [&](const std::string& token) -> ColumnType {
         if (isdigit(token[0]) || (token[0] == '-' && token.size() > 1)) {
-            return std::stod(token); // 是数字，直接转换
+            if (token.find('.') != std::string::npos) {
+                return std::stod(token); // 是浮点数，直接转换
+            } else {
+                return std::stoi(token); // 是整数，直接转换
+            }
         }
         auto it = variables.find(token);
         if (it != variables.end()) {
@@ -49,7 +74,11 @@ double evaluate(const std::string& expression, const std::map<std::string, doubl
 
     while (ss >> token) {
         if (isdigit(token[0]) || (token[0] == '-' && token.size() > 1)) {
-            values.push(std::stod(token)); // 直接压入数字
+            if (token.find('.') != std::string::npos) {
+                values.push(std::stod(token)); // 直接压入浮点数
+            } else {
+                values.push(std::stoi(token)); // 直接压入整数
+            }
         } else if (isalpha(token[0])) {
             values.push(resolveVariable(token)); // 是变量，解析其值
         } else if (token == "(") {
@@ -57,8 +86,8 @@ double evaluate(const std::string& expression, const std::map<std::string, doubl
         } else if (token == ")") {
             // 计算括号内的表达式
             while (!operators.empty() && operators.top() != '(') {
-                double b = values.top(); values.pop();
-                double a = values.top(); values.pop();
+                ColumnType b = values.top(); values.pop();
+                ColumnType a = values.top(); values.pop();
                 char op = operators.top(); operators.pop();
                 values.push(applyOp(a, b, op));
             }
@@ -66,8 +95,8 @@ double evaluate(const std::string& expression, const std::map<std::string, doubl
         } else {
             // 处理运算符
             while (!operators.empty() && precedence(operators.top()) >= precedence(token[0])) {
-                double b = values.top(); values.pop();
-                double a = values.top(); values.pop();
+                ColumnType b = values.top(); values.pop();
+                ColumnType a = values.top(); values.pop();
                 char op = operators.top(); operators.pop();
                 values.push(applyOp(a, b, op));
             }
@@ -77,8 +106,8 @@ double evaluate(const std::string& expression, const std::map<std::string, doubl
 
     // 处理剩下的运算符
     while (!operators.empty()) {
-        double b = values.top(); values.pop();
-        double a = values.top(); values.pop();
+        ColumnType b = values.top(); values.pop();
+        ColumnType a = values.top(); values.pop();
         char op = operators.top(); operators.pop();
         values.push(applyOp(a, b, op));
     }
@@ -294,67 +323,71 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
             std::cerr << "Command " << linenumber<<": " << "Table " << tableName << " does not exist." << std::endl;
         }
 
-
-    }else if(command_type == UPDATE_SET_WHERE){
-        //input::UPDATE table_name SET column_name1 = value1, column_name2 = value2 WHERE ID = 1 AND NAME = "John"
-        //paratokens = {"table_name", "column_name1", "=", "value1", ",", "column_name2", "=", "value2", "WHERE", "ID", "=", "1", "AND", "NAME", "=", "John"}
-        //doing
+    //input :: UPDATE table_name SET column_name1 = expression1 , column_name2 = expression2 WHERE ID = 1 AND NAME = "John"
+    }else if (command_type == UPDATE_SET_WHERE) {
         std::string tableName = paratokens[0];
         std::vector<Condition> conditions;
         BOOL_OP pre_bool_op = AND;
         std::vector<UpdateConfig> setConfigs;
         size_t i = 1;
-        for (; i < paratokens.size()&& paratokens[i-1] != "WHERE"; i += 4) {
+
+        // 解析 SET 子句
+        for (; i < paratokens.size() && paratokens[i] != "WHERE"; i += 3) {
             std::string column = paratokens[i];
-            ColumnType value;
-            if (paratokens[i + 1] == "="&&paratokens[i + 3] == "+") {
-                value = paratokens[i + 4];
-                setConfigs.push_back(UpdateConfig{column, ADD, value});
-                i+=2;
-            } else if (paratokens[i + 1] == "="&&paratokens[i + 3] == "-") {
-                value = paratokens[i + 4];
-                setConfigs.push_back(UpdateConfig{column, SUBTRACT, value});
-                i+=2;
-            } else if (paratokens[i + 1] == "="&&paratokens[i + 3] == "*") {
-                value = paratokens[i + 4];
-                setConfigs.push_back(UpdateConfig{column, MULTIPLY, value});
-                i+=2;
-            } else if (paratokens[i + 1] == "="&&paratokens[i + 3] == "/") {
-                value = paratokens[i + 4];
-                setConfigs.push_back(UpdateConfig{column, DIVIDE, value});
-                i+=2;
-            } else if (paratokens[i + 1] == "=") {
-                value = paratokens[i + 2];
-                setConfigs.push_back(UpdateConfig{column, SET, value});
-            } else {
-                std::cerr << "Command " << linenumber<<": " << "Invalid update operation." << std::endl;
-                return;
+            std::string expression;
+            for (size_t j = i + 2; j < paratokens.size() && paratokens[j] != "," && paratokens[j] != "WHERE"; ++j) {
+            if (!expression.empty()) {
+                expression += " ";
             }
-            // std::cout << "SET" << column << value << std::endl;
+            expression += paratokens[j];
+            }
+            setConfigs.push_back(UpdateConfig{column, SET, expression});
+            i += expression.size() / 2; // Adjust index to skip the parsed expression
         }
-        
-        
-        //skip "WHERE"
-        // std::cout << "WHERE" << paratokens[i] << std::endl;
-        for (; i + 3 < paratokens.size(); i += 4) {
+
+        // 解析 WHERE 子句
+        for (i += 1; i + 3 < paratokens.size(); i += 4) {
             std::string column = paratokens[i];
             std::string op = paratokens[i + 1];
             std::string value = paratokens[i + 2];
             conditions.push_back(Condition(pre_bool_op, column, value, op));
-            
+
             if (paratokens[i + 3] == "AND") {
                 pre_bool_op = AND;
             } else if (paratokens[i + 3] == "OR") {
                 pre_bool_op = OR;
             }
-            
         }
-        // std::cout << "BEFORE GET TABLE" << std::endl;
+
         Table* table = databases->at(*currentDatabase).getTable(tableName);
         if (table) {
-            table->updateRow(setConfigs, conditions);
+            // 获取当前行的变量值
+            std::map<std::string, ColumnType> variables;
+            for (const auto& [colName, colData] : table->columns) {
+                if (table->getColumnType(colName) == INTEGER || table->getColumnType(colName) == FLOAT) {
+                    variables[colName] = colData[0]; // 假设所有行的变量值相同
+                }
+            }
+
+            // 计算表达式并更新行
+            for (auto& [columnName, columnData] : table->columns) {
+                Data_type colType = table->getColumnType(columnName);
+                for (size_t i = 0; i < columnData.size(); ++i) {
+                    auto it = std::find_if(setConfigs.begin(), setConfigs.end(), [&columnName](const UpdateConfig& config) { return config.column == columnName; });
+                    if (it != setConfigs.end()) {
+                        ColumnType newValue = evaluate(std::get<std::string>(it->value), variables);
+                        if (colType == INTEGER) {
+                            columnData[i] = std::get<int>(newValue);
+                        } else if (colType == FLOAT) {
+                            columnData[i] = std::get<double>(newValue);
+                        } else if (colType == TEXT) {
+                            columnData[i] = std::get<std::string>(newValue);
+                        }
+                    }
+                }
+            }
         } else {
-            std::cerr << "Command " << linenumber<<": " << "Table " << tableName << " does not exist." << std::endl;
+            std::cerr << "Command " << linenumber << ": " << "Table " << tableName << " does not exist." << std::endl;
         }
     } else if (1 ){
 

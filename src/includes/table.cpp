@@ -6,7 +6,9 @@
 #include <algorithm>
 #include <unordered_map>
 #include <string>
+#include <map>
 #include "globals.hpp"
+#include "parser-re.hpp"
 
 Table::Table() : name(""), columnsNT() {}
 Table::Table(const Table& other) : name(other.name), columnsNT(other.columnsNT), columns(other.columns) {}
@@ -268,7 +270,7 @@ void Table::updateRow(const std::vector<UpdateConfig>& setConfigs, const std::ve
         bool updateRow = true;
         for (const auto& condition : conditions) {
             if (this->columns.find(condition.column) == this->columns.end()) {
-                std::cerr << "Command " << linenumber<<": " << "Column " << condition.column << " does not exist in table " << name << std::endl;
+                std::cerr << "Command " << linenumber << ": " << "Column " << condition.column << " does not exist in table " << name << std::endl;
                 updateRow = false;
                 break;
             }
@@ -276,31 +278,32 @@ void Table::updateRow(const std::vector<UpdateConfig>& setConfigs, const std::ve
             const auto& colData = this->columns.at(condition.column);
             Data_type colType = getColumnType(condition.column);
             if (colType == ERROR_TYPE) {
-                std::cerr << "Command " << linenumber<<": " << "Column " << condition.column << " does not exist." << std::endl;
+                std::cerr << "Command " << linenumber << ": " << "Column " << condition.column << " does not exist." << std::endl;
                 updateRow = false;
                 break;
-            }            bool conditionMatch = std::visit([&condition, colType](const ColumnType& arg) -> bool {
+            }
+
+            bool conditionMatch = std::visit([&condition, colType](const ColumnType& arg) -> bool {
                 try {
-                    //std::cout<<"value"<<std::get<std::string>(condition.value)<<std::endl;
-                    //std::cout<<"arg"<<arg<<std::endl;  
                     if (colType == INTEGER) {
-                        int condValue = std::stoi(std::get<std::string>(condition.value));
-                        if (condition.sign == EQUAL) return std::get<int>(arg) == condValue;
-                        else if (condition.sign == BIGGER) return std::get<int>(arg) > condValue;
-                        else if (condition.sign == SMALLER) return std::get<int>(arg) < condValue;
-                        else if (condition.sign == UNEQUAL) return std::get<int>(arg) != condValue;
+                        if (condition.sign == EQUAL) return std::get<int>(arg) == std::stoi(std::get<std::string>(condition.value));
+                        else if (condition.sign == BIGGER) return std::get<int>(arg) > std::stoi(std::get<std::string>(condition.value));
+                        else if (condition.sign == SMALLER) return std::get<int>(arg) < std::stoi(std::get<std::string>(condition.value));
+                        else if (condition.sign == UNEQUAL) return std::get<int>(arg) != std::stoi(std::get<std::string>(condition.value));
+                        else if (condition.sign == GREATER_EQUAL) return std::get<int>(arg) >= std::stoi(std::get<std::string>(condition.value));
+                        else if (condition.sign == LESS_EQUAL) return std::get<int>(arg) <= std::stoi(std::get<std::string>(condition.value));
                     } else if (colType == FLOAT) {
-                        double condValue = std::stod(std::get<std::string>(condition.value));
-                        if (condition.sign == EQUAL) return std::get<double>(arg) == condValue;
-                        else if (condition.sign == BIGGER) return std::get<double>(arg) > condValue;
-                        else if (condition.sign == SMALLER) return std::get<double>(arg) < condValue;
-                        else if (condition.sign == UNEQUAL) return std::get<double>(arg) != condValue;
+                        if (condition.sign == EQUAL) return std::get<double>(arg) == std::stod(std::get<std::string>(condition.value));
+                        else if (condition.sign == BIGGER) return std::get<double>(arg) > std::stod(std::get<std::string>(condition.value));
+                        else if (condition.sign == SMALLER) return std::get<double>(arg) < std::stod(std::get<std::string>(condition.value));
+                        else if (condition.sign == UNEQUAL) return std::get<double>(arg) != std::stod(std::get<std::string>(condition.value));
+                        else if (condition.sign == GREATER_EQUAL) return std::get<double>(arg) >= std::stod(std::get<std::string>(condition.value));
+                        else if (condition.sign == LESS_EQUAL) return std::get<double>(arg) <= std::stod(std::get<std::string>(condition.value));
                     } else if (colType == TEXT) {
                         if (condition.sign == EQUAL) return std::get<std::string>(arg) == std::get<std::string>(condition.value);
                         else if (condition.sign == UNEQUAL) return std::get<std::string>(arg) != std::get<std::string>(condition.value);
                     }
                 } catch (const std::bad_variant_access&) {
-                    std::cerr << "Command " << linenumber<<": " << "Bad variant access for column " << condition.column << std::endl;
                     return false;
                 }
                 return false;
@@ -316,67 +319,34 @@ void Table::updateRow(const std::vector<UpdateConfig>& setConfigs, const std::ve
         }
     }
 
-
-    //for(const auto& config : setConfigs) std::cout << config.column << " " << config.value << std::endl;
     for (auto& [columnName, columnData] : columns) {
         Data_type colType = getColumnType(columnName);
         for (size_t i = 0; i < rowsToUpdate.size(); ++i) {
             auto it = std::find_if(setConfigs.begin(), setConfigs.end(), [&columnName](const UpdateConfig& config) { return config.column == columnName; });
             if (it != setConfigs.end()) {
-                switch(it->operation) {
-                    case SET:
-                        if(colType == INTEGER) {
-                            columnData[rowsToUpdate[i]] = std::stoi(std::get<std::string>(it->value));
-                        } else if(colType == FLOAT) {
-                            columnData[rowsToUpdate[i]] = std::stod(std::get<std::string>(it->value));
-                        } else if(colType == TEXT) {
-                            columnData[rowsToUpdate[i]] = it->value;
-                        }
-                        break;
-                    case ADD:
-                        if(colType == INTEGER) {
-                            columnData[rowsToUpdate[i]] = std::get<int>(columnData[rowsToUpdate[i]]) + std::stoi(std::get<std::string>(it->value));
-                        } else if(colType == FLOAT) {
-                            columnData[rowsToUpdate[i]] = std::get<double>(columnData[rowsToUpdate[i]]) + std::stod(std::get<std::string>(it->value));
-                        } else {
-                            std::cerr << "Command " << linenumber<<": " << "Unsupported operation ADD on column " << columnName << std::endl;
-                        }
-                        break;
-                    case SUBTRACT:
-                        if(colType == INTEGER) {
-                            columnData[rowsToUpdate[i]] = std::get<int>(columnData[rowsToUpdate[i]]) - std::stoi(std::get<std::string>(it->value));
-                        } else if(colType == FLOAT) {
-                            columnData[rowsToUpdate[i]] = std::get<double>(columnData[rowsToUpdate[i]]) - std::stod(std::get<std::string>(it->value));
-                        } else {
-                            std::cerr << "Command " << linenumber<<": " << "Unsupported operation SUBTRACT on column " << columnName << std::endl;
-                        }
-                        break;
-                    case MULTIPLY:
-                        if(colType == INTEGER) {
-                            columnData[rowsToUpdate[i]] = std::get<int>(columnData[rowsToUpdate[i]]) * std::stoi(std::get<std::string>(it->value));
-                        } else if(colType == FLOAT) {
-                            columnData[rowsToUpdate[i]] = std::get<double>(columnData[rowsToUpdate[i]]) * std::stod(std::get<std::string>(it->value));
-                        } else {
-                            std::cerr << "Command " << linenumber<<": " << "Unsupported operation MULTIPLY on column " << columnName << std::endl;
-                        }
-                        break;
-                    case DIVIDE:
-                        if(colType == INTEGER) {
-                            columnData[rowsToUpdate[i]] = std::get<int>(columnData[rowsToUpdate[i]]) / std::stoi(std::get<std::string>(it->value));
-                        } else if(colType == FLOAT) {
-                            columnData[rowsToUpdate[i]] = std::get<double>(columnData[rowsToUpdate[i]]) / std::stod(std::get<std::string>(it->value));
-                        } else {
-                            std::cerr << "Command " << linenumber<<": " << "Unsupported operation DIVIDE on column " << columnName << std::endl;
-                        }
-                        break;
-                    default:
-                        std::cerr << "Command " << linenumber<<": " << "Unsupported update operation." << std::endl;
-                        break;
+                // 设置变量
+                std::map<std::string, ColumnType> variables;
+                for (const auto& [colName, colData] : columns) {
+                    if (getColumnType(colName) == INTEGER || getColumnType(colName) == FLOAT) {
+                        variables[colName] = colData[rowsToUpdate[i]];
+                    }
+                }
+                ColumnType newValue;
+                if (colType == TEXT) {
+                    newValue = it->value;
+                } else {
+                    newValue = evaluate(std::get<std::string>(it->value), variables);
+                }
+                if (colType == INTEGER) {
+                    columnData[rowsToUpdate[i]] = std::get<int>(newValue);
+                } else if (colType == FLOAT) {
+                    columnData[rowsToUpdate[i]] = std::get<double>(newValue);
+                } else if (colType == TEXT) {
+                    columnData[rowsToUpdate[i]] = std::get<std::string>(newValue);
                 }
             }
         }
     }
-
 }
 void Table::save(std::ofstream& file) const {
     // 保存表名
