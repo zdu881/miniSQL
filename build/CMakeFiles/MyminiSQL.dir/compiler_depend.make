@@ -668,8 +668,17 @@ CMakeFiles/MyminiSQL.dir/src/includes/parser-re.cpp.o: ../src/includes/parser-re
   /usr/include/c++/11/sstream \
   /usr/include/c++/11/bits/sstream.tcc \
   ../src/includes/globals.hpp \
+  /usr/include/c++/11/map \
+  /usr/include/c++/11/bits/stl_tree.h \
+  /usr/include/c++/11/bits/stl_map.h \
+  /usr/include/c++/11/bits/stl_multimap.h \
   ../src/includes/query.hpp \
-  /usr/include/c++/11/iostream
+  /usr/include/c++/11/iostream \
+  /usr/include/c++/11/stack \
+  /usr/include/c++/11/deque \
+  /usr/include/c++/11/bits/stl_deque.h \
+  /usr/include/c++/11/bits/deque.tcc \
+  /usr/include/c++/11/bits/stl_stack.h
 
 CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.o: ../src/includes/query.cpp \
   /usr/include/stdc-predef.h \
@@ -895,6 +904,10 @@ CMakeFiles/MyminiSQL.dir/src/includes/query.cpp.o: ../src/includes/query.cpp \
   /usr/include/c++/11/sstream \
   /usr/include/c++/11/bits/sstream.tcc \
   ../src/includes/globals.hpp \
+  /usr/include/c++/11/map \
+  /usr/include/c++/11/bits/stl_tree.h \
+  /usr/include/c++/11/bits/stl_map.h \
+  /usr/include/c++/11/bits/stl_multimap.h \
   ../src/includes/query.hpp \
   /usr/include/c++/11/iostream \
   /usr/include/c++/11/algorithm \
@@ -1371,6 +1384,12 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 
 ../src/main.cpp:
 
+/usr/include/c++/11/bits/stl_stack.h:
+
+/usr/include/c++/11/bits/stl_deque.h:
+
+/usr/include/c++/11/bits/stl_map.h:
+
 ../src/includes/query.hpp:
 
 ../src/includes/parser-re.hpp:
@@ -1609,6 +1628,8 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/c++/11/bits/alloc_traits.h:
 
+/usr/include/c++/11/deque:
+
 /usr/include/c++/11/ios:
 
 /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
@@ -1624,6 +1645,8 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/x86_64-linux-gnu/bits/wchar.h:
 
 /usr/include/c++/11/bits/exception.h:
+
+/usr/include/c++/11/map:
 
 /usr/include/c++/11/bits/range_access.h:
 
@@ -1644,6 +1667,8 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h:
 
 ../src/includes/database.hpp:
+
+/usr/include/c++/11/bits/stl_multimap.h:
 
 /usr/include/features.h:
 
@@ -1695,9 +1720,13 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/c++/11/bits/move.h:
 
+/usr/include/c++/11/bits/stl_tree.h:
+
 /usr/include/c++/11/tuple:
 
 /usr/include/c++/11/type_traits:
+
+/usr/include/c++/11/stack:
 
 /usr/include/x86_64-linux-gnu/bits/libc-header-start.h:
 
@@ -1760,6 +1789,8 @@ CMakeFiles/MyminiSQL.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/libintl.h:
 
 /usr/include/x86_64-linux-gnu/bits/endianness.h:
+
+/usr/include/c++/11/bits/deque.tcc:
 
 /usr/include/c++/11/algorithm:
 

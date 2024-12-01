@@ -149,7 +149,6 @@ void Command_line::get_command_line() {
             }
         }
     } 
-
     //paratokens : courses 1 , " Math Analyze " , 1000
     //delete " " and merge whats inside
     bool instr = false;

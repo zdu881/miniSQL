@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <globals.hpp>
 #include <vector>
-
+#include <map>
 class Parser{
     public :
         void parse(Command_line command_line, std::unordered_map<std::string, Database>* databases, std::string* currentDatabase);
@@ -14,4 +14,5 @@ class Parser{
 ColumnType fromrawStringtoInt(ColumnType str);
 ColumnType fromrawStringtoDouble(ColumnType str);
 Data_type fromrawStringtoData_type(ColumnType str);
+double evaluate(const std::string& expression, const std::map<std::string, double>& variables);
 #endif // PARSER_RE_HPP

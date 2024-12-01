@@ -6,8 +6,85 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include <stack>
 // "(",")"has not benn removed
 // input:command_type = CREATE_TABLE, paratokens = {"table_name", "(", "column_name1", "column_type1", ",", "column_name2", "column_type2", ",", ... , ")"}
+double evaluate(const std::string& expression, const std::map<std::string, double>& variables) {
+    std::stack<double> values;
+    std::stack<char> operators;
+
+    // 判断运算符优先级
+    auto precedence = [](char op) {
+        if (op == '+' || op == '-') return 1;
+        if (op == '*' || op == '/') return 2;
+        return 0;
+    };
+
+    // 执行运算
+    auto applyOp = [](double a, double b, char op) {
+        switch (op) {
+            case '+': return a + b;
+            case '-': return a - b;
+            case '*': return a * b;
+            case '/': if (b == 0) throw std::runtime_error("Division by zero");
+                      return a / b;
+            default: throw std::runtime_error("Unsupported operator");
+        }
+    };
+
+    // 解析变量或数字
+    auto resolveVariable = [&](const std::string& token) -> double {
+        if (isdigit(token[0]) || (token[0] == '-' && token.size() > 1)) {
+            return std::stod(token); // 是数字，直接转换
+        }
+        auto it = variables.find(token);
+        if (it != variables.end()) {
+            return it->second; // 从变量表中获取值
+        }
+        throw std::runtime_error("Undefined variable: " + token);
+    };
+
+    std::stringstream ss(expression);
+    std::string token;
+
+    while (ss >> token) {
+        if (isdigit(token[0]) || (token[0] == '-' && token.size() > 1)) {
+            values.push(std::stod(token)); // 直接压入数字
+        } else if (isalpha(token[0])) {
+            values.push(resolveVariable(token)); // 是变量，解析其值
+        } else if (token == "(") {
+            operators.push('('); // 左括号直接压入栈
+        } else if (token == ")") {
+            // 计算括号内的表达式
+            while (!operators.empty() && operators.top() != '(') {
+                double b = values.top(); values.pop();
+                double a = values.top(); values.pop();
+                char op = operators.top(); operators.pop();
+                values.push(applyOp(a, b, op));
+            }
+            operators.pop(); // 弹出 '('
+        } else {
+            // 处理运算符
+            while (!operators.empty() && precedence(operators.top()) >= precedence(token[0])) {
+                double b = values.top(); values.pop();
+                double a = values.top(); values.pop();
+                char op = operators.top(); operators.pop();
+                values.push(applyOp(a, b, op));
+            }
+            operators.push(token[0]);
+        }
+    }
+
+    // 处理剩下的运算符
+    while (!operators.empty()) {
+        double b = values.top(); values.pop();
+        double a = values.top(); values.pop();
+        char op = operators.top(); operators.pop();
+        values.push(applyOp(a, b, op));
+    }
+
+    return values.top(); // 返回最终的结果
+}
 ColumnType fromrawStringtoInt(ColumnType str){
     return std::stoi(std::get<std::string>(str));
 }
