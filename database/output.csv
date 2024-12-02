@@ -5,21 +5,8 @@ ID,Name,GPA,Major
 1002,"Bob Dylan",3.50,"Financial Technology"
 1004,"Hatsune Miku",3.30,"Vocaloid"
 1005,"litterzy",2.00,"Cakewalk Producer"
-1000,"Jay Chou",3.00,"Microelectronics"
-1001,"Taylor Swift",3.20,"Data Science"
-1002,"Bob Dylan",3.50,"Financial Technology"
-1004,"Hatsune Miku",3.30,"Vocaloid"
-1005,"litterzy",2.00,"Cakewalk Producer"
 ---------------------------------
 StudentID,Course
-1000,"Microelectronics"
-1001,"Data Science"
-1001,"Machine Learning"
-1002,"Financial technology"
-1003,"Mapping Engineering"
-1004,"Unknown Mother Goose"
-1004,"Melt"
-1004,"ODDS&ENDS"
 1000,"Microelectronics"
 1001,"Data Science"
 1001,"Machine Learning"
@@ -33,38 +20,15 @@ Name,height,weight
 "Hatsune Miku",158.00,42.00
 "litterzy",180.60,65.00
 ---------------------------------
-Major,height
-Vocaloid,158.00
-Cakewalk Producer,180.60
+student.Major,healthData.height
 Vocaloid,158.00
 Cakewalk Producer,180.60
 ---------------------------------
-Name,Course
-Jay Chou,Microelectronics
-Jay Chou,Microelectronics
-Taylor Swift,Data Science
-Taylor Swift,Machine Learning
-Taylor Swift,Data Science
-Taylor Swift,Machine Learning
-Bob Dylan,Financial technology
-Bob Dylan,Financial technology
-Hatsune Miku,Unknown Mother Goose
-Hatsune Miku,Melt
-Hatsune Miku,ODDS&ENDS
-Hatsune Miku,Unknown Mother Goose
-Hatsune Miku,Melt
-Hatsune Miku,ODDS&ENDS
-Jay Chou,Microelectronics
+student.Name,enrollment.Course
 Jay Chou,Microelectronics
 Taylor Swift,Data Science
 Taylor Swift,Machine Learning
-Taylor Swift,Data Science
-Taylor Swift,Machine Learning
 Bob Dylan,Financial technology
-Bob Dylan,Financial technology
-Hatsune Miku,Unknown Mother Goose
-Hatsune Miku,Melt
-Hatsune Miku,ODDS&ENDS
 Hatsune Miku,Unknown Mother Goose
 Hatsune Miku,Melt
 Hatsune Miku,ODDS&ENDS
@@ -82,21 +46,8 @@ Name
 
 
 
-
-
-
-
-
-
-
-
 ---------------------------------
 ID,Name,GPA,Major
-1000,"Jay Chou",3.00,"Microelectronics"
-1001,"Taylor Swift",3.20,"Data Science"
-1002,"Bob Dylan",3.50,"Financial Technology"
-1004,"Hatsune Miku",3.30,"Vocaloid"
-1005,"litterzy",2.00,"Cakewalk Producer"
 1000,"Jay Chou",3.00,"Microelectronics"
 1001,"Taylor Swift",3.20,"Data Science"
 1002,"Bob Dylan",3.50,"Financial Technology"

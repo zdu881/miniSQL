@@ -183,15 +183,32 @@ void Parser::parse(Command_line command_line, std::unordered_map<std::string, Da
             }
         }
         //對columns取.之後的字符串
-        for(auto& i:columns) i = i.substr(i.find('.') + 1);
+        //for(auto& i:columns) i = i.substr(i.find('.') + 1);
         i += 3; // Skip "INNER JOIN"
         tableName2 = paratokens[i];
         i += 2; // Skip "ON"
         column1 = paratokens[i].substr(paratokens[i].find('.') + 1);
-
         i += 2; // Skip "="
         column2 = paratokens[i].substr(paratokens[i].find('.') + 1);
-        databases->at(*currentDatabase).innerJoinQuery(columns, tableName1, tableName2, column1, column2);
+        i+=2;
+        if(i+3<paratokens.size()){
+            std::vector<Condition> conditions;
+            BOOL_OP pre_bool_op = AND;
+            for (; i + 3 < paratokens.size(); i += 4) {
+                std::string column = paratokens[i];
+                //取. 之後的字符串
+                column = column.substr(column.find('.') + 1);
+                std::string op = paratokens[i + 1];
+                std::string value = paratokens[i + 2];
+                conditions.push_back(Condition(pre_bool_op, column, value, op));
+                if (paratokens[i + 3] == "AND") {
+                    pre_bool_op = AND;
+                } else if (paratokens[i + 3] == "OR") {
+                    pre_bool_op = OR;
+                }
+            }
+            databases->at(*currentDatabase).innerJoinQueryWHERE(columns, tableName1, tableName2, column1, column2, conditions);
+        } else databases->at(*currentDatabase).innerJoinQuery(columns, tableName1, tableName2, column1, column2);
     } else if (command_type == DELETE_FROM_WHERE){
         //input::DELETE FROM table_name WHERE ID = 1 AND NAME = "John"
         //paratokens = {"table_name", "WHERE", "ID", "=", "1", "AND", "NAME", "=", "John"}
