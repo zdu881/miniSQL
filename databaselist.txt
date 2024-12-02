@@ -1,1 +1,1 @@
-db_university
+test_university
