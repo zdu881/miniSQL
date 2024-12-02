@@ -30,7 +30,7 @@ Table* Database::getTable(const std::string& name) {
     return nullptr;
 }
 void Database::innerJoinQuery(std::vector<std::string> columns, const std::string& table1, const std::string& table2, const std::string& column1, const std::string& column2) {
-    outputFile << "---------------------------------" << std::endl;
+    
     for (size_t j = 0; j < columns.size(); ++j) {
         outputFile << columns[j];
         if (j < columns.size() - 1) {
@@ -75,9 +75,10 @@ void Database::innerJoinQuery(std::vector<std::string> columns, const std::strin
             }
         }
     }
+    outputFile << "---------------------------------" << std::endl;
 }
 void Database::innerJoinQueryWHERE(std::vector<std::string> columns, const std::string& table1, const std::string& table2, const std::string& column1, const std::string& column2, const std::vector<Condition>& conditions) {
-    outputFile << "---------------------------------" << std::endl;
+
     for (size_t j = 0; j < columns.size(); ++j) {
         outputFile << columns[j];
         if (j < columns.size() - 1) {
@@ -171,6 +172,7 @@ void Database::innerJoinQueryWHERE(std::vector<std::string> columns, const std::
             }
         }
     }
+    outputFile << "---------------------------------" << std::endl;
 }
 void Database::save(const std::string& filename) {
     std::ofstream file(filename, std::ios::binary);

@@ -51,7 +51,6 @@ void Table::queryTable() const {
 
 void Table::queryTable(const std::vector<std::string>& columns) const {
     // 
-    outputFile<<"---------------------------------"<<std::endl;
     for (size_t j = 0; j < columns.size(); ++j) {
         outputFile << columns[j];
         if (j < columns.size() - 1) {
@@ -87,11 +86,12 @@ void Table::queryTable(const std::vector<std::string>& columns) const {
         outputFile << std::endl;
     }
     //std::cout << "QueryTable" << std::endl;
+    outputFile<<"---------------------------------"<<std::endl;
 }
 
 void Table::queryTable(const std::vector<std::string>& columns, const std::vector<Condition>& conditions) const {
     // 输出列名
-    outputFile<<"---------------------------------"<<std::endl;
+    
     for (size_t j = 0; j < columns.size(); ++j) {
         outputFile << columns[j];
         if (j < columns.size() - 1) {
@@ -209,6 +209,7 @@ void Table::queryTable(const std::vector<std::string>& columns, const std::vecto
             outputFile << std::endl;
         }
     }
+    outputFile<<"---------------------------------"<<std::endl;
 }
 
 // Removed duplicate definition of queryTable with conditions

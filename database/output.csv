@@ -1,4 +1,3 @@
----------------------------------
 ID,Name,GPA,Major
 1,"Alice Johnson",3.50,"Computer Science"
 2,"Bob Smith",3.60,"Electrical Engineering"
@@ -32,3 +31,4 @@ CourseID,CourseName,Department
 102,"Circuit Analysis","Electrical Engineering"
 103,"Linear Algebra","Mathematics"
 105,"Organic Chemistry","Chemistry"
+---------------------------------
